@@ -1,0 +1,121 @@
+.invoice-list-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.invoice-list-container h2 {
+  color: #333;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.create-invoice-btn {
+  display: inline-block;
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  text-decoration: none;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  transition: background-color 0.3s;
+}
+
+.create-invoice-btn:hover {
+  background-color: #0056b3;
+}
+
+.invoice-table-container {
+  overflow-x: auto;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.invoice-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.invoice-table th,
+.invoice-table td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.invoice-table th {
+  background-color: #f8f9fa;
+  font-weight: bold;
+  color: #333;
+}
+
+.invoice-table tr:hover {
+  background-color: #f5f5f5;
+}
+
+.invoice-table tr:last-child td {
+  border-bottom: none;
+}
+
+.view-btn,
+.print-btn {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  margin: 0 5px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: background-color 0.3s;
+}
+
+.print-btn {
+  background-color: #17a2b8;
+}
+
+.view-btn:hover {
+  background-color: #218838;
+}
+
+.print-btn:hover {
+  background-color: #138496;
+}
+
+.invoice-list-container p {
+  text-align: center;
+  color: #666;
+  font-size: 16px;
+}
+
+.invoice-list-container p a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.invoice-list-container p a:hover {
+  text-decoration: underline;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .invoice-list-container {
+    padding: 10px;
+  }
+
+  .invoice-table th,
+  .invoice-table td {
+    padding: 8px;
+    font-size: 12px;
+  }
+
+  .view-btn,
+  .print-btn {
+    padding: 4px 8px;
+    font-size: 11px;
+    margin: 0 2px;
+  }
+}

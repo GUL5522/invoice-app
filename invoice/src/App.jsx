@@ -1,44 +1,29 @@
-import { useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { AuthProvider} from './contexts/AuthContext';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { AuthProvider } from './contexts/AuthContext';
 import Login from './pages/Login';
+import Signup from './pages/Signup';
+import Home from './pages/Home/Home';
+import UpdateProfile from './pages/UpdateProfile';
 import InvoicePage from './component/InvoicePage';
-import HomePage from './pages/Home/Home';
-
-function ProtectedRoute({ children }) {
-  if (!localStorage.getItem('user')) {
-    return <Navigate to="/login" />;
-  }
-
-  return children;
-}
-
+import InvoiceList from './pages/InvoiceList';
+import InvoiceView from './pages/InvoiceView';
+import './App.css';
 
 function App() {
-  useEffect(() => {
-    const hanldeUnload = ()=>{
-      localStorage.removeItem('user');
-    }
-    window.addEventListener('unload', hanldeUnload);
-    return () => {
-      window.removeEventListener('unload', hanldeUnload);
-    }
-  }, []);
   return (
     <AuthProvider>
       <Router>
-        <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/" element={<HomePage />} />
-          <Route
-            path="/bill"
-            element={
-              <ProtectedRoute>
-                <InvoicePage />
-              </ProtectedRoute>
-            }
-          />
-        </Routes>
+        <div className="App">
+          <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/update-profile" element={<UpdateProfile />} />
+            <Route path="/bill" element={<InvoicePage />} />
+            <Route path="/invoices" element={<InvoiceList />} />
+            <Route path="/invoice/:id" element={<InvoiceView />} />
+            <Route path="/" element={<Home />} />
+          </Routes>
+        </div>
       </Router>
     </AuthProvider>
   );

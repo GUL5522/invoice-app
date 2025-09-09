@@ -104,7 +104,7 @@ button {
 @media print {
     @page {
         size: A4;
-        margin: 10mm;
+        margin: 8mm;
     }
 
     html, body {
@@ -112,92 +112,230 @@ button {
         padding: 0 !important;
         height: 100%;
         width: 100%;
-        overflow: hidden;
-        font-size: 12px;
-        font-family: 'Times New Roman', serif;
+        font-size: 11px;
+        font-family: Arial, sans-serif;
         background: white;
         color: black;
+        line-height: 1.2;
     }
 
     .invoice-container {
-        width: 190mm;
-        max-height: 275mm; /* Enough to stay on one A4 */
-        margin: auto;
-        padding: 10mm;
+        width: 100%;
+        max-width: 210mm;
+        margin: 0 auto;
+        padding: 8mm;
         box-sizing: border-box;
         border: 1px solid black;
         background-color: white;
         page-break-inside: avoid;
+        font-size: 11px;
+        max-height: 270mm;
+        overflow: hidden;
+        height: 90vh;
+    }
+
+    .invoice-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+        border-bottom: 1px solid black;
+        padding-bottom: 8px;
+        page-break-inside: avoid;
     }
 
     .invoice-header img {
-        width: 90px;
+        width: 80px;
         height: auto;
         display: block;
+    }
+
+    .invoice-info h1 {
+        font-size: 24px !important;
+        margin: 0;
+        text-align: center;
+        color: #333;
+    }
+
+    .invoice-info p {
+        font-size: 9px;
+        margin: 2px 0;
+        text-align: center;
+        color: #666;
+    }
+
+    h3 {
+        font-size: 14px;
+        margin: 8px 0;
+        text-align: center;
+        border: 1px solid black;
+        padding: 4px;
+        text-transform: uppercase;
+        page-break-inside: avoid;
+    }
+
+    .cols-3 {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+        margin-bottom: 10px;
+        page-break-inside: avoid;
+    }
+
+    .cols-2 {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+        margin-bottom: 10px;
+        page-break-inside: avoid;
+    }
+
+    .form-elem {
+        margin-bottom: 5px;
+    }
+
+    .form-label {
+        font-size: 9px;
+        margin-bottom: 2px;
+        font-weight: bold;
+        display: block;
+    }
+
+    .form-control {
+        font-size: 9px;
+        padding: 3px 4px;
+        border: 1px solid #ddd;
+        background-color: white !important;
+        width: 100%;
+        box-sizing: border-box;
     }
 
     table {
         width: 100%;
         border-collapse: collapse;
-        font-size: 12px;
-        margin-top: 10px;
+        font-size: 9px;
+        margin: 8px 0;
         page-break-inside: avoid;
     }
 
     th, td {
         border: 1px solid black;
-        padding: 4px;
+        padding: 4px 5px;
         text-align: center;
+        height: auto;
+    }
+
+    th {
+        background-color: #f8f9fa;
+        font-weight: bold;
+        font-size: 9px;
     }
 
     input {
         border: none;
         background: none;
-        font-size: 12px;
+        font-size: 9px;
         width: 100%;
         text-align: center;
+        text-transform: uppercase;
     }
 
-    .bill, .word, .bank-info, .print-footer {
-        page-break-inside: avoid;
+    /* Specific styling for product name column to handle long names */
+    table th:first-child,
+    table td:first-child {
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        white-space: normal;
+        min-width: 120px;
+        max-width: 180px;
+        height: auto;
+        text-align: left;
+    }
+
+    /* Styling for Value and Total columns to handle long numbers */
+    table th:nth-child(5),
+    table td:nth-child(5),
+    table th:nth-child(7),
+    table td:nth-child(7) {
+        min-width: 60px;
+        max-width: 90px;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        white-space: normal;
+        height: auto;
     }
 
     .bill {
         display: flex;
         justify-content: space-between;
-        margin-top: 10px;
+        margin: 10px 0;
+        padding: 8px;
+        background-color: #f8f9fa;
+        border-radius: 3px;
+        page-break-inside: avoid;
     }
 
+    .bank-info {
+        border: 3px solid black;
+        padding: 6px;
+        background: white;
+        color: black;
+        width: 45%;
+        font-size: 9px;
+        page-break-inside: avoid;
+    }
 
-        .bank-info {
-            border: 1px solid black !important;
-            padding: 10px !important;
-            margin-top: 20px !important;
-            background: white !important;
-            color: black !important;
-            width: 40% !important;
-            font-size: 13px !important;
-        }
-    
-        .word {
-            width: 50%;
-            text-align: right;
-            font-size: 13px !important;
-        }
-    
-        .print-footer {
-            font-size: 13px !important;
-        }
-    
+    .word {
+        width: 50%;
+        text-align: right;
+        font-size: 10px;
+        page-break-inside: avoid;
+    }
 
-    .total-in-word, .total-in-words {
+    .total {
+        font-size: 11px;
+        border: 1px solid black;
+        padding: 4px 6px;
+        text-align: right;
+        margin-bottom: 4px;
+    }
+
+    .total-in-word {
         font-weight: bold;
+        font-size: 10px;
+        margin: 4px 0 2px 0;
+        text-align: right;
+    }
+
+    .total-in-words {
+        font-style: italic;
+        font-size: 9px;
+        margin: 0;
+        text-align: right;
     }
 
     .print-footer {
         text-align: right;
         margin-top: 10px;
-        font-size: 12px;
+        padding-top: 8px;
+        border-top: 1px solid #ddd;
+        font-weight: bold;
+        font-size: 10px;
+        page-break-inside: avoid;
+    }
+
+    /* Force single page - aggressive approach */
+    .invoice-container,
+    .invoice-header,
+    h3,
+    .cols-3,
+    .cols-2,
+    table,
+    .bill,
+    .print-footer {
+        page-break-inside: avoid !important;
+        page-break-before: avoid !important;
+        page-break-after: avoid !important;
     }
 
     /* Hide controls and buttons */
@@ -210,6 +348,13 @@ button {
     table th:last-child,
     table td:last-child {
         display: none !important;
+    }
+
+    /* Ensure the entire document fits on one page */
+    * {
+        page-break-inside: avoid !important;
+        page-break-before: avoid !important;
+        page-break-after: avoid !important;
     }
 }
 
@@ -239,7 +384,7 @@ button {
 }
 
 table {
-    width: auto;
+    width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
 }

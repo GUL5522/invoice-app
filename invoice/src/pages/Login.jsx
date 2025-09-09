@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 export default function Login() {
   const [username, setUsername] = useState('');
@@ -11,13 +11,13 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('');
     try {
       const success = await login({username, password});
-      console.log(success);
       if (success) {
         navigate('/');
-      }else{
-        setError('Login failed');
+      } else {
+        setError('Invalid username or password');
       }
     } catch (err) {
       setError('Failed to login');
@@ -50,6 +50,7 @@ export default function Login() {
         </div>
         <button type="submit">Login</button>
       </form>
+      <p>Don't have an account? <Link to="/signup">Sign up here</Link></p>
     </div>
   );
 }

@@ -61,8 +61,23 @@ const InvoicePage = () => {
     product: '', hsn: '', qty: 0, rate: 0, taxable: 0, igst: 0, total: 0
   }]);
   const [invoiceNumber] = useState(generateInvoiceNumber());
+  const [invoiceDate, setInvoiceDate] = useState(new Date().toISOString().split('T')[0]);
+  const [dateOfSupply, setDateOfSupply] = useState(new Date().toISOString().split('T')[0]);
   const [totalSum, setTotalSum] = useState(0);
   const [totalWords, setTotalWords] = useState('');
+
+  // Form field states with default values from placeholders
+  const [state, setState] = useState('Bihar');
+  const [placeOfSupply, setPlaceOfSupply] = useState('Raxaul');
+  const [driverName, setDriverName] = useState('Xyz');
+  const [vehicleNumber, setVehicleNumber] = useState('BR05GB4421');
+  const [transportMode, setTransportMode] = useState('By Road');
+  const [buyerName, setBuyerName] = useState('Nawal Enterprises');
+  const [buyerAddress, setBuyerAddress] = useState('Lake Street-23');
+  const [buyerPhone, setBuyerPhone] = useState('+91977680798');
+  const [buyerEmail, setBuyerEmail] = useState('johndoe@gmail.com');
+  const [buyerGSTIN, setBuyerGSTIN] = useState('Doe');
+  const [buyerCountry, setBuyerCountry] = useState('India');
   
   const addRow = () => {
     if (rows.length < 3) {
@@ -105,61 +120,76 @@ const InvoicePage = () => {
     window.print();
   };
   
-  // inset data 
+  // inset data
   const saveInvoiceToDB = async () => {
-    window.print();
+    // Validate required fields
+    if (!buyerName || !buyerAddress) {
+      alert('Please fill in Buyer Name and Buyer Address');
+      return;
+    }
+
+    // Validate products
+    const validProducts = rows.filter(row =>
+      row.product && row.hsn && row.qty > 0 && row.rate > 0
+    );
+
+    if (validProducts.length === 0) {
+      alert('Please add at least one product with valid details');
+      return;
+    }
+
     const invoiceData = {
       invoiceNumber,
-      invoiceDate: document.querySelectorAll('input[type="date"]')[0].value,
-      state: document.querySelector('input[placeholder="Bihar"]').value,
-      dateOfSupply: document.querySelectorAll('input[type="date"]')[1].value,
-      placeOfSupply: document.querySelector('input[placeholder="Abc"]').value,
-      driverName: document.querySelector('input[placeholder="Xyz"]').value,
-      vehicleNumber: document.querySelector('input[placeholder="BR05GB4421"]').value,
-      // transportMode: document.querySelector('input[defaultValue="By Road"]').value, // optional if you uncomment it in schema
-    
+      invoiceDate,
+      state,
+      dateOfSupply,
+      placeOfSupply,
+      driverName,
+      vehicleNumber,
+      transportMode,
+
       // flattened buyer fields:
-      buyerName: document.querySelector('input[placeholder="Nawal Enterprises"]').value,
-      buyerAddress: document.querySelector('input[placeholder="e.g. Lake Street-23"]').value,
-      buyerPhone: document.querySelector('input[placeholder="e.g. +91977680798"]').value,
-      buyerEmail: document.querySelector('input[type="email"]').value,
-      buyerGSTIN: document.querySelectorAll('input[class="form-control summary"]')[0].value,
-      buyerCountry: document.querySelectorAll('input[class="form-control summary"]')[1].value,
-    
-      products: rows.map(row => ({
+      buyerName,
+      buyerAddress,
+      buyerPhone,
+      buyerEmail,
+      buyerGSTIN,
+      buyerCountry,
+
+      products: validProducts.map(row => ({
         product: row.product,
         hsn: row.hsn,
-        qty: row.qty,
-        rate: row.rate,
-        taxable: row.taxable,
-        igst: row.igst,
-        total: row.total,
+        qty: parseFloat(row.qty),
+        rate: parseFloat(row.rate),
+        taxable: parseFloat(row.taxable),
+        igst: parseFloat(row.igst),
+        total: parseFloat(row.total),
       })),
-    
+
       totalAmount: totalSum,
       amountInWords: totalWords
     };
-    
+
     try {
       const res = await fetch('http://localhost:5500/api/invoices', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(invoiceData),
       });
-    
+
       const data = await res.json();
-    
+
       if (res.ok) {
-        // Optional: window.print();
         alert('Invoice saved successfully!');
+        window.print(); // Print after successful save
       } else {
-        alert(data.error || 'Something went wrong');
+        alert(data.message || 'Something went wrong');
       }
     } catch (error) {
       console.error('API error:', error);
       alert('Failed to connect to the server');
     }
-    
+
   };
 
   return (
@@ -185,37 +215,37 @@ const InvoicePage = () => {
 
           <div className="form-elem">
             <label className="form-label">Invoice Date</label>
-            <input type="date" className="form-control" />
+            <input type="date" className="form-control" value={invoiceDate} onChange={(e) => setInvoiceDate(e.target.value)} />
           </div>
 
           <div className="form-elem">
             <label className="form-label">State</label>
-            <input type="text" className="form-control" placeholder="Bihar" />
+            <input type="text" className="form-control" value={state} onChange={(e) => setState(e.target.value)} />
           </div>
 
           <div className="form-elem">
             <label className="form-label">Date of Supply</label>
-            <input type="date" className="form-control firstname" placeholder="DD/MM/YYYY" />
+            <input type="date" className="form-control firstname" placeholder="DD/MM/YYYY" value={dateOfSupply} onChange={(e) => setDateOfSupply(e.target.value)} />
           </div>
 
           <div className="form-elem">
             <label className="form-label">Place Of Supply</label>
-            <input type="text" className="form-control middlename" placeholder="Abc" />
+            <input type="text" className="form-control middlename" value={placeOfSupply} onChange={(e) => setPlaceOfSupply(e.target.value)} />
           </div>
 
           <div className="form-elem">
             <label className="form-label">Driver's Name</label>
-            <input type="text" className="form-control lastname" placeholder="Xyz" />
+            <input type="text" className="form-control lastname" value={driverName} onChange={(e) => setDriverName(e.target.value)} />
           </div>
 
           <div className="form-elem">
             <label className="form-label">Vehicle Number</label>
-            <input type="text" className="form-control firstname" placeholder="BR05GB4421" />
+            <input type="text" className="form-control firstname" value={vehicleNumber} onChange={(e) => setVehicleNumber(e.target.value)} />
           </div>
 
           <div className="form-elem">
             <label className="form-label">Transport Mode</label>
-            <input type="text" className="form-control middlename" defaultValue="By Road" />
+            <input type="text" className="form-control middlename" value={transportMode} onChange={(e) => setTransportMode(e.target.value)} />
           </div>
         </div>
 
@@ -223,30 +253,30 @@ const InvoicePage = () => {
         <div className="cols-2">
           <div className="form-elem">
             <label className="form-label">Name</label>
-            <input type="text" className="form-control designation" placeholder="Nawal Enterprises" />
+            <input type="text" className="form-control designation" value={buyerName} onChange={(e) => setBuyerName(e.target.value)} />
           </div>
           <div className="form-elem">
             <label className="form-label">Address</label>
-            <input type="text" className="form-control address" placeholder="e.g. Lake Street-23" />
+            <input type="text" className="form-control address" value={buyerAddress} onChange={(e) => setBuyerAddress(e.target.value)} />
           </div>
         </div>
 
         <div className="cols-3">
           <div className="form-elem">
             <label className="form-label">Phone No:</label>
-            <input type="text" className="form-control phoneno" placeholder="e.g. +91977680798" />
+            <input type="text" className="form-control phoneno" value={buyerPhone} onChange={(e) => setBuyerPhone(e.target.value)} />
           </div>
           <div className="form-elem">
             <label className="form-label">Email</label>
-            <input type="email" className="form-control email" placeholder="e.g. johndoe@gmail.com" />
+            <input type="email" className="form-control email" value={buyerEmail} onChange={(e) => setBuyerEmail(e.target.value)} />
           </div>
           <div className="form-elem">
             <label className="form-label">GSTIN</label>
-            <input type="text" className="form-control summary" placeholder="e.g. Doe" />
+            <input type="text" className="form-control summary" value={buyerGSTIN} onChange={(e) => setBuyerGSTIN(e.target.value)} />
           </div>
           <div className="form-elem">
             <label className="form-label">Country</label>
-            <input type="text" className="form-control summary" placeholder="Nepal" />
+            <input type="text" className="form-control summary" value={buyerCountry} onChange={(e) => setBuyerCountry(e.target.value)} />
           </div>
         </div>
 

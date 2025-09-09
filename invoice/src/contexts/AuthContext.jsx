@@ -22,13 +22,17 @@ export function AuthProvider({ children }) {
         body: JSON.stringify({ username, password }),
       });
 
-      console.log(response);
-      const userData = await response.json();
-      if (!userData.success) {
-        throw new Error('Login failed');
+      const data = await response.json();
+      console.log('Login response:', data);
+      
+      if (!data.success) {
+        throw new Error(data.message || 'Login failed');
       }
-      setUser(userData);
-      localStorage.setItem('user', JSON.stringify(userData));
+      
+      // Store user data and token
+      setUser(data.user);
+      localStorage.setItem('user', JSON.stringify(data.user));
+      localStorage.setItem('token', data.token);
       return true;
     } catch (error) {
       console.error('Login error:', error);
@@ -39,7 +43,8 @@ export function AuthProvider({ children }) {
   const logout = () => {
     setUser(null);
     localStorage.removeItem('user');
-    window.location.reload();uy
+    localStorage.removeItem('token');
+    window.location.reload();
   };
 
   return (
