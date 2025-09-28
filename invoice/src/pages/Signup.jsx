@@ -56,6 +56,7 @@ export default function Signup() {
         <div>
           <label>Username:</label>
           <input
+            style={{textTransform:"none"}}
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
@@ -65,6 +66,7 @@ export default function Signup() {
         <div>
           <label>Password:</label>
           <input
+            style={{textTransform:"none"}}
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -74,6 +76,7 @@ export default function Signup() {
         <div>
           <label>Confirm Password:</label>
           <input
+            style={{textTransform:"none"}}
             type="password"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}

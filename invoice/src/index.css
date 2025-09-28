@@ -161,3 +161,9 @@
   margin-bottom: 1rem;
   border: 1px solid #c3e6cb;
 }
+#loginUser{
+  text-transform: none;
+}
+#loginPw{
+  text-transform: none;
+}

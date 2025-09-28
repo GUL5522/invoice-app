@@ -34,6 +34,7 @@ export default function Login() {
         <div>
           <label>Username:</label>
           <input
+            id='loginUser'
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
@@ -43,6 +44,7 @@ export default function Login() {
         <div>
           <label>Password:</label>
           <input
+            id='loginPw'
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
