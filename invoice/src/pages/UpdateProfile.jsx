@@ -39,7 +39,7 @@ export default function UpdateProfile() {
     }
 
     try {
-      const response = await fetch('http://localhost:5500/api/auth/update', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/update`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

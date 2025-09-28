@@ -18,14 +18,15 @@ const invoiceSchema = new mongoose.Schema({
   placeOfSupply: { type: String, required: true },
   driverName: { type: String },
   vehicleNumber: { type: String },
-  // transportMode: { type: String, default: "By Road" },
+  transportMode: { type: String, default: "By Road" },
 
   buyerName: { type: String, required: true },
   buyerAddress: { type: String, required: true },
-  buyerPhone: { type: String },
+  buyerEximCode: { type: String, required: true },
+  buyerPhone: { type: String},
   buyerEmail: { type: String },
-  buyerGSTIN: { type: String },
-  buyerCountry: { type: String, default: "India" },
+  buyerPAN: { type: String, required: true },
+  buyerCountry: { type: String, default: "NEPAL" },
 
   products: [productSchema],
 

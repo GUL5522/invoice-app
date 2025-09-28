@@ -114,8 +114,7 @@ main {
 }
 
 #home {
-  margin-top: 100px;
-  margin: auto ;
+  margin: 0 auto ;
 }
 
 /* Responsive Styles - Text centered for mobile */

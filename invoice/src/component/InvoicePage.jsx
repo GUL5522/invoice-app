@@ -69,15 +69,16 @@ const InvoicePage = () => {
   // Form field states with default values from placeholders
   const [state, setState] = useState('Bihar');
   const [placeOfSupply, setPlaceOfSupply] = useState('Raxaul');
-  const [driverName, setDriverName] = useState('Xyz');
-  const [vehicleNumber, setVehicleNumber] = useState('BR05GB4421');
+  const [driverName, setDriverName] = useState('MD WAZUL');
+  const [vehicleNumber, setVehicleNumber] = useState('BR05GB-4421');
   const [transportMode, setTransportMode] = useState('By Road');
-  const [buyerName, setBuyerName] = useState('Nawal Enterprises');
-  const [buyerAddress, setBuyerAddress] = useState('Lake Street-23');
-  const [buyerPhone, setBuyerPhone] = useState('+91977680798');
-  const [buyerEmail, setBuyerEmail] = useState('johndoe@gmail.com');
-  const [buyerGSTIN, setBuyerGSTIN] = useState('Doe');
-  const [buyerCountry, setBuyerCountry] = useState('India');
+  const [buyerName, setBuyerName] = useState('shree Nawal Enterprises');
+  const [buyerAddress, setBuyerAddress] = useState('BIRGUNJ');
+  const [buyerPhone, setBuyerPhone] = useState('+977 9855023130');
+  const [buyerEmail, setBuyerEmail] = useState('s.nawalenterprises@gmail.com');
+  const [buyerPAN, setBuyerPAN] = useState('300277319');
+  const [buyerEximCode, setBuyerEximCode] = useState('3002773190146NP');
+  const [buyerCountry, setBuyerCountry] = useState('NEPAL');
   
   const addRow = () => {
     if (rows.length < 3) {
@@ -151,9 +152,10 @@ const InvoicePage = () => {
       // flattened buyer fields:
       buyerName,
       buyerAddress,
+      buyerEximCode,
       buyerPhone,
       buyerEmail,
-      buyerGSTIN,
+      buyerPAN,
       buyerCountry,
 
       products: validProducts.map(row => ({
@@ -171,7 +173,8 @@ const InvoicePage = () => {
     };
 
     try {
-      const res = await fetch('http://localhost:5500/api/invoices', {
+      console.log(import.meta.env.VITE_API_URL)
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/invoices`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(invoiceData),
@@ -198,8 +201,10 @@ const InvoicePage = () => {
         <img className="img" src={mp} alt="image" />
         <div className="invoice-info">
           <h1 style={{ fontSize: 50 }}>M.P. ENTERPRISES</h1>
-          <p>MAIN ROAD RAXAUL, Purbi Champaran, Bihar - 845305</p>
-          <p>GSTIN: 10AINPP0877F1ZA | PAN: AINP0877F</p>
+          <p>MAIN ROAD RAXAUL, EAST CHAMPARAN, BIHAR 845305</p>
+            <p>CONTACT: +91 8235826679  |  madan.prasad92814@gmail.com</p>
+          <p>AD CODE-0000138-0620007  |  IEC CODE-2192001355</p>
+          <p>GSTIN/UIN: 10AINPP0877F1ZA | PAN: AINP0877F</p>
           <p>State Code: 10</p>
         </div>
       </header>
@@ -250,7 +255,7 @@ const InvoicePage = () => {
         </div>
 
         <h3 className="buyer">Buyer's Name & Address</h3>
-        <div className="cols-2">
+        <div className="cols-3">
           <div className="form-elem">
             <label className="form-label">Name</label>
             <input type="text" className="form-control designation" value={buyerName} onChange={(e) => setBuyerName(e.target.value)} />
@@ -258,6 +263,10 @@ const InvoicePage = () => {
           <div className="form-elem">
             <label className="form-label">Address</label>
             <input type="text" className="form-control address" value={buyerAddress} onChange={(e) => setBuyerAddress(e.target.value)} />
+          </div>
+          <div className="form-elem">
+            <label className="form-label">EXIM CODE</label>
+            <input type="text" className="form-control" value={buyerEximCode} onChange={(e) => setBuyerEximCode(e.target.value)} />
           </div>
         </div>
 
@@ -271,8 +280,8 @@ const InvoicePage = () => {
             <input type="email" className="form-control email" value={buyerEmail} onChange={(e) => setBuyerEmail(e.target.value)} />
           </div>
           <div className="form-elem">
-            <label className="form-label">GSTIN</label>
-            <input type="text" className="form-control summary" value={buyerGSTIN} onChange={(e) => setBuyerGSTIN(e.target.value)} />
+            <label className="form-label">PAN</label>
+            <input type="text" className="form-control summary" value={buyerPAN} onChange={(e) => setBuyerPAN(e.target.value)} />
           </div>
           <div className="form-elem">
             <label className="form-label">Country</label>
@@ -328,8 +337,8 @@ const InvoicePage = () => {
         <section className="print-btn-sc">
           <button type="button" className="print-btn btn btn-primary" onClick={saveInvoiceToDB}>Print</button>
         </section>
-        <footer className="print-footer">M.P ENTERPRISES</footer>
       </form>
+        <h1 className='footer-text'>M.P. ENTERPRISES</h1>
     </div>
   );
 };

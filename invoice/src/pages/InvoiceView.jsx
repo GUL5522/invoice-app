@@ -15,7 +15,7 @@ const InvoiceView = () => {
 
   const fetchInvoice = async () => {
     try {
-      const response = await fetch(`http://localhost:5500/api/invoices/${id}`);
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/invoices/${id}`);
       const data = await response.json();
 
       if (data.success) {
@@ -122,8 +122,10 @@ const InvoiceView = () => {
           <img className="img" src={mp} alt="image" />
           <div className="invoice-info">
             <h1 style={{ fontSize: 50 }}>M.P. ENTERPRISES</h1>
-            <p>MAIN ROAD RAXAUL, Purbi Champaran, Bihar - 845305</p>
-            <p>GSTIN: 10AINPP0877F1ZA | PAN: AINP0877F</p>
+            <p>MAIN ROAD RAXAUL, EAST CHAMPARAN, BIHAR 845305</p>
+            <p>CONTACT: +91 8235826679  |  madan.prasad92814@gmail.com</p>
+            <p>AD CODE-0000138-0620007  |  IEC CODE-2192001355</p>
+            <p>GSTIN/UIN: 10AINPP0877F1ZA | PAN: AINP0877F</p>
             <p>State Code: 10</p>
           </div>
         </header>
@@ -174,7 +176,7 @@ const InvoiceView = () => {
           </div>
 
           <h3 className="buyer">Buyer's Name & Address</h3>
-          <div className="cols-2">
+          <div className="cols-3">
             <div className="form-elem">
               <label className="form-label">Name</label>
               <input type="text" className="form-control designation" value={invoice.buyerName} readOnly />
@@ -182,6 +184,10 @@ const InvoiceView = () => {
             <div className="form-elem">
               <label className="form-label">Address</label>
               <input type="text" className="form-control address" value={invoice.buyerAddress} readOnly />
+            </div>
+            <div className="form-elem">
+              <label className="form-label">EXIM CODE</label>
+              <input type="text" className="form-control" value={invoice.buyerEximCode || ''} readOnly />
             </div>
           </div>
 
@@ -195,8 +201,8 @@ const InvoiceView = () => {
               <input type="email" className="form-control email" value={invoice.buyerEmail || ''} readOnly />
             </div>
             <div className="form-elem">
-              <label className="form-label">GSTIN</label>
-              <input type="text" className="form-control summary" value={invoice.buyerGSTIN || ''} readOnly />
+              <label className="form-label">PAN</label>
+              <input type="text" className="form-control summary" value={invoice.buyerPAN || ''} readOnly />
             </div>
             <div className="form-elem">
               <label className="form-label">Country</label>
@@ -234,7 +240,7 @@ const InvoiceView = () => {
           <div className="bill">
             <div className="bank-info">
               <p style={{ color: 'blue' }}>Bank & Payment Details</p>
-              <p><b>A/C Holder:</b> M.P Enterprises</p>
+              <p><b>A/C Holder:</b> M.P. Enterprises</p>
               <p><b>A/C No:</b> 10973176188</p>
               <p><b>IFSC Code:</b> SBIN0002998</p>
               <p><b>Bank:</b> State Bank of India, Raxaul</p>
@@ -246,7 +252,7 @@ const InvoiceView = () => {
             </div>
           </div>
 
-          <footer className="print-footer">M.P ENTERPRISES</footer>
+          <footer className="print-footer">M.P. ENTERPRISES</footer>
         </div>
       </div>
     </div>

@@ -314,14 +314,15 @@ button {
         text-align: right;
     }
 
-    .print-footer {
-        text-align: right;
+    .footer-text {
+        text-align: center;
         margin-top: 10px;
         padding-top: 8px;
-        border-top: 1px solid #ddd;
+        border: 1px solid #ddd;
         font-weight: bold;
         font-size: 10px;
         page-break-inside: avoid;
+        margin-bottom: 10px;
     }
 
     /* Force single page - aggressive approach */
@@ -491,6 +492,9 @@ input {
     font-weight: bold;
 }
 
-.address, .email{
+.email{
     text-transform: lowercase;
+}
+.address, {
+    text-transform: uppercase;
 }
