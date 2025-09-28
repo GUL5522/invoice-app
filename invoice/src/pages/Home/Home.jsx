@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import './Home.css';
@@ -8,24 +8,8 @@ const HomePage = () => {
   const { logout } = useAuth();
   const isLoggedIn = localStorage.getItem('user');
   const [isMenuOpen, setIsMenuOpen] = useState(false); // State for toggling menu
-  const [content, setContent] = useState({});
 
-  useEffect(() => {
-    const fetchContent = async () => {
-      try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/content`);
-        const data = await response.json();
-        if (data.success) {
-          setContent(data.content);
-        }
-      } catch (error) {
-        console.error('Error fetching content:', error);
-      }
-    };
-    fetchContent();
-  }, []);
-
-  const toggleMenu = () => { sections
+  const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
@@ -50,7 +34,7 @@ const HomePage = () => {
       <header className="header">
         <div className="header-content">
           <div className="logo-container">
-            <img src={mp ||content.logoUrl} alt="logo" className="image" />
+            <img src={mp} alt="logo" className="image" />
           </div>
 
           <nav className="navbar">
@@ -87,8 +71,8 @@ const HomePage = () => {
 
       <section id="home" className="hero" style={{ color: "white", padding: "80px 20px", textAlign: "center" }}>
         <>
-          <h1 style={{ fontSize: "2.5em", fontWeight: "bold", margin: "0 0 20px 0", color: "white" }}>{content.homeHeroTitle || 'Reliable Coal Supply for Your Industry'}</h1>
-          <p>{content.homeHeroDescription || 'We deliver high-quality coal across the region with efficiency and trust.'}</p>
+          <h1 style={{ fontSize: "2.5em", fontWeight: "bold", margin: "0 0 20px 0", color: "white" }}>Reliable Coal Supply for Your Industry</h1>
+          <p>We deliver high-quality coal across the region with efficiency and trust.</p>
           <button style={{ padding: "10px 20px", fontSize: "1em", margin: "10px", cursor: "pointer" }}>Get a Quote</button>
           <button style={{ padding: "10px 20px", fontSize: "1em", margin: "10px", cursor: "pointer" }}>Contact Us</button>
         </>
@@ -97,10 +81,10 @@ const HomePage = () => {
       <section id="about" style={sectionStyle}>
         <h2 style={h2Style}>About Us</h2>
         <>
-          <p>{content.aboutText || 'M.P Enterprises has been providing coal for over 35 years to power plants, factories, and industrial clients. Our focus is quality, timely delivery, and customer satisfaction.'}</p>
+          <p>M.P Enterprises has been providing coal for over 35 years to power plants, factories, and industrial clients. Our focus is quality, timely delivery, and customer satisfaction.</p>
           <h2>Why Choose Us</h2>
           <ul>
-            {(content.aboutList || ['Quality Assured', 'Timely Delivery', 'Competitive Pricing', 'Bulk Orders & Custom Solutions']).map((item, idx) => <li key={idx}>{item}</li>)}
+            {(['Quality Assured', 'Timely Delivery', 'Competitive Pricing', 'Bulk Orders & Custom Solutions']).map((item, idx) => <li key={idx}>{item}</li>)}
           </ul>
         </>
       </section>
@@ -109,7 +93,7 @@ const HomePage = () => {
         <h2 style={h2Style}>Our Products</h2>
         <>
           <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-around" }}>
-            {(content.productsList || ["Steam Coal", "Hardcoke Coal", "Bituminous Coal", "Softcoke Coal", "Chainese Coal", "Dry Coal", "Cooking"]).map((product, idx) => (
+            {(["Steam Coal", "Hardcoke Coal", "Bituminous Coal", "Softcoke Coal", "Chainese Coal", "Dry Coal", "Cooking"]).map((product, idx) => (
               <div key={idx} style={{ width: "200px", margin: "10px", padding: "10px", backgroundColor: "#eee", textAlign: "center", borderRadius: "5px" }}>
                 {product}
               </div>
@@ -121,7 +105,10 @@ const HomePage = () => {
       <section id="contact" style={sectionStyle}>
         <h2 style={h2Style}>Contact Us</h2>
         <>
-          <p>{content.contactText || '📍 123 Coal Street, Industrial City, Country\n📞 +91-12345-67890\n📧 info@xyzcoal.com\nAdditional Contact: madanprasad.92814@gmail.com | +91 8235826679'}</p>
+          <p>📍 123 Coal Street, Industrial City, Country
+📞 +91-12345-67890
+📧 info@xyzcoal.com
+Additional Contact: madanprasad.92814@gmail.com | +91 8235826679</p>
         </>
       </section>
 
