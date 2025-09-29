@@ -543,6 +543,7 @@
       text-align: center;
       gap: 15px;
       margin-bottom: 25px;
+      width: 100%;
     }
 
     .img {
@@ -550,14 +551,23 @@
       height: auto;
     }
 
+    .invoice-info {
+      width: 100%;
+      display: block;
+      text-align: center;
+      flex-shrink: 1;
+      min-width: 0;
+    }
+
     .invoice-info h1 {
-      font-size: clamp(16px, 3.5vw, 24px);
+      font-size: clamp(16px, 4vw, 22px);
       margin: 10px 0 8px 0;
-      line-height: 1.1;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      line-height: 1.2;
       max-width: 100%;
+    }
+
+    .mobile-break {
+      display: none;
     }
 
     .invoice-info p {
@@ -713,6 +723,10 @@
       font-size: 12px;
       margin-top: 20px;
     }
+
+    .mobile-break {
+      display: block;
+    }
   }
 
 /* Extra small mobile */
@@ -731,6 +745,10 @@
 
   .invoice-info h1 {
     font-size: 28px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
   }
 
   .tax {

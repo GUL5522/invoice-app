@@ -1,3 +1,31 @@
+html, body {
+  height: 100%;
+  overflow-y: auto;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+#root {
+  height: 100%;
+}
+
+.auth-layout {
+  padding-top: 60px; /* Offset for fixed navbar on authenticated pages */
+}
+
+@media (min-width: 769px) {
+  .auth-layout {
+    padding-top: 0; /* No padding on desktop */
+  }
+}
+
+@media (max-width: 768px) {
+  .auth-layout {
+    padding-top: 50px; /* Adjust for mobile navbar height if different */
+  }
+}
+
 .signup-container, .login-container {
   max-width: 400px;
   margin: 2rem auto;

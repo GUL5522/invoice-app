@@ -121,7 +121,7 @@ const InvoiceView = () => {
         <header className="invoice-header">
           <img className="img" src={mp} alt="image" />
           <div className="invoice-info">
-            <h1>M.P. ENTERPRISES</h1>
+            <h1>M.P.<br className="mobile-break" />ENTERPRISES</h1>
             <p>MAIN ROAD RAXAUL, EAST CHAMPARAN, BIHAR 845305</p>
             <p>CONTACT: +91 8235826679  |  madan.prasad92814@gmail.com</p>
             <p>AD CODE-0000138-0620007  |  IEC CODE-2192001355</p>
