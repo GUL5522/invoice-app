@@ -43,8 +43,8 @@ const InvoiceList = () => {
 
   const performSearch = () => {
     const filtered = invoices.filter(invoice => {
-      const buyerMatch = (invoice.buyerName || '').toLowerCase().includes(searchBuyer.toLowerCase());
-      const invoiceMatch = (invoice.invoiceNumber || '').includes(searchInvoice);
+      const buyerMatch = searchBuyer === '' || (invoice.buyerName || '').toLowerCase().includes(searchBuyer.toLowerCase());
+      const invoiceMatch = searchInvoice === '' || (invoice.invoiceNumber || '').toLowerCase().includes(searchInvoice.toLowerCase());
       const formattedInvoiceDate = formatDate(invoice.invoiceDate);
       const formattedSearchDate = searchDate ? new Date(searchDate).toLocaleDateString('en-IN') : '';
       const dateMatch = searchDate === '' || formattedInvoiceDate === formattedSearchDate;
@@ -153,12 +153,6 @@ const InvoiceList = () => {
                     <Link to={`/invoice/${invoice._id}`} className="view-btn">
                       View
                     </Link>
-                    <button
-                      className="print-btn"
-                      onClick={() => window.print()}
-                    >
-                      Print
-                    </button>
                   </td>
                 </tr>
               ))}

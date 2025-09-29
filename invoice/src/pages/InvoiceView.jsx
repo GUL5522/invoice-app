@@ -121,7 +121,7 @@ const InvoiceView = () => {
         <header className="invoice-header">
           <img className="img" src={mp} alt="image" />
           <div className="invoice-info">
-            <h1 style={{ fontSize: 50 }}>M.P. ENTERPRISES</h1>
+            <h1>M.P. ENTERPRISES</h1>
             <p>MAIN ROAD RAXAUL, EAST CHAMPARAN, BIHAR 845305</p>
             <p>CONTACT: +91 8235826679  |  madan.prasad92814@gmail.com</p>
             <p>AD CODE-0000138-0620007  |  IEC CODE-2192001355</p>
@@ -225,13 +225,13 @@ const InvoiceView = () => {
             <tbody>
               {invoice.products.map((product, index) => (
                 <tr key={index}>
-                  <td><input type="text" value={product.product} readOnly /></td>
-                  <td><input type="text" value={product.hsn} readOnly /></td>
-                  <td><input type="number" value={product.qty} readOnly /></td>
-                  <td><input type="number" value={product.rate} readOnly /></td>
-                  <td><input type="number" value={product.taxable.toFixed(2)} readOnly /></td>
-                  <td><input type="number" value={product.igst.toFixed(2)} readOnly /></td>
-                  <td><input type="number" value={product.total.toFixed(2)} readOnly /></td>
+                  <td data-label="Product Name"><input type="text" value={product.product} readOnly /></td>
+                  <td data-label="HSN"><input type="text" value={product.hsn} readOnly /></td>
+                  <td data-label="QTY"><input type="number" value={product.qty} readOnly /></td>
+                  <td data-label="Rate"><input type="number" value={product.rate} readOnly /></td>
+                  <td data-label="Value"><input type="number" value={product.taxable.toFixed(2)} readOnly /></td>
+                  <td data-label="IGST (5%)"><input type="number" value={product.igst.toFixed(2)} readOnly /></td>
+                  <td data-label="Total"><input type="number" value={product.total.toFixed(2)} readOnly /></td>
                 </tr>
               ))}
             </tbody>
@@ -252,7 +252,6 @@ const InvoiceView = () => {
             </div>
           </div>
 
-          <footer className="print-footer">M.P. ENTERPRISES</footer>
         </div>
       </div>
     </div>
