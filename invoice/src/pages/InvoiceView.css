@@ -28,11 +28,10 @@
 .print-btn {
   background-color: #28a745;
   color: white;
-  border: none;
   padding: 10px 20px;
-  border-radius: 5px;
+  border-radius: 30px;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 50px;
 }
 
 .print-btn:hover {
@@ -42,7 +41,6 @@
 /* Invoice styles - reusing from main.css */
 .invoice-container {
   background-color: white;
-  border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   padding: 20px;
   margin: 20px 0;
@@ -57,10 +55,6 @@
   padding-bottom: 20px;
 }
 
-.img {
-  width: 150px;
-  height: auto;
-}
 
 .invoice-info h1 {
   margin: 0;
@@ -178,11 +172,6 @@
 .total {
   font-size: 18px;
   font-weight: bold;
-  margin-bottom: 10px;
-  padding: 8px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  text-align: right;
 }
 
 .total-in-word {
@@ -197,6 +186,15 @@
   margin: 0;
 }
 
+.footer-image{
+    width: 250px;
+    height: 250px;
+    margin: 0;
+    position:relative;
+    left: 80%;
+    transform: translateX(-50%);
+  }
+
 .print-footer {
   text-align: center;
   margin-top: 30px;
@@ -210,7 +208,7 @@
 @media print {
   @page {
     size: A4;
-    margin: 8mm;
+    margin: 0;
   }
 
   html, body {
@@ -237,10 +235,9 @@
 
   .invoice-container {
     box-shadow: none;
-    border-radius: 0;
     border: 1px solid black;
-    max-width: none;
-    margin: 0;
+    max-width: 290mm;
+    margin: 4mm auto;
     padding: 8mm 8mm calc(8mm + 30px);
     page-break-inside: avoid;
     background-color: white;
@@ -260,21 +257,24 @@
     page-break-inside: avoid;
   }
 
-  .img {
-    width: 80px;
-    height: auto;
+  .footer-image {
+    width: 150px;
+    height: 150px;
+    position: absolute;   /* page ke andar absolute */
+    right: 10px;          /* right corner */
+    bottom: 10px;         /* bottom corner */
   }
 
-  .invoice-info h1 {
+  .footer{
     font-size: 24px !important;
     margin: 0;
     color: #333;
     text-align: center;
     position: absolute;
     bottom: 5px;
-    left: 50%;
-    transform: translateX(-50%);
     width: 100%;
+    left: 80%;
+    transform: translateX(-50%);
     z-index: 10;
   }
 
@@ -488,10 +488,6 @@
     gap: 10px;
   }
 
-  .img {
-    width: 120px;
-  }
-
   .invoice-info h1 {
     font-size: 40px;
   }
@@ -572,7 +568,7 @@
 
     .invoice-info p {
       font-size: clamp(10px, 2.5vw, 14px);
-      margin: 8px 0;
+      /* margin: 8px 0; */
       line-height: 1.5;
       word-wrap: break-word;
       hyphens: auto;
@@ -739,10 +735,6 @@
     padding: 10px;
   }
 
-  .img {
-    width: 80px;
-  }
-
   .invoice-info h1 {
     font-size: 28px;
     white-space: nowrap;
@@ -776,3 +768,7 @@
     padding: 5px 8px;
   }
 }
+
+
+
+

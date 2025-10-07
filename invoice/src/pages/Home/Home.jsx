@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import './Home.css';
-import mp from '../../assets/mp.jpg';
+import mp from '../../assets/m.p.png';
 
 const HomePage = () => {
   const { logout } = useAuth();
@@ -45,16 +45,14 @@ const HomePage = () => {
                 <span className="bar"></span>
               </button>
               <ul className={`nav-links ${isMenuOpen ? 'active' : ''}`}>
-                <li><a href="#home" onClick={(e) => { e.preventDefault(); scrollToSection('home'); }}>Home</a></li>
-                <li><a href="#about" onClick={(e) => { e.preventDefault(); scrollToSection('about'); }}>About</a></li>
-                <li><a href="#products" onClick={(e) => { e.preventDefault(); scrollToSection('products'); }}>Products</a></li>
-                <li><a href="#contact" onClick={(e) => { e.preventDefault(); scrollToSection('contact'); }}>Contact</a></li>
                 {!isLoggedIn ? (
                   <li><Link to="/login" onClick={toggleMenu}>Login</Link></li>
                 ) : (
                   <>
-                    <li><Link to="/bill" onClick={toggleMenu}>Bill Generate</Link></li>
-                    <li><Link to="/invoices" onClick={toggleMenu}>View Invoices</Link></li>
+                    <li><Link to="/bill" onClick={toggleMenu}>Indian Custom</Link></li>
+                    <li><Link to="/invoices" onClick={toggleMenu}>Indian Invoices</Link></li>
+                    <li><Link to="/bill" onClick={toggleMenu}>Nepal Custom</Link></li>
+                    <li><Link to="/invoices" onClick={toggleMenu}>Nepal Invoices</Link></li>
                     <li><Link to="/update-profile" onClick={toggleMenu}>Update Profile</Link></li>
                     <li><a href="#" onClick={() => { logout(); toggleMenu(); }}>Logout</a></li>
                   </>
@@ -63,7 +61,7 @@ const HomePage = () => {
             </div>
           </nav>
           <div className="text-container">
-            <h1>M.P Enterprises</h1>
+            <h1>M.P. Enterprises</h1>
             <p>Quality Coal. On-Time Delivery. Trusted Partner.</p>
           </div>
         </div>
@@ -81,7 +79,7 @@ const HomePage = () => {
       <section id="about" style={sectionStyle}>
         <h2 style={h2Style}>About Us</h2>
         <>
-          <p>M.P Enterprises has been providing coal for over 35 years to power plants, factories, and industrial clients. Our focus is quality, timely delivery, and customer satisfaction.</p>
+          <p>M.P. Enterprises has been providing coal for over 35 years to power plants, factories, and industrial clients. Our focus is quality, timely delivery, and customer satisfaction.</p>
           <h2>Why Choose Us</h2>
           <ul>
             {(['Quality Assured', 'Timely Delivery', 'Competitive Pricing', 'Bulk Orders & Custom Solutions']).map((item, idx) => <li key={idx}>{item}</li>)}
@@ -93,7 +91,7 @@ const HomePage = () => {
         <h2 style={h2Style}>Our Products</h2>
         <>
           <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-around" }}>
-            {(["Steam Coal", "Hardcoke Coal", "Bituminous Coal", "Softcoke Coal", "Chainese Coal", "Dry Coal", "Cooking"]).map((product, idx) => (
+            {(["Steam Coal", "Hardcoke Coal", "Softcoke Coal", "Chainese Coal",]).map((product, idx) => (
               <div key={idx} style={{ width: "200px", margin: "10px", padding: "10px", backgroundColor: "#eee", textAlign: "center", borderRadius: "5px" }}>
                 {product}
               </div>
@@ -105,15 +103,14 @@ const HomePage = () => {
       <section id="contact" style={sectionStyle}>
         <h2 style={h2Style}>Contact Us</h2>
         <>
-          <p>📍 123 Coal Street, Industrial City, Country
-📞 +91-12345-67890
-📧 info@xyzcoal.com
-Additional Contact: madanprasad.92814@gmail.com | +91 8235826679</p>
+          <p>📍 MAIN ROAD RAXAUL, EAST CHAMPARAN, BIHAR 845305, INDIA
+📞 +91 8235826679
+📧 madanprasad.92814@gmail.com</p>
         </>
       </section>
 
       <footer style={{ backgroundColor: "#333", color: "white", textAlign: "center", padding: "20px" }}>
-        <p>© 2025 M.P Enterprises. All rights reserved.</p>
+        <p>© 2025 M.P. Enterprises. All rights reserved.</p>
       </footer>
     </div>
   );

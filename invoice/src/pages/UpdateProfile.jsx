@@ -90,6 +90,7 @@ export default function UpdateProfile() {
         <div>
           <label>Current Password:</label>
           <input
+            style={{textTransform:"none"}}
             type="password"
             value={currentPassword}
             onChange={(e) => setCurrentPassword(e.target.value)}
@@ -101,6 +102,7 @@ export default function UpdateProfile() {
         <div>
           <label>New Username (optional):</label>
           <input
+            style={{textTransform:"none"}}
             type="text"
             value={newUsername}
             onChange={(e) => setNewUsername(e.target.value)}
@@ -111,6 +113,7 @@ export default function UpdateProfile() {
         <div>
           <label>New Password (optional):</label>
           <input
+            style={{textTransform:"none"}}
             type="password"
             value={newPassword}
             onChange={(e) => setNewPassword(e.target.value)}
@@ -121,6 +124,7 @@ export default function UpdateProfile() {
         <div>
           <label>Confirm New Password:</label>
           <input
+            style={{textTransform:"none"}}
             type="password"
             value={confirmNewPassword}
             onChange={(e) => setConfirmNewPassword(e.target.value)}

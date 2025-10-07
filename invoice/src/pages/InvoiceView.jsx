@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import mp from '../assets/mp.jpg';
+import mp from '../assets/m.p.png';
+import signature from "../assets/singnature.png";
 import './InvoiceView.css';
 
 const InvoiceView = () => {
@@ -121,7 +122,7 @@ const InvoiceView = () => {
         <header className="invoice-header">
           <img className="img" src={mp} alt="image" />
           <div className="invoice-info">
-            <h1>M.P.<br className="mobile-break" />ENTERPRISES</h1>
+            <h1>M.P. ENTERPRISES</h1>
             <p>MAIN ROAD RAXAUL, EAST CHAMPARAN, BIHAR 845305</p>
             <p>CONTACT: +91 8235826679  |  madan.prasad92814@gmail.com</p>
             <p>AD CODE-0000138-0620007  |  IEC CODE-2192001355</p>
@@ -173,6 +174,11 @@ const InvoiceView = () => {
               <label className="form-label">Transport Mode</label>
               <input type="text" className="form-control middlename" value="By Road" readOnly />
             </div>
+
+            <div className="form-elem">
+            <label className="form-label">Country</label>
+            <input type="text" className="form-control middlename" value="INDIA" onChange={(e) => setTransportMode(e.target.value)} />
+          </div>
           </div>
 
           <h3 className="buyer">Buyer's Name & Address</h3>
@@ -251,8 +257,9 @@ const InvoiceView = () => {
               <p className="total-in-words">{invoice.amountInWords}</p>
             </div>
           </div>
-
         </div>
+              <img src={signature} className="footer-image" alt="Digital Signature" /> 
+            {/* <h2 className="footer">M.P. ENTERPRISES</h2> */}
       </div>
     </div>
   );

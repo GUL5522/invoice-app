@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import mp from '../assets/mp.jpg';
+import mp from '../assets/m.p.png';
+import signature from "../assets/singnature.png";
 import './main.css';
 
 const generateInvoiceNumber = () => {
@@ -57,6 +58,11 @@ const numberToWords = (n) => {
 
 
 const InvoicePage = () => {
+  const driverOptions = ['MD WAZUL', 'Driver 2', 'Driver 3'];
+  const vehicleOptions = ['BR05GB-4421', 'Vehicle 2', 'Vehicle 3'];
+  const productOptions = ['Rice', 'Wheat', 'Maize', 'Sugar', 'Salt'];
+  const hsnOptions = ['1001', '1002', '1003', '1004', '1005'];
+
   const [rows, setRows] = useState([{
     product: '', hsn: '', qty: 0, rate: 0, taxable: 0, igst: 0, total: 0
   }]);
@@ -69,9 +75,10 @@ const InvoicePage = () => {
   // Form field states with default values from placeholders
   const [state, setState] = useState('Bihar');
   const [placeOfSupply, setPlaceOfSupply] = useState('Raxaul');
-  const [driverName, setDriverName] = useState('MD WAZUL');
-  const [vehicleNumber, setVehicleNumber] = useState('BR05GB-4421');
+  const [driverName, setDriverName] = useState('');
+  const [vehicleNumber, setVehicleNumber] = useState('');
   const [transportMode, setTransportMode] = useState('By Road');
+  const [countryName, setCountry] = useState('India');
   const [buyerName, setBuyerName] = useState('shree Nawal Enterprises');
   const [buyerAddress, setBuyerAddress] = useState('BIRGUNJ');
   const [buyerPhone, setBuyerPhone] = useState('+977 9855023130');
@@ -117,6 +124,18 @@ const InvoicePage = () => {
     setTotalWords(numberToWords(Math.round(sum)));
   }, [rows]);
 
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.ctrlKey && e.key === 'p') {
+        e.preventDefault();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
+
   const printInvoice = () => {
     window.print();
   };
@@ -129,15 +148,25 @@ const InvoicePage = () => {
       return;
     }
 
+    // if (!driverName) {
+    //   alert('Please fill in Driver Name');
+    //   return;
+    // }
+
+    // if (!vehicleNumber) {
+    //   alert('Please fill in Vehicle Number');
+    //   return;
+    // }
+
     // Validate products
     const validProducts = rows.filter(row =>
       row.product && row.hsn && row.qty > 0 && row.rate > 0
     );
 
-    if (validProducts.length === 0) {
-      alert('Please add at least one product with valid details');
-      return;
-    }
+    // if (validProducts.length === 0) {
+    //   alert('Please add at least one product with valid details');
+    //   return;
+    // }
 
     const invoiceData = {
       invoiceNumber,
@@ -148,6 +177,8 @@ const InvoicePage = () => {
       driverName,
       vehicleNumber,
       transportMode,
+      countryName,
+      
 
       // flattened buyer fields:
       buyerName,
@@ -196,7 +227,7 @@ const InvoicePage = () => {
   };
 
   return (
-    <div className="invoice-container" style={{ marginTop: '0px' }}>
+    <div className="invoice-container">
       <header className="invoice-header">
         <img className="img" src={mp} alt="image" />
         <div className="invoice-info">
@@ -240,17 +271,32 @@ const InvoicePage = () => {
 
           <div className="form-elem">
             <label className="form-label">Driver's Name</label>
-            <input type="text" className="form-control lastname" value={driverName} onChange={(e) => setDriverName(e.target.value)} />
+            <input type="text" className="form-control lastname" value={driverName} onChange={(e) => setDriverName(e.target.value)} list="drivers" />
+            <datalist id="drivers">
+              {driverOptions.map((driver, idx) => (
+                <option key={idx} value={driver} />
+              ))}
+            </datalist>
           </div>
 
           <div className="form-elem">
             <label className="form-label">Vehicle Number</label>
-            <input type="text" className="form-control firstname" value={vehicleNumber} onChange={(e) => setVehicleNumber(e.target.value)} />
+            <input type="text" className="form-control firstname" value={vehicleNumber} onChange={(e) => setVehicleNumber(e.target.value)} list="vehicles" />
+            <datalist id="vehicles">
+              {vehicleOptions.map((vehicle, idx) => (
+                <option key={idx} value={vehicle} />
+              ))}
+            </datalist>
           </div>
 
           <div className="form-elem">
             <label className="form-label">Transport Mode</label>
             <input type="text" className="form-control middlename" value={transportMode} onChange={(e) => setTransportMode(e.target.value)} />
+          </div>
+
+          <div className="form-elem">
+            <label className="form-label">Country</label>
+            <input type="text" className="form-control middlename" value={countryName} onChange={(e) => setCountry(e.target.value)} />
           </div>
         </div>
 
@@ -289,12 +335,12 @@ const InvoicePage = () => {
           </div>
         </div>
 
-        <table id="dynamicTable">
+        <table id="dynamicTable" className="invoice-page-table">
           <thead>
             <tr>
               <th>Product Name</th>
               <th>HSN</th>
-              <th>QTY</th>
+              <th>QTY (MTS)</th>
               <th>Rate</th>
               <th>Value</th>
               <th>IGST (5%)</th>
@@ -305,8 +351,32 @@ const InvoicePage = () => {
           <tbody>
             {rows.map((row, index) => (
               <tr key={index}>
-                <td><input type="text" value={row.product} onChange={(e) => handleInputChange(index, 'product', e.target.value)} /></td>
-                <td><input type="text" value={row.hsn} onChange={(e) => handleInputChange(index, 'hsn', e.target.value)} /></td>
+                <td>
+                  <input
+                    type="text"
+                    value={row.product}
+                    onChange={(e) => handleInputChange(index, 'product', e.target.value)}
+                    list="products"
+                  />
+                  <datalist id="products">
+                    {productOptions.map((product, idx) => (
+                      <option key={idx} value={product} />
+                    ))}
+                  </datalist>
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    value={row.hsn}
+                    onChange={(e) => handleInputChange(index, 'hsn', e.target.value)}
+                    list="hsns"
+                  />
+                  <datalist id="hsns">
+                    {hsnOptions.map((hsn, idx) => (
+                      <option key={idx} value={hsn} />
+                    ))}
+                  </datalist>
+                </td>
                 <td><input type="number" value={row.qty} onChange={(e) => handleInputChange(index, 'qty', e.target.value)} /></td>
                 <td><input type="number" value={row.rate} onChange={(e) => handleInputChange(index, 'rate', e.target.value)} /></td>
                 <td><input type="number" value={row.taxable.toFixed(2)} readOnly /></td>
@@ -322,7 +392,7 @@ const InvoicePage = () => {
         <div className="bill">
           <div className="bank-info">
             <p style={{ color: 'blue' }}>Bank & Payment Details</p>
-            <p><b>A/C Holder:</b> M.P Enterprises</p>
+            <p><b>A/C Holder:</b> M.P. Enterprises</p>
             <p><b>A/C No:</b> 10973176188</p>
             <p><b>IFSC Code:</b> SBIN0002998</p>
             <p><b>Bank:</b> State Bank of India, Raxaul</p>
@@ -338,7 +408,8 @@ const InvoicePage = () => {
           <button type="button" className="print-btn btn btn-primary" onClick={saveInvoiceToDB}>Print</button>
         </section>
       </form>
-        <h1 className='footer-text'>M.P. ENTERPRISES</h1>
+      <img src={signature} className="footer-image" alt="Digital Signature" /> 
+      {/* <h1 className="footer">M.P. ENTERPRISES</h1> */}
     </div>
   );
 };

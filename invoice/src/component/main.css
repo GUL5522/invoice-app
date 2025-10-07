@@ -4,21 +4,12 @@
     box-sizing: border-box;
 }
 
-h3{
-    /* color: black;
-    font-size: larger;
-    font-weight: bold; */
-    /* background-color: black; */
-    /* width: 100%; */
-    /* font-weight: 500; */
+h3 {
     text-transform: uppercase;
     /* letter-spacing: 1.5px; */
     font-size: 1.7rem;
     border: 2px solid black;
     text-align: center;
-    /* padding: 0.8rem 1.6rem; */
-    /* margin-bottom: 2rem; */
-    /* margin-top: 10px; */
 }
 
 button {
@@ -39,7 +30,7 @@ button {
 }
 
 .btn-primary {
-    background-color:blue;
+    background-color: blue;
     color: white;
     border: 1px solid red;
 }
@@ -62,52 +53,51 @@ button {
     /* flex:1; */
 }
 
-.total{
+.total {
     font-size: 14px;
     border: 2px solid black;
     font-family: inherit;
     padding: 0.8rem 1.6rem;
 }
+
 .form-control:focus {
     border-color: rgba(0, 0, 0, 0.3);
 }
 
+.footer{
+    font-size: 24px !important;
+    color: #333;
+    text-align: center;
+    /* position: absolute; */
+    bottom: 5px;
+    width: 100%;
+
+  }
 
 .cols-3,
 .cols-2 {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-        column-gap: 2rem;
-        grid-template-columns: repeat(2, 1fr);
-        column-gap: 2rem;
+    column-gap: 2rem;
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 2rem;
 }
 
-/* @media screen and (min-width: 768px) {
-    .cols-3 {
-        grid-template-columns: repeat(3, 1fr);
-        column-gap: 2rem;
-    }
-
-    .cols-2 {
-        grid-template-columns: repeat(2, 1fr);
-        column-gap: 2rem;
-    }
-}  */
-
+/* @media screen and (min-width: 768px) { .cols-3 { grid-template-columns: repeat(3, 1fr); column-gap: 2rem; } .cols-2 { grid-template-columns: repeat(2, 1fr); column-gap: 2rem; } } */
 .print-btn-sc {
     /* margin: 2rem 0 6rem 0; */
-    margin-top: 10px;
+    margin-top: 80px;
 }
-
 
 /* print section */
 @media print {
     @page {
         size: A4;
-        margin: 8mm;
+        margin: 0;
     }
 
-    html, body {
+    html,
+    body {
         margin: 0 !important;
         padding: 0 !important;
         height: 100%;
@@ -120,10 +110,10 @@ button {
     }
 
     .invoice-container {
-        width: 100%;
-        max-width: 210mm;
-        margin: 0 auto;
-        padding: 8mm;
+        width: 90%;
+        max-width: 290mm;
+        margin: 4mm auto;
+        padding: 8mm 8mm calc(8mm + 30px);
         box-sizing: border-box;
         border: 1px solid black;
         background-color: white;
@@ -132,6 +122,7 @@ button {
         max-height: 270mm;
         overflow: hidden;
         height: 90vh;
+        position: relative;
     }
 
     .invoice-header {
@@ -142,26 +133,29 @@ button {
         border-bottom: 1px solid black;
         padding-bottom: 8px;
         page-break-inside: avoid;
-    }
-
-    .invoice-header img {
-        width: 80px;
-        height: auto;
-        display: block;
+        /* Ensure header is visible in print */
+        color: black !important;
+        background: white !important;
     }
 
     .invoice-info h1 {
-        font-size: 24px !important;
-        margin: 0;
+        font-size: 48px !important;
+        margin: 0 0 10px 0;
         text-align: center;
-        color: #333;
+        color: black !important;
+        font-family: 'Times New Roman', Times, serif;
+        font-weight: 900 !important;
+        display: block !important;
     }
 
     .invoice-info p {
-        font-size: 9px;
-        margin: 2px 0;
+        font-size: 14px;
+        margin: 4px 0;
         text-align: center;
-        color: #666;
+        color: black !important;
+        font-family: 'Georgia', serif;
+        font-weight: 400;
+        line-height: 1.4;
     }
 
     h3 {
@@ -218,11 +212,11 @@ button {
         page-break-inside: avoid;
     }
 
-    th, td {
+    th,
+    td {
         border: 1px solid black;
         padding: 4px 5px;
         text-align: center;
-        height: auto;
     }
 
     th {
@@ -235,7 +229,7 @@ button {
         border: none;
         background: none;
         font-size: 9px;
-        width: 100%;
+        width: 50%;
         text-align: center;
         text-transform: uppercase;
     }
@@ -270,8 +264,8 @@ button {
         justify-content: space-between;
         margin: 10px 0;
         padding: 8px;
-        background-color: #f8f9fa;
-        border-radius: 3px;
+        background-color: #f4f5f7;
+        border-radius: 5px;
         page-break-inside: avoid;
     }
 
@@ -280,7 +274,7 @@ button {
         padding: 6px;
         background: white;
         color: black;
-        width: 45%;
+        width: 35%;
         font-size: 9px;
         page-break-inside: avoid;
     }
@@ -294,7 +288,7 @@ button {
 
     .total {
         font-size: 11px;
-        border: 1px solid black;
+        border: 1px solid rgb(14, 13, 13);
         padding: 4px 6px;
         text-align: right;
         margin-bottom: 4px;
@@ -309,21 +303,20 @@ button {
 
     .total-in-words {
         font-style: italic;
-        font-size: 9px;
+        font-size: 10px;
         margin: 0;
         text-align: right;
     }
 
-    .footer-text {
-        text-align: center;
-        margin-top: 10px;
-        padding-top: 8px;
-        border: 1px solid #ddd;
-        font-weight: bold;
-        font-size: 10px;
-        page-break-inside: avoid;
-        margin-bottom: 10px;
-    }
+    .footer{
+    font-size: 24px !important;
+    color: #333;
+    text-align: center;
+    /* position: absolute; */
+    bottom: 5px;
+    width: 100%;
+    transform: translateX(30%);
+  }
 
     /* Force single page - aggressive approach */
     .invoice-container,
@@ -346,8 +339,9 @@ button {
         display: none !important;
     }
 
-    table th:last-child,
-    table td:last-child {
+    /* Hide only the Action column (8th column) in print for InvoicePage table */
+    table.invoice-page-table th:last-child,
+    table.invoice-page-table td:last-child {
         display: none !important;
     }
 
@@ -362,21 +356,21 @@ button {
 .invoice-info {
     margin: 8px;
 }
-.buyer{
+
+.buyer {
     margin-top: 10px;
     margin-bottom: 10px;
 }
-.tax{
+
+.tax {
     margin-bottom: 10px;
     margin-top: 10px;
 }
 
 .img {
-    width: 10%;
-    /* margin: 20px; */
-    margin-top: 8px;
+    width: 20%;
+    margin-top: 10px;
     margin-left: 10px;
-    margin-right: 10px;
 }
 
 .invoice-header {
@@ -399,11 +393,8 @@ th {
 }
 
 input {
-    width: 90%;
-    /* height: 90%; */
     border: none;
     text-align: center;
-    /* font-size: 16px; */
     text-transform: uppercase;
 }
 
@@ -416,7 +407,7 @@ input {
 }
 
 .total-in-words {
-    text-align:end;
+    text-align: end;
     font-size: 17px;
     margin-top: 10px;
     margin-right: 20px;
@@ -428,18 +419,18 @@ input {
 }
 
 .word {
-    width: 40%; 
+    width: 40%;
 }
 
 .bank-info {
     border: 5px solid black;
-    width: 35%;
+    /* width: 35%; */
     margin-top: 20px;
 }
 
 .delete-btn {
     background-color: red;
-    color: white;
+    color: black;
     border: none;
     padding: 5px 10px;
     cursor: pointer;
@@ -451,50 +442,52 @@ input {
     background-color: darkred;
 }
 
-.invoice-container{
-    /* display: flex; */
-    /* height: 975px; */
-    /* padding: 20px; */
-    /* max-width: 100% !important; */
-        background: white !important;
-        padding: 0px !important;
-        /* border: 2px solid black; */
+.invoice-container {
+    background: white !important;
+    padding: 0px !important;
 }
- #invoice-form{
-    /* display: flex; */
+
+#invoice-form {
     margin: 2px;
- }
- 
+}
 
-  #addRowBtn{
+#addRowBtn {
     margin-top: 10px;
-  }
+}
 
-  .form-elem {
+.form-elem {
     display: flex;
     align-items: center;
-    gap: 0px; /* Adds spacing between label and input */
+    gap: 0px;
+    /* Adds spacing between label and input */
 }
 
 .form-label {
-    width: 100px; /* Adjust label width as needed */
-    text-align: left; /* Align text properly */
+    width: 100px;
+    /* Adjust label width as needed */
+    text-align: left;
+    /* Align text properly */
     font-size: medium;
+    margin-left: 10px;
 }
-.print-footer{
-    
-    bottom: 0;
-    right: 20px;
-    width: 100%;
-    text-align: right;
-    padding: 20px;
-    font-size: 14px;
-    font-weight: bold;
-}
-
-.email{
+.email {
     text-transform: lowercase;
 }
-.address, {
+
+.address {
     text-transform: uppercase;
+}
+
+/* Mobile responsiveness for table */
+@media (max-width: 768px) {
+  .invoice-page-table {
+    font-size: 12px;
+  }
+  .invoice-page-table th, .invoice-page-table td {
+    padding: 4px;
+  }
+  /* Hide Action column in mobile to save space */
+  .invoice-page-table th:last-child, .invoice-page-table td:last-child {
+    display: none;
+  }
 }
