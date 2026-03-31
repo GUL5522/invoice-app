@@ -51,8 +51,8 @@ const HomePage = () => {
                   <>
                     <li><Link to="/bill" onClick={toggleMenu}>Indian Custom</Link></li>
                     <li><Link to="/invoices" onClick={toggleMenu}>Indian Invoices</Link></li>
-                    <li><Link to="/bill" onClick={toggleMenu}>Nepal Custom</Link></li>
-                    <li><Link to="/invoices" onClick={toggleMenu}>Nepal Invoices</Link></li>
+                    <li><Link to="/nepal-bill" onClick={toggleMenu}>Nepal Custom</Link></li>
+                    <li><Link to="/nepal-invoices" onClick={toggleMenu}>Nepal Invoices</Link></li>
                     <li><Link to="/update-profile" onClick={toggleMenu}>Update Profile</Link></li>
                     <li><a href="#" onClick={() => { logout(); toggleMenu(); }}>Logout</a></li>
                   </>

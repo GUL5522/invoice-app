@@ -231,7 +231,11 @@ const InvoiceView = () => {
             <tbody>
               {invoice.products.map((product, index) => (
                 <tr key={index}>
-                  <td data-label="Product Name"><input type="text" value={product.product} readOnly /></td>
+                  <td data-label="Product Name">
+                    <input type="text" value={product.product} readOnly style={{ marginBottom: '4px' }} />
+                    <input type="text" value={product.descOption || ''} readOnly list="" placeholder="Description (dropdown)" style={{ width: '100%', marginBottom: '4px' }} />
+                    <textarea value={product.description || ''} readOnly rows="3" placeholder="Detailed Description" style={{ width: '100%', resize: 'vertical', border: 'none' }} />
+                  </td>
                   <td data-label="HSN"><input type="text" value={product.hsn} readOnly /></td>
                   <td data-label="QTY"><input type="number" value={product.qty} readOnly /></td>
                   <td data-label="Rate"><input type="number" value={product.rate} readOnly /></td>

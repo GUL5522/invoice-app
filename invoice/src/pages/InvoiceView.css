@@ -140,12 +140,35 @@
   color: #333;
 }
 
-#dynamicTable input {
-  width: 100%;
-  border: none;
-  background: transparent;
-  font-size: 14px;
-}
+  #dynamicTable input {
+    width: 100%;
+    border: none;
+    background: transparent;
+    font-size: 14px;
+    text-align: left;
+  }
+
+  #dynamicTable textarea {
+    font-size: 14px;
+    font-family: inherit;
+    font-weight: normal;
+    line-height: 1.4;
+  }
+
+  /* Ensure textarea matches input font exactly */
+  #dynamicTable input, #dynamicTable textarea {
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    font-weight: normal;
+  }
+
+  @media print {
+    #dynamicTable input, #dynamicTable textarea {
+      font-family: Arial, sans-serif;
+      font-size: 9px;
+      font-weight: normal;
+    }
+  }
 
 #dynamicTable input[readonly] {
   cursor: not-allowed;
@@ -355,7 +378,7 @@
   #dynamicTable td {
     border: 1px solid black;
     padding: 4px 5px;
-    text-align: center;
+    text-align: left;
   }
 
   #dynamicTable th {
@@ -370,20 +393,34 @@
     background: none;
     font-size: 9px;
     width: 100%;
-    text-align: center;
+    text-align: left;
     text-transform: uppercase;
   }
 
   /* Specific styling for product name column to handle long names */
-  #dynamicTable th:first-child,
+#dynamicTable th:first-child,
   #dynamicTable td:first-child {
     word-wrap: break-word;
     overflow-wrap: break-word;
     white-space: normal;
-    min-width: 120px;
-    max-width: 180px;
+    min-width: 200px;
+    max-width: 250px;
     height: auto;
     text-align: left;
+    vertical-align: top;
+    padding: 12px !important;
+  }
+
+  /* Print styles for table cells */
+  @media print {
+    #dynamicTable th:first-child,
+    #dynamicTable td:first-child {
+      min-width: 180px !important;
+      max-width: 250px !important;
+      height: auto !important;
+      vertical-align: top !important;
+      padding: 8px 12px !important;
+    }
   }
 
   /* Styling for Value and Total columns to handle long numbers */
@@ -767,6 +804,11 @@
     font-size: 11px;
     padding: 5px 8px;
   }
+
+  
+
+
+
 }
 
 

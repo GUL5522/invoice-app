@@ -7,6 +7,10 @@ import UpdateProfile from './pages/UpdateProfile';
 import InvoicePage from './component/InvoicePage';
 import InvoiceList from './pages/InvoiceList';
 import InvoiceView from './pages/InvoiceView';
+import Nepal from './pages/Nepal/Nepal';
+import NepalInvoiceView from './pages/Nepal/NepalInvoiceView';
+import NepalList from './pages/Nepal/NepalList';
+import NepalEdit from './pages/Nepal/NepalEdit';
 import './App.css';
 
 function AppContent() {
@@ -22,6 +26,10 @@ function AppContent() {
           <Route path="/invoices" element={<InvoiceList />} />
           <Route path="/invoice/:id" element={<InvoiceView />} />
           <Route path="/" element={<Home />} />
+          <Route path="/nepal-bill" element={<Nepal />} />
+          <Route path="/nepal/:id" element={<NepalEdit />} />
+          <Route path="/nepal-invoice/:id" element={<NepalInvoiceView />} />
+          <Route path="/nepal-invoices" element={<NepalList />} />
         </Routes>
       </div>
     </Router>

@@ -4,6 +4,7 @@ const mongoose = require('mongoose')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const Invoice = require('./modal/InsertInvoice')
+const NepalInvoice = require('./modal/NepalInvoice')
 require('dotenv').config();
 
 const cors = require('cors')
@@ -197,6 +198,54 @@ app.get('/api/invoices/:id', async (req, res) => {
         return res.status(500).json({success: false, message: 'Failed to fetch invoice' });
     }
 })
+
+// Nepal Invoice routes
+app.post('/api/nepal-invoices', async (req, res) => {
+    try {
+        const nepalInvoice = new NepalInvoice(req.body);
+        await nepalInvoice.save();
+        return res.status(200).json({success: true, message: 'Nepal Invoice saved successfully', invoice: nepalInvoice });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({success: false, message: 'Failed to save Nepal Invoice' });
+    }
+});
+
+app.get('/api/nepal-invoices', async (req, res) => {
+    try {
+        const invoices = await NepalInvoice.find().sort({ createdAt: -1 });
+        return res.status(200).json({success: true, invoices });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({success: false, message: 'Failed to fetch Nepal invoices' });
+    }
+});
+
+app.get('/api/nepal-invoices/:id', async (req, res) => {
+    try {
+        const invoice = await NepalInvoice.findById(req.params.id);
+        if (!invoice) {
+            return res.status(404).json({success: false, message: 'Nepal Invoice not found' });
+        }
+        return res.status(200).json({success: true, invoice });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({success: false, message: 'Failed to fetch Nepal invoice' });
+    }
+});
+
+app.put('/api/nepal-invoices/:id', async (req, res) => {
+    try {
+        const invoice = await NepalInvoice.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
+        if (!invoice) {
+            return res.status(404).json({success: false, message: 'Nepal Invoice not found' });
+        }
+        return res.status(200).json({success: true, invoice });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({success: false, message: 'Failed to update Nepal invoice' });
+    }
+});
 
 const port = process.env.PORT || 5500
 app.listen(port, () => console.log(`Server is running on port ${port}`));

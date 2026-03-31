@@ -58,13 +58,14 @@ const numberToWords = (n) => {
 
 
 const InvoicePage = () => {
-  const driverOptions = ['MD WAZUL', 'Driver 2', 'Driver 3'];
-  const vehicleOptions = ['BR05GB-4421', 'Vehicle 2', 'Vehicle 3'];
-  const productOptions = ['Rice', 'Wheat', 'Maize', 'Sugar', 'Salt'];
-  const hsnOptions = ['1001', '1002', '1003', '1004', '1005'];
+  const driverOptions = ['MD FARUK', 'LALU MIYA', 'MD. WAZUL', 'MD. NASIM'];
+  const vehicleOptions = ['BR-O5G-7204', 'BR-05GB-4421',];
+  const productOptions = ['HARD COKE', 'HARD COKE(LOOSE)', 'SOFT COKE', 'SOFT COKE(LOOSE)', 'CHINESE'];
+  const hsnOptions = ['27040000', '27040030', '27040040', '1005'];
+  const descriptionOptions = ['GRADE-1', 'GRADE-2', 'GRADE-W-3', 'GRADE-2 FC', ];
 
   const [rows, setRows] = useState([{
-    product: '', hsn: '', qty: 0, rate: 0, taxable: 0, igst: 0, total: 0
+    product: '', descOption: '', description: '', hsn: '', qty: 0, rate: 0, taxable: 0, igst: 0, total: 0
   }]);
   const [invoiceNumber] = useState(generateInvoiceNumber());
   const [invoiceDate, setInvoiceDate] = useState(new Date().toISOString().split('T')[0]);
@@ -79,7 +80,7 @@ const InvoicePage = () => {
   const [vehicleNumber, setVehicleNumber] = useState('');
   const [transportMode, setTransportMode] = useState('By Road');
   const [countryName, setCountry] = useState('India');
-  const [buyerName, setBuyerName] = useState('shree Nawal Enterprises');
+  const [buyerName, setBuyerName] = useState('Shree Nawal Enterprises');
   const [buyerAddress, setBuyerAddress] = useState('BIRGUNJ');
   const [buyerPhone, setBuyerPhone] = useState('+977 9855023130');
   const [buyerEmail, setBuyerEmail] = useState('s.nawalenterprises@gmail.com');
@@ -90,7 +91,7 @@ const InvoicePage = () => {
   const addRow = () => {
     if (rows.length < 3) {
       setRows([...rows, {
-        product: '', hsn: '', qty: '', rate: '', taxable: 0, igst: 0, total: 0
+        product: '', descOption: '', description: '', hsn: '', qty: '', rate: '', taxable: 0, igst: 0, total: 0
       }]);
     }
   };
@@ -148,25 +149,25 @@ const InvoicePage = () => {
       return;
     }
 
-    // if (!driverName) {
-    //   alert('Please fill in Driver Name');
-    //   return;
-    // }
+    if (!driverName) {
+      alert('Please fill in Driver Name');
+      return;
+    }
 
-    // if (!vehicleNumber) {
-    //   alert('Please fill in Vehicle Number');
-    //   return;
-    // }
+    if (!vehicleNumber) {
+      alert('Please fill in Vehicle Number');
+      return;
+    }
 
     // Validate products
     const validProducts = rows.filter(row =>
       row.product && row.hsn && row.qty > 0 && row.rate > 0
     );
 
-    // if (validProducts.length === 0) {
-    //   alert('Please add at least one product with valid details');
-    //   return;
-    // }
+    if (validProducts.length === 0) {
+      alert('Please add at least one product with valid details');
+      return;
+    }
 
     const invoiceData = {
       invoiceNumber,
@@ -191,6 +192,8 @@ const InvoicePage = () => {
 
       products: validProducts.map(row => ({
         product: row.product,
+        descOption: row.descOption,
+        description: row.description,
         hsn: row.hsn,
         qty: parseFloat(row.qty),
         rate: parseFloat(row.rate),
@@ -345,7 +348,7 @@ const InvoicePage = () => {
               <th>Value</th>
               <th>IGST (5%)</th>
               <th>Total</th>
-              <th>Action</th>
+              {/* <th>Action</th> */}
             </tr>
           </thead>
           <tbody>
@@ -357,12 +360,33 @@ const InvoicePage = () => {
                     value={row.product}
                     onChange={(e) => handleInputChange(index, 'product', e.target.value)}
                     list="products"
+                    placeholder="Product Name"
                   />
                   <datalist id="products">
                     {productOptions.map((product, idx) => (
                       <option key={idx} value={product} />
                     ))}
                   </datalist>
+                  <datalist id="descriptions">
+                    {descriptionOptions.map((desc, idx) => (
+                      <option key={idx} value={desc} />
+                    ))}
+                  </datalist>
+                  <input
+                    type="text"
+                    list="descriptions"
+                    placeholder="Select Grade"
+                    value={row.descOption}
+                    onChange={(e) => handleInputChange(index, 'descOption', e.target.value)}
+                    style={{ width: '100%', marginTop: '4px', marginBottom: '4px' }}
+                  />
+                  <textarea
+                    placeholder="Description"
+                    value={row.description}
+                    onChange={(e) => handleInputChange(index, 'description', e.target.value)}
+                    rows="3"
+                    style={{ width: '100%', resize: 'vertical', border: 'none' }}
+                  />
                 </td>
                 <td>
                   <input
@@ -382,12 +406,12 @@ const InvoicePage = () => {
                 <td><input type="number" value={row.taxable.toFixed(2)} readOnly /></td>
                 <td><input type="number" value={row.igst.toFixed(2)} readOnly /></td>
                 <td><input type="number" value={row.total.toFixed(2)} readOnly /></td>
-                <td><button type="button" className="delete-btn" onClick={() => removeRow(index)}>Remove</button></td>
+                {/* <td><button type="button" className="delete-btn" onClick={() => removeRow(index)}>Remove</button></td> */}
               </tr>
             ))}
           </tbody>
         </table>
-        <button type="button" id="addRowBtn" className="btn btn-primary" onClick={addRow}>Add Row</button>
+        {/* <button type="button" id="addRowBtn" className="btn btn-primary" onClick={addRow}>Add Row</button> */}
 
         <div className="bill">
           <div className="bank-info">
