@@ -111,10 +111,7 @@
   width: 17%;
 }
 
-.table th:nth-child(3),
-.table td:nth-child(3) {
-  width: 14%;
-}
+.table th:nth-child(3),\n.table td:nth-child(3) {\n  width: 20%;\n}
 
 .table th:nth-child(4),
 .table td:nth-child(4) {
@@ -249,7 +246,7 @@ input {
     display: block;
     width: 100% !important;
     padding: 4px 0 !important;
-    min-height: auto !important;
+    min-height: 44px !important;
   }
 
   .right-table td:first-child {
@@ -361,7 +358,8 @@ input {
   textarea {
     font-size: 16px !important;
     min-height: 44px !important;
-    width: 100% !important;
+
+    /* width: 100% !important; */
     box-sizing: border-box;
     padding: 4px;
   }
@@ -435,16 +433,31 @@ input {
     min-height: 44px;
   }
 
+  input[type="number"] {
+    height: 44px;
+  }
+
+  ::before {
+    font-size: 16px;
+  }
+  .table th:nth-child(3),
+.table td:nth-child(3) {
+  width: 14%;
+}
+
+
   @media screen and (max-width: 480px) {
     .invoice {
       padding: 2mm 2mm calc(2mm + 10px) !important;
       font-size: 14px !important;
     }
 
+
     .table th,
     .table td {
-      font-size: 14px !important;
+      font-size: 15px;
       padding: 2px 4px !important;
+
     }
 
     input[type="text"],
@@ -466,13 +479,22 @@ input {
       font-size: 24px !important;
     }
 
+    .email {
+      font-size: 16px !important;
+    }
+
     .footer-image {
       display: block;
       /* margin: auto !important; */
       /* max-width: 190px; */
       position: relative;
-      margin: 0 1000px 100px 0 !important;
+      margin: 0 1000px 80px -100px !important;
     }
+    .table th:nth-child(3),
+.table td:nth-child(3)::before {
+  width: 14%;
+}
+
 
   }
 }

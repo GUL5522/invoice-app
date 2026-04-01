@@ -44,7 +44,7 @@ button {
 .form-control {
     border-radius: none;
     /* border: 1px solid rgba(0, 0, 0, 0.1); */
-    font-size: 14px;
+    font-size: 16px;
     padding: 0.8rem 1.6rem;
     font-family: inherit;
     /* width: 100%; */
@@ -501,11 +501,13 @@ input {
 
 /* Mobile responsiveness for table */
 @media (max-width: 768px) {
-  .invoice-page-table {
-    font-size: 12px;
+  .invoice-page-table{
+    font-size: 15px;
   }
   .invoice-page-table th, .invoice-page-table td {
     padding: 4px;
+    
+    
   }
   /* Hide Action column in mobile to save space */
   .invoice-page-table th:last-child, .invoice-page-table td:last-child {

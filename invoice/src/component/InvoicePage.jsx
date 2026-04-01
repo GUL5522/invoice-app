@@ -378,14 +378,14 @@ const InvoicePage = () => {
                     placeholder="Select Grade"
                     value={row.descOption}
                     onChange={(e) => handleInputChange(index, 'descOption', e.target.value)}
-                    style={{ width: '100%', marginTop: '4px', marginBottom: '4px' }}
+                    style={{ width: '63%', margin:"4px 0 4px 103px" }}
                   />
                   <textarea
                     placeholder="Description"
                     value={row.description}
                     onChange={(e) => handleInputChange(index, 'description', e.target.value)}
                     rows="3"
-                    style={{ width: '100%', resize: 'vertical', border: 'none' }}
+                    style={{ width: '100%', resize: 'vertical', border: '1px solid' }}
                   />
                 </td>
                 <td>
@@ -432,6 +432,7 @@ const InvoicePage = () => {
           <button type="button" className="print-btn btn btn-primary" onClick={saveInvoiceToDB}>Print</button>
         </section>
       </form>
+      
       <img src={signature} className="footer-image" alt="Digital Signature" /> 
       {/* <h1 className="footer">M.P. ENTERPRISES</h1> */}
     </div>
