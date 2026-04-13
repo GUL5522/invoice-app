@@ -303,6 +303,9 @@ export default function App() {
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 required
+                style={{
+                  textTransform: "none",
+                }}
               />
 
               <label htmlFor="password">Password</label>
@@ -317,7 +320,7 @@ export default function App() {
                     padding: "10px",
                     paddingRight: "70px",
                     border: "1px solid #ccc",
-                    borderRadius: "6px"
+                    borderRadius: "6px",
                   }}
                   required
                 />
