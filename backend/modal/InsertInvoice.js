@@ -17,6 +17,7 @@ const invoiceSchema = new mongoose.Schema({
   invoiceDate: { type: Date, required: true },
   state: { type: String, required: true, uppercase: true, trim: true },
   dateOfSupply: { type: Date, required: true },
+
   placeOfSupply: { type: String, required: true, uppercase: true, trim: true },
 
   driverName: { type: String, uppercase: true, trim: true },
@@ -38,5 +39,8 @@ const invoiceSchema = new mongoose.Schema({
 }, {
   timestamps: true
 });
+
+
+
 
 module.exports = mongoose.model('Invoice', invoiceSchema);

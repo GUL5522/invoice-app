@@ -32,8 +32,13 @@ const InvoiceView = () => {
     }
   };
 
-  const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString('en-IN');
+const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-IN', { 
+      day: '2-digit', 
+      month: '2-digit', 
+      year: 'numeric' 
+    });
   };
 
   const numberToWords = (n) => {
@@ -232,9 +237,9 @@ const InvoiceView = () => {
               {invoice.products.map((product, index) => (
                 <tr key={index}>
                   <td data-label="Product Name">
-                    <input type="text" value={product.product} readOnly style={{ marginBottom: '4px' }} />
-                    <input type="text" value={product.descOption || ''} readOnly list="" placeholder="Description (dropdown)" style={{ width: '100%', marginBottom: '4px' }} />
-                    <textarea value={product.description || ''} readOnly rows="3" placeholder="Detailed Description" style={{ width: '100%', resize: 'vertical', border: 'none' }} />
+                    <input type="text" value={product.product} readOnly  />
+                    <input type="text" value={product.descOption || ''} readOnly list="" placeholder="Description (dropdown)" />
+                    <textarea value={product.description || ''} readOnly rows="3" placeholder="Detailed Description" />
                   </td>
                   <td data-label="HSN"><input type="text" value={product.hsn} readOnly /></td>
                   <td data-label="QTY"><input type="number" value={product.qty} readOnly /></td>

@@ -6,6 +6,7 @@ export default function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const { login } = useAuth();
   const navigate = useNavigate();
 
@@ -13,7 +14,7 @@ export default function Login() {
     e.preventDefault();
     setError('');
     try {
-      const success = await login({username, password});
+      const success = await login({ username, password });
       if (success) {
         navigate('/');
       } else {
@@ -43,13 +44,30 @@ export default function Login() {
         </div>
         <div>
           <label>Password:</label>
-          <input
-            id='loginPw'
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
+
+          <div style={{ position: "relative" }}>
+            <input
+              id="loginPw"
+              style={{ textTransform: "none", paddingRight: "40px" }}
+              type={showPassword ? "text" : "password"}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+
+            <span
+              onClick={() => setShowPassword(!showPassword)}
+              style={{
+                position: "absolute",
+                right: "10px",
+                top: "50%",
+                transform: "translateY(-50%)",
+                cursor: "pointer"
+              }}
+            >
+              {showPassword ? "🙈" : "👁️"}
+            </span>
+          </div>
         </div>
         <button type="submit">Login</button>
       </form>

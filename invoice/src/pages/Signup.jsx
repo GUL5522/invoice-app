@@ -7,6 +7,7 @@ export default function Signup() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
+  const [showPassword, setShowPassword] = useState(false); // 🔥 added
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -56,7 +57,7 @@ export default function Signup() {
         <div>
           <label>Username:</label>
           <input
-            style={{textTransform:"none"}}
+            style={{ textTransform: "none" }}
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
@@ -65,23 +66,53 @@ export default function Signup() {
         </div>
         <div>
           <label>Password:</label>
-          <input
-            style={{textTransform:"none"}}
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
+          <div style={{ position: "relative" }}>
+            <input
+              style={{ textTransform: "none", paddingRight: "40px" }}
+              type={showPassword ? "text" : "password"}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+
+            <span
+              onClick={() => setShowPassword(!showPassword)}
+              style={{
+                position: "absolute",
+                right: "10px",
+                top: "50%",
+                transform: "translateY(-50%)",
+                cursor: "pointer"
+              }}
+            >
+              {showPassword ? "🙈" : "👁️"}
+            </span>
+          </div>
         </div>
         <div>
           <label>Confirm Password:</label>
-          <input
-            style={{textTransform:"none"}}
-            type="password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            required
-          />
+          <div style={{ position: "relative" }}>
+            <input
+              style={{ textTransform: "none", paddingRight: "40px" }}
+              type={showPassword ? "text" : "password"}
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              required
+            />
+
+            <span
+              onClick={() => setShowPassword(!showPassword)}
+              style={{
+                position: "absolute",
+                right: "10px",
+                top: "50%",
+                transform: "translateY(-50%)",
+                cursor: "pointer"
+              }}
+            >
+              {showPassword ? "🙈" : "👁️"}
+            </span>
+          </div>
         </div>
         <button type="submit">Signup</button>
       </form>

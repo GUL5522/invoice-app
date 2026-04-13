@@ -144,30 +144,30 @@ const InvoicePage = () => {
   // inset data
   const saveInvoiceToDB = async () => {
     // Validate required fields
-    if (!buyerName || !buyerAddress) {
-      alert('Please fill in Buyer Name and Buyer Address');
-      return;
-    }
+    // if (!buyerName || !buyerAddress) {
+    //   alert('Please fill in Buyer Name and Buyer Address');
+    //   return;
+    // }
 
-    if (!driverName) {
-      alert('Please fill in Driver Name');
-      return;
-    }
+    // if (!driverName) {
+    //   alert('Please fill in Driver Name');
+    //   return;
+    // }
 
-    if (!vehicleNumber) {
-      alert('Please fill in Vehicle Number');
-      return;
-    }
+    // if (!vehicleNumber) {
+    //   alert('Please fill in Vehicle Number');
+    //   return;
+    // }
 
     // Validate products
     const validProducts = rows.filter(row =>
       row.product && row.hsn && row.qty > 0 && row.rate > 0
     );
 
-    if (validProducts.length === 0) {
-      alert('Please add at least one product with valid details');
-      return;
-    }
+    // if (validProducts.length === 0) {
+    //   alert('Please add at least one product with valid details');
+    //   return;
+    // }
 
     const invoiceData = {
       invoiceNumber,
@@ -378,14 +378,13 @@ const InvoicePage = () => {
                     placeholder="Select Grade"
                     value={row.descOption}
                     onChange={(e) => handleInputChange(index, 'descOption', e.target.value)}
-                    style={{ width: '63%', margin:"4px 0 4px 103px" }}
                   />
                   <textarea
                     placeholder="Description"
                     value={row.description}
                     onChange={(e) => handleInputChange(index, 'description', e.target.value)}
                     rows="3"
-                    style={{ width: '100%', resize: 'vertical', border: '1px solid' }}
+                    style={{ fontsize:"50px" }}
                   />
                 </td>
                 <td>

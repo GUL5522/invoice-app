@@ -431,7 +431,7 @@ const NepalForm = ({ initialEditId }) => {
             <thead>
               <tr>
                 <td><label>Invoice No:</label><input value={invoiceNumber} readOnly /></td>
-                <td><label>Date:</label><input type="date" value={invoiceDate} onChange={(e) => setInvoiceDate(e.target.value)} /></td>
+<td><label>Date:</label><input type="date" value={invoiceDate} onChange={(e) => setInvoiceDate(e.target.value)} /><br/><small>(Displays as DD/MM/YYYY: {new Date(invoiceDate).toLocaleDateString('en-IN', { day: '2-digit', month: '2-digit', year: 'numeric' })})</small></td>
               </tr>
               <tr>
                 <td><label>Indian Custom Point:</label><input value={indianCustomPoint} onChange={(e) => setIndianCustomPoint(e.target.value)} /></td>
@@ -476,12 +476,11 @@ const NepalForm = ({ initialEditId }) => {
               <td>
                 <b>{row.product}</b>
                 <div>{row.descOption}</div>
-                <textarea value={row.description} readOnly />
+                <textarea className="myTextarea" value={row.description} readOnly />
               </td>
 
               <td>{row.hsn}</td>
               <td><input type="text" style={{width: '100%'}} value={row.qty || ''} onChange={(e) => handleInputChange(i, 'qty', e.target.value)} /></td>
-              {/* <td>{row.rate}</td> */}
               <td><input type="text" style={{width: '100%'}} value={row.rate || ''} onChange={(e) => handleInputChange(i, 'rate', e.target.value)} required /></td>
               <td>{row.taxable?.toFixed(2)}</td>
               {/* <td>{row.gst?.toFixed(2)}</td> */}
@@ -491,7 +490,7 @@ const NepalForm = ({ initialEditId }) => {
         </tbody>
       </table>
 
-      <h3>Total: {numberToWords(totalSum)}</h3>
+      {/* <h3>Total: {numberToWords(totalSum)}</h3> */}
 
       <div className="bill">
         <div className="bank-info">

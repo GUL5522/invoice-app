@@ -6,26 +6,22 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const storedUser = localStorage.getItem('user');
+    const storedUser = sessionStorage.getItem('user');
+
     if (storedUser) {
-      setUser(JSON.parse(storedUser));
+      try {
+        const parsedUser = JSON.parse(storedUser);
+        setUser(parsedUser);
+      } catch (e) {
+        console.warn('Invalid user data:', e);
+        localStorage.removeItem('user');
+      }
     }
   }, []);
 
-  useEffect(() => {
-    const handleBeforeUnload = () => {
-      localStorage.removeItem('user');
-      localStorage.removeItem('token');
-    };
+  // Removed auto-logout on tab close
 
-    window.addEventListener('beforeunload', handleBeforeUnload);
-
-    return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload);
-    };
-  }, []);
-
-  const login = async ({username, password}) => {
+  const login = async ({ username, password }) => {
     try {
       const response = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/login`, {
         method: 'POST',
@@ -37,15 +33,15 @@ export function AuthProvider({ children }) {
 
       const data = await response.json();
       console.log('Login response:', data);
-      
+
       if (!data.success) {
         throw new Error(data.message || 'Login failed');
       }
-      
+
       // Store user data and token
       setUser(data.user);
-      localStorage.setItem('user', JSON.stringify(data.user));
-      localStorage.setItem('token', data.token);
+      sessionStorage.setItem('user', JSON.stringify(data.user));
+      sessionStorage.setItem('token', data.token);
       return true;
     } catch (error) {
       console.error('Login error:', error);
@@ -55,15 +51,18 @@ export function AuthProvider({ children }) {
 
   const logout = () => {
     setUser(null);
-    localStorage.removeItem('user');
-    localStorage.removeItem('token');
-    window.location.reload();
+    sessionStorage.removeItem('user');
+    sessionStorage.removeItem('token');
   };
+
+  const isUserExists = () => {
+  return !!sessionStorage.getItem('user');
+};
 
   const getToken = () => localStorage.getItem('token');
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, getToken }}>
+    <AuthContext.Provider value={{ user, login, logout, getToken,isUserExists }}>
       {children}
     </AuthContext.Provider>
   );

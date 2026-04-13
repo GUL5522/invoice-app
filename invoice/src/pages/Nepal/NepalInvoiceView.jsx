@@ -36,8 +36,13 @@ const NepalInvoiceView = () => {
     window.print();
   };
 
-  const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString('en-IN');
+const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-IN', { 
+      day: '2-digit', 
+      month: '2-digit', 
+      year: 'numeric' 
+    });
   };
 
   const numberToWords = (n) => {
@@ -185,8 +190,8 @@ const NepalInvoiceView = () => {
                   <div>{p.descOption}</div>
                   <pre style={{ 
                     width: '100%', 
-                    height: '60px', 
-                    marginTop: '4px', 
+                    height: '90px', 
+                    margin: '4px', 
                     fontSize: '20px', 
                     border: 'none', 
                     outline: 'none', 
@@ -207,7 +212,7 @@ const NepalInvoiceView = () => {
           </tbody>
         </table>
 
-        <h3>Total: {numberToWords(invoice.totalAmount)}</h3>
+        {/* <h3>Total: {numberToWords(invoice.totalAmount)}</h3> */}
 
         <div className="bill">
           <div className="bank-info">

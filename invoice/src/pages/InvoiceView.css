@@ -140,35 +140,39 @@
   color: #333;
 }
 
-  #dynamicTable input {
-    width: 100%;
-    border: none;
-    background: transparent;
-    font-size: 14px;
-    text-align: left;
-  }
+#dynamicTable input {
+  width: 100%;
+  height: 25px;
+  border: none;
+  background: white;
+  font-size: 14px;
+  text-align: left;
+}
 
+#dynamicTable textarea {
+  font-size: 14px;
+  font-family: inherit;
+  font-weight: normal;
+  line-height: 1.4;
+}
+
+/* Ensure textarea matches input font exactly */
+#dynamicTable input,
+#dynamicTable textarea {
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  font-weight: normal;
+}
+
+@media print {
+
+  #dynamicTable input,
   #dynamicTable textarea {
-    font-size: 14px;
-    font-family: inherit;
-    font-weight: normal;
-    line-height: 1.4;
-  }
-
-  /* Ensure textarea matches input font exactly */
-  #dynamicTable input, #dynamicTable textarea {
     font-family: Arial, sans-serif;
-    font-size: 14px;
+    font-size: 9px;
     font-weight: normal;
   }
-
-  @media print {
-    #dynamicTable input, #dynamicTable textarea {
-      font-family: Arial, sans-serif;
-      font-size: 9px;
-      font-weight: normal;
-    }
-  }
+}
 
 #dynamicTable input[readonly] {
   cursor: not-allowed;
@@ -209,14 +213,14 @@
   margin: 0;
 }
 
-.footer-image{
-    width: 250px;
-    height: 250px;
-    margin: 0;
-    position:relative;
-    left: 80%;
-    transform: translateX(-50%);
-  }
+.footer-image {
+  width: 250px;
+  height: 250px;
+  margin: 0;
+  position: relative;
+  left: 80%;
+  transform: translateX(-50%);
+}
 
 .print-footer {
   text-align: center;
@@ -234,7 +238,8 @@
     margin: 0;
   }
 
-  html, body {
+  html,
+  body {
     margin: 0 !important;
     padding: 0 !important;
     height: 100%;
@@ -283,12 +288,15 @@
   .footer-image {
     width: 150px;
     height: 150px;
-    position: absolute;   /* page ke andar absolute */
-    right: 10px;          /* right corner */
-    bottom: 10px;         /* bottom corner */
+    position: absolute;
+    /* page ke andar absolute */
+    right: 10px;
+    /* right corner */
+    bottom: 10px;
+    /* bottom corner */
   }
 
-  .footer{
+  .footer {
     font-size: 24px !important;
     margin: 0;
     color: #333;
@@ -398,7 +406,7 @@
   }
 
   /* Specific styling for product name column to handle long names */
-#dynamicTable th:first-child,
+  #dynamicTable th:first-child,
   #dynamicTable td:first-child {
     word-wrap: break-word;
     overflow-wrap: break-word;
@@ -413,6 +421,7 @@
 
   /* Print styles for table cells */
   @media print {
+
     #dynamicTable th:first-child,
     #dynamicTable td:first-child {
       min-width: 180px !important;
@@ -468,13 +477,13 @@
   .total-in-word {
     font-weight: bold;
     margin: 4px 0 2px 0;
-    font-size: 10px;
+    font-size: 18px;
     text-align: right;
   }
 
   .total-in-words {
     font-style: italic;
-    font-size: 9px;
+    font-size: 18px;
     margin: 0;
     text-align: right;
   }
@@ -544,223 +553,218 @@
   }
 }
 
-  /* Mobile responsiveness */
-  @media screen and (max-width: 768px) {
-    .invoice-view-container {
-      max-width: 100%;
-      padding: 10px;
-      font-size: 12px;
-      line-height: 1.4;
-    }
-
-    .invoice-actions {
-      flex-direction: column;
-      gap: 10px;
-      align-items: stretch;
-    }
-
-    .back-btn,
-    .print-btn {
-      width: 100%;
-      text-align: center;
-    }
-
-    .invoice-container {
-      padding: 15px;
-      margin: 10px 0;
-    }
-
-    .invoice-header {
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      gap: 15px;
-      margin-bottom: 25px;
-      width: 100%;
-    }
-
-    .img {
-      width: clamp(80px, 15vw, 120px);
-      height: auto;
-    }
-
-    .invoice-info {
-      width: 100%;
-      display: block;
-      text-align: center;
-      flex-shrink: 1;
-      min-width: 0;
-    }
-
-    .invoice-info h1 {
-      font-size: clamp(16px, 4vw, 22px);
-      margin: 10px 0 8px 0;
-      line-height: 1.2;
-      max-width: 100%;
-    }
-
-    .mobile-break {
-      display: none;
-    }
-
-    .invoice-info p {
-      font-size: clamp(10px, 2.5vw, 14px);
-      /* margin: 8px 0; */
-      line-height: 1.5;
-      word-wrap: break-word;
-      hyphens: auto;
-    }
-
-    .tax {
-      font-size: 20px;
-      margin: 15px 0;
-    }
-
-    .cols-3,
-    .cols-2 {
-      grid-template-columns: 1fr;
-      gap: 10px;
-      margin-bottom: 20px;
-    }
-
-    .form-elem {
-      margin-bottom: 10px;
-    }
-
-    .form-label {
-      font-size: 12px;
-    }
-
-    .form-control {
-      font-size: 12px;
-      padding: 6px 10px;
-    }
-
-    .buyer {
-      font-size: 18px;
-      margin: 15px 0 10px 0;
-    }
-
-    #dynamicTable {
-      font-size: 11px;
-      margin: 15px 0;
-      border: 1px solid #ddd;
-      border-radius: 4px;
-      overflow: hidden;
-    }
-
-    #dynamicTable thead {
-      display: none;
-    }
-
-    #dynamicTable tbody,
-    #dynamicTable tr {
-      display: block;
-      width: 100%;
-      margin-bottom: 10px;
-      border: 1px solid #ddd;
-      border-radius: 4px;
-      background-color: #f9f9f9;
-    }
-
-    #dynamicTable td {
-      display: block;
-      width: 100%;
-      text-align: left;
-      padding: 8px 12px;
-      border: none;
-      position: relative;
-      box-sizing: border-box;
-    }
-
-    #dynamicTable td::before {
-      content: attr(data-label) ": ";
-      font-weight: bold;
-      color: #333;
-      display: inline-block;
-      min-width: 100px;
-    }
-
-    #dynamicTable td:first-child::before {
-      content: "Product Name: ";
-    }
-
-    #dynamicTable td:nth-child(2)::before {
-      content: "HSN: ";
-    }
-
-    #dynamicTable td:nth-child(3)::before {
-      content: "QTY: ";
-    }
-
-    #dynamicTable td:nth-child(4)::before {
-      content: "Rate: ";
-    }
-
-    #dynamicTable td:nth-child(5)::before {
-      content: "Value: ";
-    }
-
-    #dynamicTable td:nth-child(6)::before {
-      content: "IGST (5%): ";
-    }
-
-    #dynamicTable td:nth-child(7)::before {
-      content: "Total: ";
-    }
-
-    #dynamicTable input {
-      font-size: 12px;
-      padding: 2px 4px;
-      width: calc(100% - 120px);
-      display: inline-block;
-      border: 1px solid #ddd;
-      background: white;
-      border-radius: 2px;
-    }
-
-    .bill {
-      flex-direction: column;
-      gap: 15px;
-      padding: 15px;
-      margin: 20px 0;
-    }
-
-    .bank-info {
-      order: 2;
-    }
-
-    .word {
-      order: 1;
-      text-align: left;
-      width: 100%;
-    }
-
-    .total {
-      font-size: 16px;
-      width: 100%;
-      text-align: right;
-    }
-
-    .total-in-word {
-      font-size: 12px;
-      text-align: left;
-    }
-
-    .total-in-words {
-      font-size: 12px;
-      text-align: left;
-    }
-
-    .print-footer {
-      font-size: 12px;
-      margin-top: 20px;
-    }
-
-    .mobile-break {
-      display: block;
-    }
+/* Mobile responsiveness */
+@media screen and (max-width: 768px) {
+  .invoice-view-container {
+    max-width: 100%;
+    padding: 10px;
+    font-size: 12px;
+    line-height: 1.4;
   }
+
+  .invoice-actions {
+    flex-direction: column;
+    gap: 10px;
+    align-items: stretch;
+  }
+
+  .back-btn,
+  .print-btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  .invoice-container {
+    padding: 15px;
+    margin: 10px 0;
+  }
+
+  .invoice-header {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 15px;
+    margin-bottom: 25px;
+    width: 100%;
+  }
+
+  .img {
+    width: clamp(80px, 15vw, 120px);
+    height: auto;
+  }
+
+  .invoice-info {
+    width: 100%;
+    display: block;
+    text-align: center;
+    flex-shrink: 1;
+    min-width: 0;
+  }
+
+  .invoice-info h1 {
+    font-size: clamp(16px, 4vw, 22px);
+    margin: 10px 0 8px 0;
+    line-height: 1.2;
+    max-width: 100%;
+  }
+
+  .mobile-break {
+    display: none;
+  }
+
+  .invoice-info p {
+    font-size: clamp(10px, 2.5vw, 14px);
+    /* margin: 8px 0; */
+    line-height: 1.5;
+    word-wrap: break-word;
+    hyphens: auto;
+  }
+
+  .tax {
+    font-size: 20px;
+    margin: 15px 0;
+  }
+
+  .cols-3,
+  .cols-2 {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  .form-elem {
+    margin-bottom: 10px;
+  }
+
+  .form-label {
+    font-size: 16px;
+  }
+
+  .form-control {
+    font-size: 18px;
+    padding: 6px 10px;
+  }
+
+  .buyer {
+    font-size: 18px;
+    margin: 15px 0 10px 0;
+  }
+
+  #dynamicTable {
+    font-size: 11px;
+    margin: 15px 0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  #dynamicTable thead {
+    display: none;
+  }
+
+  #dynamicTable tbody,
+  #dynamicTable tr {
+    display: block;
+    width: 100%;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+  }
+
+  #dynamicTable td {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 8px 12px;
+    border: none;
+    position: relative;
+    box-sizing: border-box;
+  }
+
+  #dynamicTable td::before {
+    content: attr(data-label) ": ";
+    font-weight: bold;
+    color: #333;
+    display: inline-block;
+    min-width: 100px;
+  }
+
+  #dynamicTable td:first-child::before {
+    content: "Product Name: ";
+  }
+
+  #dynamicTable td:nth-child(2)::before {
+    content: "HSN: ";
+  }
+
+  #dynamicTable td:nth-child(3)::before {
+    content: "QTY: ";
+  }
+
+  #dynamicTable td:nth-child(4)::before {
+    content: "Rate: ";
+  }
+
+  #dynamicTable td:nth-child(5)::before {
+    content: "Value: ";
+  }
+
+  #dynamicTable td:nth-child(6)::before {
+    content: "IGST (5%): ";
+  }
+
+  #dynamicTable td:nth-child(7)::before {
+    content: "Total: ";
+  }
+
+  #dynamicTable input {
+    font-size: 20px;
+    padding: 2px 4px;
+    /* width: calc(100% - 120px); */
+    display: inline-block;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    height: 60px;
+  }
+
+  .bill {
+    flex-direction: column;
+    gap: 15px;
+    padding: 15px;
+    margin: 20px 0;
+  }
+
+  .bank-info {
+    order: 2;
+  }
+
+  .word {
+    order: 1;
+    text-align: left;
+    width: 100%;
+  }
+
+  .total {
+    font-size: 16px;
+    width: 100%;
+    text-align: right;
+  }
+
+  .total-in-words {
+    font-size: 18px;
+    text-align: left;
+  }
+
+  .print-footer {
+    font-size: 12px;
+    margin-top: 20px;
+  }
+
+  .mobile-break {
+    display: block;
+  }
+}
 
 /* Extra small mobile */
 @media screen and (max-width: 480px) {
@@ -801,16 +805,7 @@
   }
 
   .form-control {
-    font-size: 11px;
+    font-size: 18px;
     padding: 5px 8px;
   }
-
-  
-
-
-
 }
-
-
-
-
