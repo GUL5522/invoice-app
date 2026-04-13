@@ -12,6 +12,8 @@ export default function App() {
   const [loginOpen, setLoginOpen] = useState(false);
   const { user, login, logout } = useAuth();
   const isLoggedIn = !!user;
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   // Removed dead code for localStorage login check
@@ -23,28 +25,24 @@ export default function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  event.preventDefault();
 
-    // 🔥 check if already user logged in
-    const existingUser = sessionStorage.getItem("user");
+  const existingUser = sessionStorage.getItem("user");
 
-    if (existingUser) {
-      alert("User already logged in. Please logout first.");
-      return;
-    }
+  if (existingUser) {
+    alert("User already logged in. Please logout first.");
+    return;
+  }
 
-    const formData = new FormData(event.currentTarget);
-    const username = formData.get("email") as string;
-    const password = formData.get("password") as string;
 
-    const success = await login({ username, password });
+  const success = await login({ username, password });
 
-    if (success) {
-      setLoginOpen(false);
-    } else {
-      alert("Invalid username or password");
-    }
-  };
+  if (success) {
+    setLoginOpen(false);
+  } else {
+    alert("Invalid username or password");
+  }
+};
 
   const handleLogout = () => {
     logout();
@@ -299,14 +297,21 @@ export default function App() {
 
             <form onSubmit={handleLogin}>
               <label htmlFor="email">Username</label>
-              <input id="email" type="text" placeholder="username" required />
+              <input
+                type="text"
+                placeholder="username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                required
+              />
 
               <label htmlFor="password">Password</label>
               <div style={{ position: "relative" }}>
                 <input
-                  id="password"
                   type={showPassword ? "text" : "password"}
                   placeholder="Enter password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   style={{
                     width: "100%",
                     padding: "10px",
@@ -317,18 +322,18 @@ export default function App() {
                   required
                 />
 
-               <span
-              onClick={() => setShowPassword(!showPassword)}
-              style={{
-                position: "absolute",
-                right: "10px",
-                top: "50%",
-                transform: "translateY(-50%)",
-                cursor: "pointer"
-              }}
-            >
-              {showPassword ? "🙈" : "👁️"}
-            </span>
+                <span
+                  onClick={() => setShowPassword(!showPassword)}
+                  style={{
+                    position: "absolute",
+                    right: "10px",
+                    top: "50%",
+                    transform: "translateY(-50%)",
+                    cursor: "pointer"
+                  }}
+                >
+                  {showPassword ? "🙈" : "👁️"}
+                </span>
               </div>
 
               <div className="modal-actions">
