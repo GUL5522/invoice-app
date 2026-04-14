@@ -19,10 +19,10 @@ const PORT = process.env.PORT || 5500
 
 // Validate required environment variables
 if (!MONGODB_URI || MONGODB_URI.includes('your-database-name')) {
-  console.warn('Warning: MONGODB_URI is not set or contains placeholder. Please set a valid MONGODB_URI in .env file.');
+    console.warn('Warning: MONGODB_URI is not set or contains placeholder. Please set a valid MONGODB_URI in .env file.');
 }
 if (!JWT_SECRET) {
-  console.warn('Warning: JWT_SECRET is not set. Please set JWT_SECRET in .env file for security.');
+    console.warn('Warning: JWT_SECRET is not set. Please set JWT_SECRET in .env file for security.');
 }
 
 // Database Schema
@@ -33,9 +33,9 @@ const userSchema = new mongoose.Schema({
 const User = mongoose.model('User', userSchema);
 
 // Connect to MongoDB
-mongoose.connect(MONGODB_URI) 
-.then(() => console.log('Connected to MongoDB') )
-.catch(err => console.error('Error connecting to MongoDB:', err));
+mongoose.connect(MONGODB_URI)
+    .then(() => console.log('Connected to MongoDB'))
+    .catch(err => console.error('Error connecting to MongoDB:', err));
 
 // signup route - RESTRICTED TO ONLY ONE USER
 app.post('/api/auth/signup', async (req, res) => {
@@ -167,10 +167,10 @@ app.post('/api/invoices', async (req, res) => {
     try {
         const invoice = new Invoice(req.body);
         await invoice.save();
-        return res.status(200).json({success: true, message: 'Invoice saved successfully' });
+        return res.status(200).json({ success: true, message: 'Invoice saved successfully' });
     } catch (error) {
         console.error(error);
-        return res.status(500).json({success: false, message: 'Failed to save invoice' });
+        return res.status(500).json({ success: false, message: 'Failed to save invoice' });
     }
 })
 
@@ -178,10 +178,10 @@ app.post('/api/invoices', async (req, res) => {
 app.get('/api/invoices', async (req, res) => {
     try {
         const invoices = await Invoice.find().sort({ createdAt: -1 });
-        return res.status(200).json({success: true, invoices });
+        return res.status(200).json({ success: true, invoices });
     } catch (error) {
         console.error(error);
-        return res.status(500).json({success: false, message: 'Failed to fetch invoices' });
+        return res.status(500).json({ success: false, message: 'Failed to fetch invoices' });
     }
 })
 
@@ -190,12 +190,12 @@ app.get('/api/invoices/:id', async (req, res) => {
     try {
         const invoice = await Invoice.findById(req.params.id);
         if (!invoice) {
-            return res.status(404).json({success: false, message: 'Invoice not found' });
+            return res.status(404).json({ success: false, message: 'Invoice not found' });
         }
-        return res.status(200).json({success: true, invoice });
+        return res.status(200).json({ success: true, invoice });
     } catch (error) {
         console.error(error);
-        return res.status(500).json({success: false, message: 'Failed to fetch invoice' });
+        return res.status(500).json({ success: false, message: 'Failed to fetch invoice' });
     }
 })
 
@@ -204,20 +204,20 @@ app.post('/api/nepal-invoices', async (req, res) => {
     try {
         const nepalInvoice = new NepalInvoice(req.body);
         await nepalInvoice.save();
-        return res.status(200).json({success: true, message: 'Nepal Invoice saved successfully', invoice: nepalInvoice });
+        return res.status(200).json({ success: true, message: 'Nepal Invoice saved successfully', invoice: nepalInvoice });
     } catch (error) {
         console.error(error);
-        return res.status(500).json({success: false, message: 'Failed to save Nepal Invoice' });
+        return res.status(500).json({ success: false, message: 'Failed to save Nepal Invoice' });
     }
 });
 
 app.get('/api/nepal-invoices', async (req, res) => {
     try {
         const invoices = await NepalInvoice.find().sort({ createdAt: -1 });
-        return res.status(200).json({success: true, invoices });
+        return res.status(200).json({ success: true, invoices });
     } catch (error) {
         console.error(error);
-        return res.status(500).json({success: false, message: 'Failed to fetch Nepal invoices' });
+        return res.status(500).json({ success: false, message: 'Failed to fetch Nepal invoices' });
     }
 });
 
@@ -225,12 +225,12 @@ app.get('/api/nepal-invoices/:id', async (req, res) => {
     try {
         const invoice = await NepalInvoice.findById(req.params.id);
         if (!invoice) {
-            return res.status(404).json({success: false, message: 'Nepal Invoice not found' });
+            return res.status(404).json({ success: false, message: 'Nepal Invoice not found' });
         }
-        return res.status(200).json({success: true, invoice });
+        return res.status(200).json({ success: true, invoice });
     } catch (error) {
         console.error(error);
-        return res.status(500).json({success: false, message: 'Failed to fetch Nepal invoice' });
+        return res.status(500).json({ success: false, message: 'Failed to fetch Nepal invoice' });
     }
 });
 
@@ -238,14 +238,17 @@ app.put('/api/nepal-invoices/:id', async (req, res) => {
     try {
         const invoice = await NepalInvoice.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
         if (!invoice) {
-            return res.status(404).json({success: false, message: 'Nepal Invoice not found' });
+            return res.status(404).json({ success: false, message: 'Nepal Invoice not found' });
         }
-        return res.status(200).json({success: true, invoice });
+        return res.status(200).json({ success: true, invoice });
     } catch (error) {
         console.error(error);
-        return res.status(500).json({success: false, message: 'Failed to update Nepal invoice' });
+        return res.status(500).json({ success: false, message: 'Failed to update Nepal invoice' });
     }
 });
 
 const port = process.env.PORT || 5500
 app.listen(port, () => console.log(`Server is running on port ${port}`));
+
+
+//final code with all the routes and functionalities for user authentication and invoice management, including both general invoices and Nepal-specific invoices. The server connects to MongoDB, handles user signup, login, and credential updates, and provides CRUD operations for invoices.

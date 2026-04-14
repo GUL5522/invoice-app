@@ -256,8 +256,8 @@ export default function App() {
           <div className="map-wrap">
             <a href="https://www.google.com/maps/place/Duncan+Rd,+Raxaul,+Bihar+845305/@26.9909763,84.8482381,686m/data=!3m2!1e3!4b1!4m6!3m5!1s0x399356ac01485a21:0x5c46ff51320e1ec3!8m2!3d26.9909715!4d84.850813!16s%2Fg%2F12hm16s3g?entry=ttu" target="_blank" rel="noopener noreferrer" className="map-link">
               <div className="map-placeholder">
-                <h3>📍 Raxaul, Bihar</h3>
-                <p>Main Road, East Champaran<br />845305, India</p>
+                <h3>📍 Raxaul</h3>
+                <p>Main Road, East Champaran, Bihar<br />845305, India</p>
                 <button className="view-map-btn">View on Google Maps</button>
               </div>
             </a>
