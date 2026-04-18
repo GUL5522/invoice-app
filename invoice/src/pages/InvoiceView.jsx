@@ -238,8 +238,8 @@ const formatDate = (dateString) => {
                 <tr key={index}>
                   <td data-label="Product Name">
                     <input type="text" value={product.product} readOnly  />
-                    <input type="text" value={product.descOption || ''} readOnly list="" placeholder="Description (dropdown)" />
-                    <textarea value={product.description || ''} readOnly rows="3" placeholder="Detailed Description" />
+                    <input type="text" value={product.descOption || ''} readOnly list="" placeholder="Grade" />
+                    <textarea value={product.description || ''} readOnly rows="3" placeholder="Size" />
                   </td>
                   <td data-label="HSN"><input type="text" value={product.hsn} readOnly /></td>
                   <td data-label="QTY"><input type="number" value={product.qty} readOnly /></td>

@@ -49,54 +49,84 @@ const NepalForm = ({ initialEditId }) => {
 
 
   const numberToWords = (n) => {
-  if (isNaN(n) || n < 0) return "Please enter a valid number";
-  if (n === 0) return "Zero Rupees Only";
+    if (isNaN(n) || n < 0) return "Please enter a valid number";
+    if (n === 0) return "Zero Rupees Only";
 
-  const ones = ["", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine"];
-  const teens = ["Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen"];
-  const tens = ["", "Ten", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"];
-  const places = ["", "Thousand", "Lakh", "Crore"];
+    const ones = ["", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine"];
+    const teens = ["Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen"];
+    const tens = ["", "Ten", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"];
+    const places = ["", "Thousand", "Lakh", "Crore"];
 
-  const convertBelowThousand = (num) => {
+    const convertBelowThousand = (num) => {
+      let word = "";
+      if (num >= 100) {
+        word += ones[Math.floor(num / 100)] + " Hundred ";
+        num %= 100;
+      }
+      if (num >= 11 && num <= 19) {
+        word += teens[num - 11] + " ";
+      } else {
+        word += tens[Math.floor(num / 10)] + " ";
+        word += ones[num % 10] + " ";
+      }
+      return word.trim();
+    };
+
+    let integerPart = Math.floor(n);
     let word = "";
-    if (num >= 100) {
-      word += ones[Math.floor(num / 100)] + " Hundred ";
-      num %= 100;
-    }
-    if (num >= 11 && num <= 19) {
-      word += teens[num - 11] + " ";
-    } else {
-      word += tens[Math.floor(num / 10)] + " ";
-      word += ones[num % 10] + " ";
-    }
-    return word.trim();
-  };
+    let numParts = [];
 
-  let integerPart = Math.floor(n);
-  let word = "";
-  let numParts = [];
+    numParts.push(integerPart % 1000);
+    integerPart = Math.floor(integerPart / 1000);
+    numParts.push(integerPart % 100);
+    integerPart = Math.floor(integerPart / 100);
+    numParts.push(integerPart % 100);
+    integerPart = Math.floor(integerPart / 100);
+    numParts.push(integerPart);
 
-  numParts.push(integerPart % 1000);
-  integerPart = Math.floor(integerPart / 1000);
-  numParts.push(integerPart % 100);
-  integerPart = Math.floor(integerPart / 100);
-  numParts.push(integerPart % 100);
-  integerPart = Math.floor(integerPart / 100);
-  numParts.push(integerPart);
-
-  for (let j = numParts.length - 1; j >= 0; j--) {
-    if (numParts[j] !== 0) {
-      word += convertBelowThousand(numParts[j]) + " " + places[j] + " ";
+    for (let j = numParts.length - 1; j >= 0; j--) {
+      if (numParts[j] !== 0) {
+        word += convertBelowThousand(numParts[j]) + " " + places[j] + " ";
+      }
     }
-  }
 
     return word.trim() + " Only";
 
-};
+  };
 
   useEffect(() => {
     fetchNepalInvoices();
   }, []);
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'p') {
+        e.preventDefault();
+        // alert("Please use the Print button on the website.");
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
+
+  useEffect(() => {
+  const beforePrintHandler = (e) => {
+    if (!window.isCustomPrint) {
+      e.preventDefault();
+      // alert("Use website print button only!");
+    }
+  };
+
+  window.addEventListener("beforeprint", beforePrintHandler);
+
+  return () => {
+    window.removeEventListener("beforeprint", beforePrintHandler);
+  };
+}, []);
 
   const fetchNepalInvoices = async () => {
     setNepalLoading(true);
@@ -199,7 +229,7 @@ const NepalForm = ({ initialEditId }) => {
   const handleInputChange = (index, field, value) => {
     const updatedRows = [...rows];
     const numValue = parseFloat(value) || 0;
-    
+
     updatedRows[index][field] = value;
 
     const qty = parseFloat(updatedRows[index].qty) || 0;
@@ -211,7 +241,7 @@ const NepalForm = ({ initialEditId }) => {
     updatedRows[index].taxable = taxable;
     updatedRows[index].gst = gst;
     updatedRows[index].total = total;
-    
+
     setRows(updatedRows);
     calculateTotal(updatedRows);
   };
@@ -246,8 +276,8 @@ const NepalForm = ({ initialEditId }) => {
     };
 
 
-  const url = internalEditId 
-      ? `${import.meta.env.VITE_API_URL}/api/nepal-invoices/${internalEditId}` 
+    const url = internalEditId
+      ? `${import.meta.env.VITE_API_URL}/api/nepal-invoices/${internalEditId}`
       : `${import.meta.env.VITE_API_URL}/api/nepal-invoices`;
     const method = editId ? "PUT" : "POST";
 
@@ -262,15 +292,19 @@ const NepalForm = ({ initialEditId }) => {
 
       if (data.success) {
         alert(editId ? "Updated Successfully" : "Saved Successfully");
+        window.isCustomPrint = true;
         window.print();
-        
+        setTimeout(() => {
+          window.isCustomPrint = false;
+        }, 1000);
+
         // Reset edit mode
         if (internalEditId) {
           setInternalEditId(null);
           setIsEditMode(false);
-          setSelectedNepalId(""); 
+          setSelectedNepalId("");
         }
-        
+
         // Refetch lists
         fetchNepalInvoices();
         fetchInvoices();
@@ -370,7 +404,7 @@ const NepalForm = ({ initialEditId }) => {
           {loading ? "Loading..." : "Load Data"}
         </button>
       </div>
-          
+
       <h2 className="title">Tax Invoice</h2>
 
       {/* Nepal Edit Select */}
@@ -431,7 +465,7 @@ const NepalForm = ({ initialEditId }) => {
             <thead>
               <tr>
                 <td><label>Invoice No:</label><input value={invoiceNumber} readOnly /></td>
-<td><label>Date:</label><input type="date" value={invoiceDate} onChange={(e) => setInvoiceDate(e.target.value)} /><br/><small>(Displays as DD/MM/YYYY: {new Date(invoiceDate).toLocaleDateString('en-IN', { day: '2-digit', month: '2-digit', year: 'numeric' })})</small></td>
+                <td><label>Date:</label><input type="date" value={invoiceDate} onChange={(e) => setInvoiceDate(e.target.value)} /><br /><small>(Displays as DD/MM/YYYY: {new Date(invoiceDate).toLocaleDateString('en-IN', { day: '2-digit', month: '2-digit', year: 'numeric' })})</small></td>
               </tr>
               <tr>
                 <td><label>Indian Custom Point:</label><input value={indianCustomPoint} onChange={(e) => setIndianCustomPoint(e.target.value)} /></td>
@@ -480,8 +514,8 @@ const NepalForm = ({ initialEditId }) => {
               </td>
 
               <td>{row.hsn}</td>
-              <td><input type="text" style={{width: '100%'}} value={row.qty || ''} onChange={(e) => handleInputChange(i, 'qty', e.target.value)} /></td>
-              <td><input type="text" style={{width: '100%'}} value={row.rate || ''} onChange={(e) => handleInputChange(i, 'rate', e.target.value)} required /></td>
+              <td><input type="text" style={{ width: '100%' }} value={row.qty || ''} onChange={(e) => handleInputChange(i, 'qty', e.target.value)} /></td>
+              <td><input type="text" style={{ width: '100%' }} value={row.rate || ''} onChange={(e) => handleInputChange(i, 'rate', e.target.value)} required /></td>
               <td>{row.taxable?.toFixed(2)}</td>
               {/* <td>{row.gst?.toFixed(2)}</td> */}
               {/* <td>{row.total?.toFixed(2)}</td> */}
@@ -505,8 +539,8 @@ const NepalForm = ({ initialEditId }) => {
           <p className="total-in-words">{numberToWords(totalSum)}</p>
         </div>
       </div>
-        <img src={signature} className="footer-image" alt="Digital Signature" /> 
-      
+      <img src={signature} className="footer-image" alt="Digital Signature" />
+
 
 
       <button className="print-btn" onClick={saveNepalInvoice} disabled={rows.length === 0}>

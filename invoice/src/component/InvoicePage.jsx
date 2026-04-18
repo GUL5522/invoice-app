@@ -63,6 +63,7 @@ const InvoicePage = () => {
   const productOptions = ['HARD COKE', 'HARD COKE(LOOSE)', 'SOFT COKE', 'SOFT COKE(LOOSE)', 'CHINESE'];
   const hsnOptions = ['27040000', '27040030', '27040040', '1005'];
   const descriptionOptions = ['GRADE-1', 'GRADE-2', 'GRADE-W-3', 'GRADE-2 FC', ];
+  const description = ['Size: 10mm-20mm', 'Size: 20mm-40mm', 'Size: 40mm-80mm'];
 
   const [rows, setRows] = useState([{
     product: '', descOption: '', description: '', hsn: '', qty: 0, rate: 0, taxable: 0, igst: 0, total: 0
@@ -88,19 +89,19 @@ const InvoicePage = () => {
   const [buyerEximCode, setBuyerEximCode] = useState('3002773190146NP');
   const [buyerCountry, setBuyerCountry] = useState('NEPAL');
   
-  const addRow = () => {
-    if (rows.length < 3) {
-      setRows([...rows, {
-        product: '', descOption: '', description: '', hsn: '', qty: '', rate: '', taxable: 0, igst: 0, total: 0
-      }]);
-    }
-  };
+  // const addRow = () => {
+  //   if (rows.length < 3) {
+  //     setRows([...rows, {
+  //       product: '', descOption: '', description: '', hsn: '', qty: '', rate: '', taxable: 0, igst: 0, total: 0
+  //     }]);
+  //   }
+  // };
 
-  const removeRow = (index) => {
-    const updatedRows = [...rows];
-    updatedRows.splice(index, 1);
-    setRows(updatedRows);
-  };
+  // const removeRow = (index) => {
+  //   const updatedRows = [...rows];
+  //   updatedRows.splice(index, 1);
+  //   setRows(updatedRows);
+  // };
   
   const handleInputChange = (index, field, value) => {
     const updatedRows = [...rows];
@@ -126,14 +127,32 @@ const InvoicePage = () => {
   }, [rows]);
 
   useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (e.ctrlKey && e.key === 'p') {
+      const handleKeyDown = (e) => {
+        if ((e.ctrlKey || e.metaKey) && e.key === 'p') {
+          e.preventDefault();
+          // alert("Please use the Print button on the website.");
+        }
+      };
+  
+      window.addEventListener("keydown", handleKeyDown);
+  
+      return () => {
+        window.removeEventListener("keydown", handleKeyDown);
+      };
+    }, []);
+  
+    useEffect(() => {
+    const beforePrintHandler = (e) => {
+      if (!window.isCustomPrint) {
         e.preventDefault();
+        // alert("Use website print button only!");
       }
     };
-    window.addEventListener('keydown', handleKeyDown);
+  
+    window.addEventListener("beforeprint", beforePrintHandler);
+  
     return () => {
-      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener("beforeprint", beforePrintHandler);
     };
   }, []);
 
@@ -144,30 +163,30 @@ const InvoicePage = () => {
   // inset data
   const saveInvoiceToDB = async () => {
     // Validate required fields
-    // if (!buyerName || !buyerAddress) {
-    //   alert('Please fill in Buyer Name and Buyer Address');
-    //   return;
-    // }
+    if (!buyerName || !buyerAddress) {
+      alert('Please fill in Buyer Name and Buyer Address');
+      return;
+    }
 
-    // if (!driverName) {
-    //   alert('Please fill in Driver Name');
-    //   return;
-    // }
+    if (!driverName) {
+      alert('Please fill in Driver Name');
+      return;
+    }
 
-    // if (!vehicleNumber) {
-    //   alert('Please fill in Vehicle Number');
-    //   return;
-    // }
+    if (!vehicleNumber) {
+      alert('Please fill in Vehicle Number');
+      return;
+    }
 
-    // Validate products
+    //Validate products
     const validProducts = rows.filter(row =>
       row.product && row.hsn && row.qty > 0 && row.rate > 0
     );
 
-    // if (validProducts.length === 0) {
-    //   alert('Please add at least one product with valid details');
-    //   return;
-    // }
+    if (validProducts.length === 0) {
+      alert('Please add at least one product with valid details');
+      return;
+    }
 
     const invoiceData = {
       invoiceNumber,
@@ -322,7 +341,7 @@ const InvoicePage = () => {
         <div className="cols-3">
           <div className="form-elem">
             <label className="form-label">Phone No:</label>
-            <input type="text" className="form-control phoneno" value={buyerPhone} onChange={(e) => setBuyerPhone(e.target.value)} />
+            <input type="number" className="form-control phoneno" value={buyerPhone} onChange={(e) => setBuyerPhone(e.target.value)} />
           </div>
           <div className="form-elem">
             <label className="form-label">Email</label>
@@ -379,8 +398,9 @@ const InvoicePage = () => {
                     value={row.descOption}
                     onChange={(e) => handleInputChange(index, 'descOption', e.target.value)}
                   />
+
                   <textarea
-                    placeholder="Description"
+                    placeholder="Input Size"
                     value={row.description}
                     onChange={(e) => handleInputChange(index, 'description', e.target.value)}
                     rows="3"
