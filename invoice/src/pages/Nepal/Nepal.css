@@ -325,8 +325,24 @@ input {
     background: white !important;
     border-radius: 4px !important;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    page-break-inside: avoid;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
   }
+
+  /* When printing, avoid mobile card stacking causing extra pages */
+  @media print {
+    .table-product tr,
+    .table-product td {
+      display: table-row !important;
+    }
+    .table-product thead {
+      display: table-header-group !important;
+    }
+    .table-product td {
+      border-bottom: 1px solid black !important;
+    }
+  }
+
 
   .table-product td {
     display: block !important;
