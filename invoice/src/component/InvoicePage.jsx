@@ -154,7 +154,7 @@ const InvoicePage = () => {
     return () => {
       window.removeEventListener("beforeprint", beforePrintHandler);
     };
-  }, []);
+  }, []);     
 
   const printInvoice = () => {
     window.print();
@@ -341,7 +341,7 @@ const InvoicePage = () => {
         <div className="cols-3">
           <div className="form-elem">
             <label className="form-label">Phone No:</label>
-            <input type="number" className="form-control phoneno" value={buyerPhone} onChange={(e) => setBuyerPhone(e.target.value)} />
+            <input type="text" className="form-control phoneno" value={buyerPhone} onChange={(e) => setBuyerPhone(e.target.value)} />
           </div>
           <div className="form-elem">
             <label className="form-label">Email</label>
@@ -400,7 +400,7 @@ const InvoicePage = () => {
                   />
 
                   <textarea
-                    placeholder="Input Size"
+                    placeholder="Size:-"
                     value={row.description}
                     onChange={(e) => handleInputChange(index, 'description', e.target.value)}
                     rows="3"

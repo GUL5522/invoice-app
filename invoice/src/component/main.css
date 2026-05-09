@@ -224,6 +224,17 @@ input {
     display: none !important;
   }
 
+  input[type="date"] {
+    appearance: none;
+    -webkit-appearance: none;
+  }
+
+  input[type="date"]::-webkit-calendar-picker-indicator {
+    display: none !important;
+  }
+
+
+
     .invoice-container {
         width: 95%;
         max-width: 300mm;

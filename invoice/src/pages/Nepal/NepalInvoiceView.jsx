@@ -176,7 +176,7 @@ const formatDate = (dateString) => {
             <tr>
               <th>Product</th>
               <th>HSN</th>
-              <th>Qty</th>
+              <th>Quantity</th>
               <th>Rate(MTS)</th>
               <th>Amount</th>
               {/* <th>Total</th> */}
