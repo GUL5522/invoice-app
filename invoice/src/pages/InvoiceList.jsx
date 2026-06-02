@@ -37,24 +37,43 @@ const InvoiceList = () => {
     }
   };
 
-const formatDate = (dateString) => {
+  const formatDate = (dateString) => {
     const date = new Date(dateString);
-    return date.toLocaleDateString('en-IN', { 
-      day: '2-digit', 
-      month: '2-digit', 
-      year: 'numeric' 
+    return date.toLocaleDateString('en-IN', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric'
     });
   };
 
   const performSearch = () => {
-    const filtered = invoices.filter(invoice => {
-      const buyerMatch = searchBuyer === '' || (invoice.buyerName || '').toLowerCase().includes(searchBuyer.toLowerCase());
-      const invoiceMatch = searchInvoice === '' || (invoice.invoiceNumber || '').toLowerCase().includes(searchInvoice.toLowerCase());
-      const formattedInvoiceDate = formatDate(invoice.invoiceDate);
-      const formattedSearchDate = searchDate ? new Date(searchDate).toLocaleDateString('en-IN') : '';
-      const dateMatch = searchDate === '' || formattedInvoiceDate === formattedSearchDate;
+    const filtered = invoices.filter((invoice) => {
+      const buyerMatch =
+        searchBuyer === '' ||
+        (invoice.buyerName || '')
+          .toLowerCase()
+          .includes(searchBuyer.toLowerCase());
+
+      const invoiceMatch =
+        searchInvoice === '' ||
+        (invoice.invoiceNumber || '')
+          .toLowerCase()
+          .includes(searchInvoice.toLowerCase());
+
+      // Reliable date comparison: normalize both sides to YYYY-MM-DD
+      const invoiceDateValue = invoice.invoiceDate
+        ? new Date(invoice.invoiceDate).toISOString().split('T')[0]
+        : '';
+
+      const searchDateValue = searchDate
+        ? new Date(searchDate).toISOString().split('T')[0]
+        : '';
+
+      const dateMatch = searchDate === '' || invoiceDateValue === searchDateValue;
+
       return buyerMatch && invoiceMatch && dateMatch;
     });
+
     setFilteredInvoices(filtered);
   };
 
@@ -94,41 +113,35 @@ const formatDate = (dateString) => {
 
   return (
     <div className="invoice-list-container">
-      <h2>Saved Invoices</h2>
+      <h2>Indian Invoices</h2>
       <Link to="/bill" className="create-invoice-btn">Create New Invoice</Link>
 
-      <div className="search-container">
-        <div>
-          <label>Search by Buyer Name:</label>
-          <input
-            type="text"
-            value={searchBuyer}
-            onKeyDown={handleKeyDown}
-            onChange={(e) => setSearchBuyer(e.target.value)}
-            placeholder="Enter buyer name"
-          />
-        </div>
-        <div>
-          <label>Search by Invoice Number:</label>
-          <input
-            type="text"
-            value={searchInvoice}
-            onKeyDown={handleKeyDown}
-            onChange={(e) => setSearchInvoice(e.target.value)}
-            placeholder="Enter invoice number"
-          />
-        </div>
-        <div>
-          <label>Search by Date:</label>
-          <input
-            type="date"
-            value={searchDate}
-            onKeyDown={handleKeyDown}
-            onChange={(e) => setSearchDate(e.target.value)}
-          />
-        </div>
-        <button onClick={performSearch}>Search</button>
-        <button onClick={clearSearch}>Clear Search</button>
+      <div className="search-box">
+        <input
+          type="text"
+          placeholder="🔍 Search Buyer"
+          value={searchBuyer}
+          onChange={(e) => setSearchBuyer(e.target.value)}
+          onKeyDown={handleKeyDown}
+        />
+
+        <input
+          type="text"
+          placeholder="📄 Search Invoice #"
+          value={searchInvoice}
+          onChange={(e) => setSearchInvoice(e.target.value)}
+          onKeyDown={handleKeyDown}
+        />
+
+        <input
+          type="date"
+          value={searchDate}
+          onChange={(e) => setSearchDate(e.target.value)}
+        />
+
+        <button className="clear-btn" onClick={clearSearch}>
+          Clear
+        </button>
       </div>
 
       <p>Showing {filteredInvoices.length} of {invoices.length} invoices</p>
@@ -155,7 +168,8 @@ const formatDate = (dateString) => {
                   <td>{invoice.buyerName}</td>
                   <td>₹{invoice.totalAmount.toFixed(2)}</td>
                   <td>
-                    <Link to={`/invoice/${invoice._id}`} className="view-btn">
+                    <Link to={`/bill/${invoice._id}`}
+                      className="view-btn" state={{ invoiceId: invoice._id }}>
                       View
                     </Link>
                   </td>

@@ -1,16 +1,14 @@
 * {
-    padding: 2px;
     margin: 0;
     box-sizing: border-box;
 }
 
-h3 {
+/* h3 {
     text-transform: uppercase;
-    /* letter-spacing: 1.5px; */
     font-size: 1.7rem;
     border: 2px solid black;
     text-align: center;
-}
+} */
 
 button {
     border: none;
@@ -22,80 +20,104 @@ button {
 
 /* buttons */
 .btn {
-    font-size: 14.5px;
-    font-weight: 600;
-    padding: 1.4rem 1.6rem;
     border-radius: 4px;
     display: inline-block;
 }
 
-.btn-primary {
-    background-color: blue;
-    color: white;
-    border: 1px solid red;
+.title {
+    text-align: center;
 }
 
-.btn-primary:hover {
-    background-color: transparent;
-    color: var(--clr-dark);
-    border-color: var(--clr-grey);
-}
-
-.form-control {
-    border-radius: none;
-    /* border: 1px solid rgba(0, 0, 0, 0.1); */
-    font-size: 16px;
-    padding: 0.8rem 1.6rem;
-    font-family: inherit;
-    /* width: 100%; */
-    /* outline: 0; */
-    transition: var(--transition);
-    /* flex:1; */
+.title2 {
+    text-align: center;
+    font-size: 14px;
 }
 
 .total {
-    font-size: 14px;
-    border: 2px solid black;
+    font-size: 11px;
     font-family: inherit;
     padding: 0.8rem 1.6rem;
 }
 
-.form-control:focus {
-    border-color: rgba(0, 0, 0, 0.3);
-}
-
-.footer {
-    font-size: 24px !important;
-    color: #333;
-    text-align: center;
-    /* position: absolute; */
-    bottom: 5px;
-    width: 100%;
-}
-
-.invoice-info {
-    margin: 8px;
-}
 
 .buyer {
     margin-top: 10px;
     margin-bottom: 10px;
 }
 
-.tax {
-    margin-bottom: 10px;
+input {
+    border: none;
+    text-align: left;
+}
+
+.word {
+    border-bottom: 0.8px solid black;
+    padding: 4px 10px;
+    text-align: left;
+    overflow-wrap: break-word;
+    box-sizing: border-box;
+}
+
+.total-in-word {
+    text-align: left;
+    font-size: 15px;
+    font-weight: bold;
     margin-top: 10px;
 }
 
-.img {
-    width: 20%;
-    margin-top: 10px;
-    margin-left: 10px;
+.total-in-words {
+    font-size: 15px;
+    margin-top: 5px;
 }
 
-.invoice-header {
+.invoice {
+    /* width: 95%; */
+    font-family: Arial;
+    padding: 8mm 8mm calc(8mm + 30px);
+    margin: 10mm auto;
+    /* border: 2px solid black; */
+}
+
+.Load-data {
+    padding: 15px;
+    cursor: pointer;
+    background-color: green;
+    color: white;
+    border-color: black;
+    border-radius: 15px;
+}
+
+.select-box {
+    /* border-bottom: 2px solid black; */
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+/* TOP */
+.top {
     display: flex;
-    /* text-align: center; */
+    flex-wrap: wrap;
+    border: 1px solid black;
+}
+
+/* LEFT */
+.left {
+    width: 40%;
+    border-right: 1px solid black;
+    display: flex;
+    flex-direction: column;
+}
+
+.box {
+    border-bottom: 1px solid black;
+    padding: 10px;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+
+.box:last-child {
+    border-bottom: none;
 }
 
 table {
@@ -106,447 +128,415 @@ table {
 
 td,
 th {
-    border: 2px solid black;
-    padding: 8px 12px;
+    border: 1px solid black;
+    padding: 3px;
     min-height: 70px;
     text-align: left;
     vertical-align: top;
 }
 
-input {
-    border: none;
-    text-align: left;
-    text-transform: uppercase;
+/* RIGHT */
+.right {
+    width: 60%;
 }
 
-.total-in-word {
-    text-align: right;
-    font-size: 18px;
+.right-table {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+}
+
+/* remove only outer border */
+
+.right-table tr:first-child td {
+    border-top: none;
+} 
+
+ .right-table tr:last-child td {
+    border-bottom: none;
+}
+
+.right-table td:first-child {
+    border-left: none;
+}
+
+.right-table td:last-child {
+    border-right: none;
+}
+
+.right-table td {
+    width: 50%;
+    vertical-align: top;
+    padding: 6px 8px;
+    line-height: 1.3;
+    box-sizing: border-box;
+    min-height: 70px;
+}
+
+.right-table label {
     font-weight: bold;
-    margin-top: 10px;
-    margin-right: 20px;
+    margin-right: 5px;
+    font-size: 13px;
 }
 
-.total-in-words {
-    text-align: end;
-    font-size: 18px;
-    margin-top: 10px;
-    margin-right: 20px;
+.right-table input {
+    width: 100%;
+    display: block;
+    font-size: 14px;
+    word-wrap: break-word;
+    white-space: normal;
+    height: auto;
+    min-height: 1.2em;
 }
 
-.bill {
-    display: flex;
-    justify-content: space-between;
+/* TABLE */
+.table-product-india {
+    width: 100%;
+    margin-left: 0;
+    border-collapse: collapse;
+    border-top: none;
 }
 
-.word {
-    width: 40%;
+.table-product-nepal {
+    width: 100%;
+    margin-left: 0;
+    border-collapse: collapse;
+    border-top: none;
 }
 
-.bank-info {
-    border: 5px solid black;
-    /* width: 25%; */
-    margin-top: 20px;
+.table-product-india tr:first-child th,
+.table-product-india tr:first-child td {
+    border-top: none;
 }
 
-.delete-btn {
-    background-color: red;
+.table-product-nepal tr:first-child th,
+.table-product-nepal tr:first-child td {
+    border-top: none;
+}
+
+.table-product-india th,
+.table-product-india td {
+    padding: 4px 4px 4px 6px;
+    font-size: 13px;
+    box-sizing: border-box;
+}
+
+.table-product-nepal th,
+.table-product-nepal td {
+    padding: 4px 4px 4px 6px;
+    font-size: 13px;
+    box-sizing: border-box;
+}
+
+.table-product-india td,
+.table-product-nepal td {
+    /* padding-top: 50px; */
+    padding-bottom: 70px;
+}
+
+input[list] {
+    padding-right: 0 !important;
+    background-image: none !important;
+}
+
+input[list]::-webkit-calendar-picker-indicator {
+    display: none !important;
+}
+
+input::-webkit-list-button {
+    display: none !important;
+}
+
+input:disabled {
+    background: transparent;
     color: black;
+    opacity: 1;
+    cursor: default;
+}
+
+.table-product-india th:nth-child(1),
+.table-product-india td:nth-child(1) {
+    width: 25%;
+}
+
+.table-product-india th:nth-child(2),
+.table-product-india td:nth-child(2) {
+    width: 12%;
+}
+
+.table-product-india th:nth-child(3),
+.table-product-india td:nth-child(3) {
+    width: 9%;
+}
+
+.table-product-india th:nth-child(4),
+.table-product-india td:nth-child(4) {
+    width: 10%;
+}
+
+.table-product-india th:nth-child(5),
+.table-product-india td:nth-child(5) {
+    width: 12%;
+}
+
+.table-product-india th:nth-child(6),
+.table-product-india td:nth-child(6) {
+    width: 11%;
+}
+
+.table-product-india th:nth-child(7),
+.table-product-india td:nth-child(7) {
+    width: 13%;
+}
+
+.table-product-nepal th:nth-child(1),
+.table-product-nepal td:nth-child(1) {
+    width: 35%;
+}
+
+.table-product-nepal th:nth-child(2),
+.table-product-nepal td:nth-child(2) {
+    width: 20%;
+}
+
+.table-product-nepal th:nth-child(3),
+.table-product-nepal td:nth-child(3) {
+    width: 10%;
+}
+
+.table-product-nepal th:nth-child(4),
+.table-product-nepal td:nth-child(4) {
+    width: 15%;
+}
+
+.table-product-nepal th:nth-child(5),
+.table-product-nepal td:nth-child(5) {
+    width: 20%;
+}
+
+.myTextarea {
+    width: 100%;
+    min-height: 18px;
+    height: auto;
+    margin: 0;
+    /* padding: 0; */
+    font-size: 14px;
+    line-height: 1.1;
     border: none;
-    padding: 5px 10px;
+    outline: none;
+    resize: none;
+    background: white;
+    overflow: hidden;
+    white-space: pre-wrap;
+    word-break: normal;
+    overflow-wrap: normal;
+}
+
+/* BUTTON */
+.print-btn {
+    margin-top: 10px;
+    padding: 8px 12px;
     cursor: pointer;
-    font-size: 12px;
-    border-radius: 3px;
 }
 
-.delete-btn:hover {
-    background-color: darkred;
+.bottom-section {
+    border: 1px solid black;
+    border-top: none;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
 }
 
-.invoice-container {
-    background: white !important;
-    padding: 0px !important;
+.bottom-grid {
+    display: flex;
+    /* border: 1px solid black; */
+    min-height: 170px;
+    font-size: 13px;
 }
 
-#invoice-form {
-    margin: 2px;
+.declaration-box {
+    width: 60%;
+    padding: 10px;
+    box-sizing: border-box;
+    position: relative;
+    min-height: 170px;
 }
 
-#addRowBtn {
+.tax-words {
+    margin: 0;
+}
+
+.declaration-content {
+    position: absolute;
+    left: 10px;
+    right: 10px;
+    bottom: 5px;
+    font-size: 16px;
+}
+
+.declaration-box p {
+    margin: 0;
+    line-height: 1.3;
+}
+
+.underline {
+    text-decoration: underline;
+}
+
+.bank-box {
+    width: 40%;
+    /* padding: 30px; */
+    box-sizing: border-box;
+    position: relative;
+    margin-top:40px;
+}
+
+.bank-box p {
+    margin: 0 0 6px 0;
+}
+
+.bank-row {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 6px; 
+    /* line-height: 1.4; */
+}
+
+.bank-row span {
+    width: 160px;
+    /* font-weight: 500; */
+}
+
+.bank-row b {
+    flex: 1;
+    text-align: left;
+}
+
+.signature-box {
+    width: 100%;
+    height: 70px;
+    text-align: right;
+    /* margin-top: 10px; */
+    border-top: 1px solid black;
+    border-left: 1px solid black;
+}
+
+/* .signature-box b{
+    display: block;
+    margin-right: 25px;
+}
+
+.signature-box p {
+    margin-right: 15px;
+    margin-top: 40px;
+    font-size: 14px;
+} */
+
+.footer-image {
+    width: 110px;
+    height: auto;
+    object-fit: contain;
+    margin-right: 90px;
+}
+
+.footer-text {
+    text-align: center;
+    padding: 6px;
+    font-size: 15px;
+    clear: both;
     margin-top: 10px;
 }
 
-.form-elem {
-    display: flex;
-    align-items: center;
-    gap: 0px;
-    /* Adds spacing between label and input */
-}
-
-.form-label {
-    width: 100px;
-    /* Adjust label width as needed */
-    text-align: left;
-    /* Align text properly */
-    font-size: medium;
-    margin-left: 10px;
-}
-
-.email {
-    text-transform: lowercase;
-}
-
-.address {
-    text-transform: uppercase;
-}
-
-.cols-3,
-.cols-2 {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    column-gap: 2rem;
-    grid-template-columns: repeat(2, 1fr);
-    column-gap: 2rem;
-}
-
-/* @media screen and (min-width: 768px) { .cols-3 { grid-template-columns: repeat(3, 1fr); column-gap: 2rem; } .cols-2 { grid-template-columns: repeat(2, 1fr); column-gap: 2rem; } } */
-.print-btn-sc {
-    /* margin: 2rem 0 6rem 0; */
-    margin-top: 80px;
-}
 
 @media print {
-  body {
-    background: white !important;
-    color: black !important;
-  }
-  .print-btn-sc, #addRowBtn, .delete-btn {
-    display: none !important;
-  }
 
-  input[type="date"] {
-    appearance: none;
-    -webkit-appearance: none;
-  }
-
-  input[type="date"]::-webkit-calendar-picker-indicator {
-    display: none !important;
-  }
-
-
-
-    .invoice-container {
-        width: 95%;
-        max-width: 300mm;
-        margin: 4mm auto;
-        padding: 8mm 8mm calc(8mm + 30px);
-        box-sizing: border-box;
-        border: 1px solid black;
-        background-color: white;
-        page-break-inside: avoid;
-        font-size: 11px;
-        overflow: hidden;
-        height: 100vh;
-        position: relative;
+    @page {
+        size: A4 portrait;
+        margin: 2mm;
     }
 
-    .invoice-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 10px;
-        border-bottom: 1px solid black;
-        padding-bottom: 8px;
-        page-break-inside: avoid;
-        /* Ensure header is visible in print */
-        color: black !important;
-        background: white !important;
+    body * {
+        visibility: hidden;
     }
 
-    .invoice-info h1 {
-        font-size: 48px !important;
-        margin: 0 0 10px 0;
-        text-align: center;
-        color: black !important;
-        font-family: 'Times New Roman', Times, serif;
-        font-weight: 900 !important;
-        display: block !important;
+    .invoice,
+    .invoice * {
+        visibility: visible;
     }
 
-    .invoice-info p {
-        font-size: 14px;
-        margin: 4px 0;
-        text-align: center;
-        color: black !important;
-        font-family: 'Georgia', serif;
-        font-weight: 400;
-        line-height: 1.4;
-    }
-
-    h3 {
-        font-size: 14px;
-        margin: 8px 0;
-        text-align: center;
-        border: 1px solid black;
-        padding: 4px;
-        text-transform: uppercase;
-        page-break-inside: avoid;
-    }
-
-    .cols-3 {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 8px;
-        margin-bottom: 10px;
-        page-break-inside: avoid;
-    }
-
-    .cols-2 {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 8px;
-        margin-bottom: 10px;
-        page-break-inside: avoid;
-    }
-
-    .form-elem {
-        margin-bottom: 5px;
-    }
-
-    .form-label {
-        font-size: 9px;
-        margin-bottom: 2px;
-        font-weight: bold;
-        display: block;
-    }
-
-    .form-control {
-        font-size: 9px;
-        padding: 3px 4px;
-        border: 1px solid #ddd;
-        background-color: white !important;
+    .invoice {
+        position: absolute;
+        left: 0;
+        top: 0;
         width: 100%;
+        min-height: auto;
+        margin: 0 auto;
+        margin-top: 10mm;
+        padding: 2mm;
+        /* border: 2px solid #000; */
         box-sizing: border-box;
-    }
-
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        font-size: 10px;
-        margin: 8px 0;
+        page-break-after: avoid;
         page-break-inside: avoid;
     }
 
+    .print-btn,
+    .select-box,
+    .Load-data {
+        display: none !important;
+    }
+
+  .top {
+        border-left: none !important;
+        border-right: none !important;
+    }
+
+    .left {
+        border-left: 1px solid black !important;
+    }
+
+    .right {
+        border-right: 1px solid black !important;
+    }
+
+
+    input,
+    textarea {
+        border: none !important;
+        outline: none !important;
+        background: transparent !important;
+        resize: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    tr,
+    td,
     th,
-    td {
-        border: 1px solid black;
-        padding: 6px 8px;
-        text-align: left;
-
-        th:nth-child(1),
-        td:nth-child(1) {
-            width: 25%;
-        }
-
-        th:nth-child(2),
-        td:nth-child(2) {
-            width: 10%;
-        }
-
-        th:nth-child(3),
-        td:nth-child(3) {
-            width: 10%;
-        }
-
-        th:nth-child(4),
-        td:nth-child(4) {
-            width: 10%;
-        }
-
-        th:nth-child(5),
-        td:nth-child(5) {
-            width: 15%;
-        }
-
-        th:nth-child(6),
-        td:nth-child(6) {
-            width: 10%;
-        }
-
-        th:nth-child(7),
-        td:nth-child(7) {
-            width: 20%;
-            overflow: visible;
-            
-        }
+    .box,
+    .bottom-section {
+        page-break-inside: avoid !important;
+    }
+    
+    .table-product-nepal {
+        width: 100% !important;
+        table-layout: fixed !important;
     }
 
-    th {
-        background-color: #f8f9fa;
-        font-weight: bold;
-        font-size: 9px;
-        text-align: left !important;
-    }
-
-    input {
-        border: none;
-        background: none;
-        font-size: 9px;
-        width: 50%;
-        text-align: let;
-        text-transform: uppercase;
-    }
-
-    /* Specific styling for product name column to handle long names and description (dropdown + textarea) */
-    table th:first-child {
-        word-wrap: break-word;
-        overflow-wrap: break-word;
-        white-space: normal;
-        min-width: 160px;
-        max-width: 220px;
-        min-height: 120px;
-        text-align: left;
-        padding: 6px 8px;
-        vertical-align: top;
-    }
-
-    table td:first-child {
-        word-wrap: break-word;
-        overflow-wrap: break-word;
-        white-space: normal;
-        min-width: 160px;
-        max-width: 220px;
-        min-height: 120px;
-        text-align: left;
-        padding: 6px 8px;
-        vertical-align: top;
-    }
-
-    /* Ensure all table cells have consistent min-height for description */
-    table th,
-    table td {
-        min-height: 70px;
-    }
-
-    /* Styling for Value and Total columns to handle long numbers */
-    table th:nth-child(5),
-    table td:nth-child(5),
-    table th:nth-child(7),
-    table td:nth-child(7) {
-        min-width: 60px;
-        max-width: 90px;
-        word-wrap: break-word;
-        overflow-wrap: break-word;
-        white-space: normal;
-        height: auto;
-    }
-
-    .bill {
-        display: flex;
-        justify-content: space-between;
-        margin: 10px 0;
-        padding: 8px;
-        background-color: #f4f5f7;
-        border-radius: 5px;
-        page-break-inside: avoid;
-    }
-
-    .bank-info {
-        border: 3px solid black;
-        padding: 6px;
-        background: white;
-        color: black;
-        width: 35%;
-        font-size: 9px;
-        page-break-inside: avoid;
-    }
-
-    .word {
-        width: 50%;
-        text-align: right;
-        font-size: 18px;
-        page-break-inside: avoid;
-    }
-
-    .total {
-        font-size: 11px;
-        border: 1px solid rgb(14, 13, 13);
-        padding: 4px 6px;
-        text-align: right;
-        margin-bottom: 4px;
-    }
-
-    .total-in-word {
-        font-weight: bold;
-        font-size: 18px;
-        margin: 4px 0 2px 0;
-        text-align: right;
-        font-style: italic;
-    }
-
-    .footer {
-        font-size: 24px !important;
-        color: #333;
-        text-align: center;
-        /* position: absolute; */
-        bottom: 5px;
-        width: 100%;
-        transform: translateX(30%);
-    }
-
-    /* Force single page - aggressive approach */
-    .invoice-container,
-    .invoice-header,
-    h3,
-    .cols-3,
-    .cols-2,
+    .invoice,
+    .table-product-india,
+    .table-product-nepal,
+    .bottom-section,
+    .bottom-grid,
+    .footer-image,
+    .footer-text,
     table,
-    .bill,
-    .print-footer {
+    tr,
+    td,
+    th {
         page-break-inside: avoid !important;
-        page-break-before: avoid !important;
-        page-break-after: avoid !important;
-    }
-
-    /* Hide controls and buttons */
-    .print-btn-sc,
-    #addRowBtn,
-    .delete-btn {
-        display: none !important;
-    }
-
-    /* Hide only the Action column (8th column) in print for InvoicePage table */
-    /* table.invoice-page-table th:last-child,
-    table.invoice-page-table td:last-child {
-        display: none !important;
-    } */
-
-    /* Ensure the entire document fits on one page */
-    * {
-        page-break-inside: avoid !important;
-        page-break-before: avoid !important;
-        page-break-after: avoid !important;
+        break-inside: avoid !important;
     }
 }
 
-
-
-/* Mobile responsiveness for table */
-@media (max-width: 768px) {
-    .invoice-page-table {
-        font-size: 15px;
-    }
-
-    .invoice-page-table th,
-    .invoice-page-table td {
-        padding: 4px;
-
-
-    }
-
-    /* Hide Action column in mobile to save space */
-    .invoice-page-table th:last-child,
-    .invoice-page-table td:last-child {
-        display: none;
-    }
-}
+/* =========================
+   MOBILE RESPONSIVE DESIGN
+========================== */

@@ -6,9 +6,7 @@ import Home from './pages/Home/Home';
 import UpdateProfile from './pages/UpdateProfile';
 import InvoicePage from './component/InvoicePage';
 import InvoiceList from './pages/InvoiceList';
-import InvoiceView from './pages/InvoiceView';
 import Nepal from './pages/Nepal/Nepal';
-import NepalInvoiceView from './pages/Nepal/NepalInvoiceView';
 import NepalList from './pages/Nepal/NepalList';
 import NepalEdit from './pages/Nepal/NepalEdit';
 import './App.css';
@@ -24,13 +22,14 @@ function AppContent() {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/update-profile" element={<UpdateProfile />} />
+          <Route path="/bill/:id" element={<InvoicePage />} />
           <Route path="/bill" element={<InvoicePage />} />
           <Route path="/invoices" element={<InvoiceList />} />
-          <Route path="/invoice/:id" element={<InvoiceView />} />
+          {/* <Route path="/invoice/:id" element={<InvoiceView />} /> */}
           <Route path="/" element={<Home />} />
           <Route path="/nepal-bill" element={<Nepal />} />
           <Route path="/nepal/:id" element={<NepalEdit />} />
-          <Route path="/nepal-invoice/:id" element={<NepalInvoiceView />} />
+          {/* <Route path="/nepal-invoice/:id" element={<NepalInvoiceView />} /> */}
           <Route path="/nepal-invoices" element={<NepalList />} />
         </Routes>
       </div>

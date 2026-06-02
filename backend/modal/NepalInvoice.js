@@ -15,22 +15,31 @@ const productSchema = new mongoose.Schema({
 const nepalInvoiceSchema = new mongoose.Schema({
   invoiceNumber: { type: String, required: true, unique: true, uppercase: true, trim: true },
   invoiceDate: { type: Date, required: true },
-  
-  buyerName: { type: String, required: true, uppercase: true, trim: true },
+
+buyerName: {
+  type: String,
+  required: true,
+  trim: true,
+  set: (value) =>
+    value
+      .toLowerCase()
+      .replace(/\b\w/g, (char) => char.toUpperCase())
+},
   buyerAddress: { type: String, required: true, uppercase: true, trim: true },
   buyerEximCode: { type: String, required: true, uppercase: true, trim: true },
   buyerPhone: { type: String, uppercase: true, trim: true },
   buyerPAN: { type: String, required: true, uppercase: true, trim: true },
   buyerEmail: { type: String, lowercase: true, trim: true },
 
-  driverName: { type: String, uppercase: true, trim: true },
-  vehicleNumber: { type: String, uppercase: true, trim: true },
   indianCustomPoint: { type: String, uppercase: true, trim: true },
   modeTermsOfPayment: { type: String, uppercase: true, trim: true },
   countryOfOrigin: { type: String, uppercase: true, trim: true },
   customEntryPoint: { type: String, uppercase: true, trim: true },
   dispatchThrough: { type: String, uppercase: true, trim: true },
   destination: { type: String, uppercase: true, trim: true },
+  transport: { type: String, uppercase: true, trim: true },
+  vehicleNumber: { type: String, uppercase: true, trim: true },
+  countryName: { type: String, uppercase: true, trim: true },
   termsDelivery: { type: String, uppercase: true, trim: true, default: "FOB RAXAUL" },
 
   products: [productSchema],

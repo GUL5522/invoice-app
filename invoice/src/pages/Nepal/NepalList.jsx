@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import './Nepal.css'; // Reuse styles
 
 const NepalList = () => {
   const [invoices, setInvoices] = useState([]);
@@ -74,63 +73,95 @@ const NepalList = () => {
   }
 
   return (
-    <div>
+  <div className="invoice-list-container">
+
+    <div className="top-controls">
       <h2>Nepal Invoices</h2>
-      <Link to="/nepal-bill" className="create-invoice-btn">Create New Nepal Invoice</Link>
 
-      <div>
-        <input
-          type="text"
-          placeholder="Search buyer"
-          value={searchBuyer}
-          onChange={(e) => setSearchBuyer(e.target.value)}
-          onKeyDown={handleKeyDown}
-        />
-        <input
-          type="text"
-          placeholder="Search invoice #"
-          value={searchInvoice}
-          onChange={(e) => setSearchInvoice(e.target.value)}
-          onKeyDown={handleKeyDown}
-        />
-        <input
-          type="date"
-          value={searchDate}
-          onChange={(e) => setSearchDate(e.target.value)}
-        />
-        <button onClick={clearSearch}>Clear</button>
-      </div>
+      <Link to="/nepal-bill" className="create-invoice-btn">
+        + Create New Nepal Invoice
+      </Link>
+    </div>
 
-      <p>{filteredInvoices.length} Nepal invoices</p>
+    {/* Search Section */}
+    <div className="search-box">
+      <input
+        type="text"
+        placeholder="🔍 Search Buyer"
+        value={searchBuyer}
+        onChange={(e) => setSearchBuyer(e.target.value)}
+        onKeyDown={handleKeyDown}
+      />
 
-      {filteredInvoices.length === 0 ? (
-        <p>No Nepal invoices found.</p>
-      ) : (
-<table className="table responsive-table" style={{width: '100%', borderCollapse: 'collapse'}}>
+      <input
+        type="text"
+        placeholder="📄 Search Invoice #"
+        value={searchInvoice}
+        onChange={(e) => setSearchInvoice(e.target.value)}
+        onKeyDown={handleKeyDown}
+      />
+
+      <input
+        type="date"
+        value={searchDate}
+        onChange={(e) => setSearchDate(e.target.value)}
+      />
+
+      <button className="clear-btn" onClick={clearSearch}>
+        Clear
+      </button>
+    </div>
+
+    <p className="invoice-count">
+      {filteredInvoices.length} Nepal invoices found
+    </p>
+
+    {filteredInvoices.length === 0 ? (
+      <p>No Nepal invoices found.</p>
+    ) : (
+      <div className="invoice-table-container">
+
+        <table className="invoice-table">
           <thead>
             <tr>
               <th>Invoice #</th>
               <th>Date</th>
               <th>Buyer</th>
-              <th>Total</th>
+              <th>Total Amount</th>
               <th>Actions</th>
             </tr>
           </thead>
+
           <tbody>
             {filteredInvoices.map((invoice) => (
               <tr key={invoice._id}>
                 <td>{invoice.invoiceNumber}</td>
+
                 <td>{formatDate(invoice.invoiceDate)}</td>
+
                 <td>{invoice.buyerName}</td>
-                <td>{invoice.totalAmount.toFixed(2)}</td>
-                <td><Link to={`/nepal-invoice/${invoice._id}`}>View</Link></td>
+
+                <td>
+                  ₹ {invoice.totalAmount.toLocaleString("en-IN")}
+                </td>
+
+                <td>
+                  <Link
+                    to={`/nepal/${invoice._id}`}
+                    className="view-btn"
+                  >
+                    View
+                  </Link>
+                </td>
               </tr>
             ))}
           </tbody>
         </table>
-      )}
-    </div>
-  );
+
+      </div>
+    )}
+  </div>
+);
 };
 
 export default NepalList;

@@ -94,9 +94,9 @@ export default function App() {
   const authTabs = useMemo<NavTab[]>(() => !isLoggedIn
     ? [{ type: 'action', name: "Login", onClick: () => setLoginOpen(true) }]
     : [
-      { type: 'path', name: "Indian Custom", path: "/bill" },
+      // { type: 'path', name: "Indian Custom", path: "/bill" },
       { type: 'path', name: "Indian Invoices", path: "/invoices" },
-      { type: 'path', name: "Nepal Custom", path: "/nepal-bill" },
+      // { type: 'path', name: "Nepal Custom", path: "/nepal-bill" },
       { type: 'path', name: "Nepal Invoices", path: "/nepal-invoices" },
       { type: 'path', name: "Update Profile", path: "/update-profile" },
       { type: 'action', name: "Logout", onClick: handleLogout }

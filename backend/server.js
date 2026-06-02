@@ -169,7 +169,28 @@ app.post('/api/invoices', async (req, res) => {
         await invoice.save();
         return res.status(200).json({ success: true, message: 'Invoice saved successfully' });
     } catch (error) {
-        console.error(error);
+        console.error('Failed to save invoice:', error);
+
+        // If validation fails, return useful details to frontend
+        if (error && error.name === 'ValidationError') {
+            return res.status(400).json({
+                success: false,
+                message: 'Validation failed to save invoice',
+                details: Object.values(error.errors || {}).map((e) => ({
+                    path: e.path,
+                    message: e.message,
+                })),
+            });
+        }
+
+        // Duplicate invoiceNumber etc.
+        if (error && error.code === 11000) {
+            return res.status(409).json({
+                success: false,
+                message: 'Duplicate invoiceNumber',
+            });
+        }
+
         return res.status(500).json({ success: false, message: 'Failed to save invoice' });
     }
 })

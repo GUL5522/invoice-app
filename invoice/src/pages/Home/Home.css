@@ -235,7 +235,8 @@ h2 {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
-.map-wrap, .map-placeholder {
+.map-wrap,
+.map-placeholder {
   height: 400px;
   border-radius: 12px;
   background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
@@ -245,7 +246,7 @@ h2 {
   justify-content: center;
   text-align: center;
   padding: 2rem;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 }
 
 .map-link {
@@ -388,8 +389,8 @@ h2 {
   .nav-mobile .nav-links {
     flex-direction: column;
     align-items: flex-start;
-    gap: 0;
-    padding: 0.6rem 0.2rem;
+    gap: 10px;
+    padding: 1rem 0.5rem;
   }
 
   .nav-mobile .nav-links li {
@@ -400,7 +401,9 @@ h2 {
   .nav-mobile .nav-links button {
     width: 100%;
     text-align: left;
-    padding: 0.75rem;
+    padding: 12px 14px;
+    border-radius: 8px;
+    transition: 0.3s ease;
   }
 
   .hero {

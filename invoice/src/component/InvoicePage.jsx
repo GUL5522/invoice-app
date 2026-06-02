@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import mp from '../assets/m.p.png';
+import React, { useEffect, useState } from "react";
+import "./main.css";
 import signature from "../assets/singnature.png";
-import './main.css';
+import { useParams } from "react-router-dom";
 
 const generateInvoiceNumber = () => {
   const today = new Date();
@@ -12,11 +12,43 @@ const generateInvoiceNumber = () => {
 
 const numberToWords = (n) => {
   if (isNaN(n) || n < 0) return "Please enter a valid number";
-  if (n === 0) return "Zero Rupees Only";
+  if (n === 0) return "Zero Rupees Only /-";
 
-  const ones = ["", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine"];
-  const teens = ["Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen"];
-  const tens = ["", "Ten", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"];
+  const ones = [
+    "",
+    "One",
+    "Two",
+    "Three",
+    "Four",
+    "Five",
+    "Six",
+    "Seven",
+    "Eight",
+    "Nine",
+  ];
+  const teens = [
+    "Eleven",
+    "Twelve",
+    "Thirteen",
+    "Fourteen",
+    "Fifteen",
+    "Sixteen",
+    "Seventeen",
+    "Eighteen",
+    "Nineteen",
+  ];
+  const tens = [
+    "",
+    "Ten",
+    "Twenty",
+    "Thirty",
+    "Forty",
+    "Fifty",
+    "Sixty",
+    "Seventy",
+    "Eighty",
+    "Ninety",
+  ];
   const places = ["", "Thousand", "Lakh", "Crore"];
 
   const convertBelowThousand = (num) => {
@@ -55,152 +87,195 @@ const numberToWords = (n) => {
   return word.trim() + " Rupees Only /-";
 };
 
+const formatDate = (dateString) => {
+  const date = new Date(dateString);
 
+  const day = date.getDate().toString().padStart(2, "0");
+  const month = date.toLocaleString("en-US", { month: "short" });
+  const year = date.getFullYear().toString().slice(-2);
 
-const InvoicePage = () => {
-  const driverOptions = ['MD FARUK', 'LALU MIYA', 'MD. WAZUL', 'MD. NASIM'];
-  const vehicleOptions = ['BR-O5G-7204', 'BR-05GB-4421',];
-  const productOptions = ['HARD COKE', 'HARD COKE(LOOSE)', 'SOFT COKE', 'SOFT COKE(LOOSE)', 'CHINESE'];
-  const hsnOptions = ['27040000', '27040030', '27040040', '1005'];
-  const descriptionOptions = ['GRADE-1', 'GRADE-2', 'GRADE-W-3', 'GRADE-2 FC', ];
-  const description = ['Size: 10mm-20mm', 'Size: 20mm-40mm', 'Size: 40mm-80mm'];
+  return `${day}-${month}-${year}`;
+};
 
-  const [rows, setRows] = useState([{
-    product: '', descOption: '', description: '', hsn: '', qty: 0, rate: 0, taxable: 0, igst: 0, total: 0
-  }]);
-  const [invoiceNumber] = useState(generateInvoiceNumber());
-  const [invoiceDate, setInvoiceDate] = useState(new Date().toISOString().split('T')[0]);
-  const [dateOfSupply, setDateOfSupply] = useState(new Date().toISOString().split('T')[0]);
+// NOTE: Indian invoice editor needs IGST (5%) but layout same as Nepal.
+const InvoicePage = ({ readOnly = false, invoiceId = null }) => {
+  const params = useParams();
+  const resolvedInvoiceId = invoiceId || params.id || null;
+  const isViewMode = !!resolvedInvoiceId;
+
+  const vehicleOptions = ["BRO5G-7204", "BR05GB-4421"];
+  const productOptions = [
+    "HARD COKE",
+    "HARD COKE(LOOSE)",
+    "SOFT COKE",
+    "SOFT COKE(LOOSE)",
+    "COAL (LOOSE)",
+    "CHINESE",
+  ];
+  const hsnOptions = ["27040000", "27040030", "27040040", "27011200"];
+  const descriptionOptions = ["GRADE-I", "GRADE-II", "GRADE-W-III", "GRADE-II FC", "GRADE-II FC (coke)",];
+
+  const [rows, setRows] = useState([
+    {
+      product: "",
+      descOption: "",
+      description: "GCV-5700\nSize (50-200MM)",
+      hsn: "",
+      qty: "",
+      rate: "",
+      taxable: 0,
+      igst: 0,
+      total: 0,
+    },
+  ]);
+
+  const [invoiceNumber, setInvoiceNumber] = useState(generateInvoiceNumber());
+  const [invoiceDate, setInvoiceDate] = useState(new Date().toISOString().split("T")[0]);
+  // const [dateOfSupply, setDateOfSupply] = useState(new Date().toISOString().split("T")[0]);
+
   const [totalSum, setTotalSum] = useState(0);
-  const [totalWords, setTotalWords] = useState('');
+  const [totalWords, setTotalWords] = useState("");
 
-  // Form field states with default values from placeholders
-  const [state, setState] = useState('Bihar');
-  const [placeOfSupply, setPlaceOfSupply] = useState('Raxaul');
-  const [driverName, setDriverName] = useState('');
-  const [vehicleNumber, setVehicleNumber] = useState('');
-  const [transportMode, setTransportMode] = useState('By Road');
-  const [countryName, setCountry] = useState('India');
-  const [buyerName, setBuyerName] = useState('Shree Nawal Enterprises');
-  const [buyerAddress, setBuyerAddress] = useState('BIRGUNJ');
-  const [buyerPhone, setBuyerPhone] = useState('+977 9855023130');
-  const [buyerEmail, setBuyerEmail] = useState('s.nawalenterprises@gmail.com');
-  const [buyerPAN, setBuyerPAN] = useState('300277319');
-  const [buyerEximCode, setBuyerEximCode] = useState('3002773190146NP');
-  const [buyerCountry, setBuyerCountry] = useState('NEPAL');
-  
-  // const addRow = () => {
-  //   if (rows.length < 3) {
-  //     setRows([...rows, {
-  //       product: '', descOption: '', description: '', hsn: '', qty: '', rate: '', taxable: 0, igst: 0, total: 0
-  //     }]);
-  //   }
-  // };
+  // const [destinations, setDestinations] = useState("Bihar");
+  // const [placeOfSupply, setPlaceOfSupply] = useState("Raxaul");
+  // const [driverName, setDriverName] = useState("");
+  // const [transportMode, setTransportMode] = useState("By Road");
+  const [dispatchThrough, setDispatchThrough] = useState("By Truck");
+  const [destination, setDestination] = useState("BIRGUNJ(NEPAL)");
+  const [transport, setTransport] = useState("R.M.R");
+  const [vehicleNumber, setVehicleNumber] = useState("");
+  const [countryName, setCountryName] = useState("NEPAL");
+  const [termsDelivery, setTermsDelivery] = useState("FOB RAXAUL");
 
-  // const removeRow = (index) => {
-  //   const updatedRows = [...rows];
-  //   updatedRows.splice(index, 1);
-  //   setRows(updatedRows);
-  // };
-  
+  // Buyer (Nepal layout uses left/buyer block)
+  const [buyerName, setBuyerName] = useState("Shree Nawal Enterprises");
+  const [buyerAddress, setBuyerAddress] = useState("BIRGUNJ,NEPAL");
+  const [buyerPhone, setBuyerPhone] = useState("+977 9855023130");
+  const [buyerEmail, setBuyerEmail] = useState("s.nawalenterprises@gmail.com");
+  const [buyerPAN, setBuyerPAN] = useState("300277319");
+  const [buyerEximCode, setBuyerEximCode] = useState("3002773190146NP");
+  const [buyerCountry, setBuyerCountry] = useState("NEPAL");
+  const GST_RATE = 5 / 100;
+
   const handleInputChange = (index, field, value) => {
     const updatedRows = [...rows];
     updatedRows[index][field] = value;
 
     const qty = parseFloat(updatedRows[index].qty) || 0;
     const rate = parseFloat(updatedRows[index].rate) || 0;
+
     const taxable = qty * rate;
-    const igst = taxable * 0.05;
+    const igst = taxable * GST_RATE;
     const total = taxable + igst;
 
     updatedRows[index].taxable = taxable;
     updatedRows[index].igst = igst;
     updatedRows[index].total = total;
-    
+
     setRows(updatedRows);
   };
-  
+
   useEffect(() => {
-    const sum = rows.reduce((acc, row) => acc + row.total, 0);
+    const sum = rows.reduce((acc, row) => acc + (row.total || 0), 0);
     setTotalSum(sum);
     setTotalWords(numberToWords(Math.round(sum)));
   }, [rows]);
 
   useEffect(() => {
-      const handleKeyDown = (e) => {
-        if ((e.ctrlKey || e.metaKey) && e.key === 'p') {
-          e.preventDefault();
-          // alert("Please use the Print button on the website.");
-        }
-      };
-  
-      window.addEventListener("keydown", handleKeyDown);
-  
-      return () => {
-        window.removeEventListener("keydown", handleKeyDown);
-      };
-    }, []);
-  
-    useEffect(() => {
-    const beforePrintHandler = (e) => {
-      if (!window.isCustomPrint) {
+    const handleKeyDown = (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === "p") {
         e.preventDefault();
-        // alert("Use website print button only!");
       }
     };
-  
-    window.addEventListener("beforeprint", beforePrintHandler);
-  
-    return () => {
-      window.removeEventListener("beforeprint", beforePrintHandler);
-    };
-  }, []);     
 
-  const printInvoice = () => {
-    window.print();
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
+  useEffect(() => {
+    if (resolvedInvoiceId) {
+      fetchInvoice();
+    }
+  }, [resolvedInvoiceId]);
+
+  const fetchInvoice = async () => {
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/invoices/${resolvedInvoiceId}`
+      );
+
+      const data = await response.json();
+
+      if (data.success) {
+        const invoice = data.invoice;
+        setInvoiceNumber(invoice.invoiceNumber || "");
+
+        setInvoiceDate(
+          invoice.invoiceDate
+            ? new Date(invoice.invoiceDate).toISOString().split("T")[0]
+            : ""
+        );
+
+        setBuyerName(invoice.buyerName || "");
+        setBuyerAddress(invoice.buyerAddress || "");
+        setBuyerPhone(invoice.buyerPhone || "");
+        setBuyerEmail(invoice.buyerEmail || "");
+        setBuyerPAN(invoice.buyerPAN || "");
+        setBuyerEximCode(invoice.buyerEximCode || "");
+
+        setDispatchThrough(invoice.dispatchThrough || "");
+        setDestination(invoice.destination || "");
+        setTransport(invoice.transport || "");
+        setVehicleNumber(invoice.vehicleNumber || "");
+        setCountryName(invoice.countryName || "");
+        setTermsDelivery(invoice.termsDelivery || "");
+        setRows(invoice.products || []);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
-  
-  // inset data
+
   const saveInvoiceToDB = async () => {
-    // Validate required fields
     if (!buyerName || !buyerAddress) {
-      alert('Please fill in Buyer Name and Buyer Address');
+      alert("Please fill in Buyer Name and Buyer Address");
       return;
     }
 
-    if (!driverName) {
-      alert('Please fill in Driver Name');
+    if (!transport) {
+      alert("Please fill Transport Name");
       return;
     }
 
     if (!vehicleNumber) {
-      alert('Please fill in Vehicle Number');
+      alert("Please fill Vehicle Number");
       return;
     }
 
-    //Validate products
-    const validProducts = rows.filter(row =>
-      row.product && row.hsn && row.qty > 0 && row.rate > 0
+    const validProducts = rows.filter(
+      (row) =>
+        row.product &&
+        row.hsn &&
+        parseFloat(row.qty) > 0 &&
+        parseFloat(row.rate) > 0
     );
 
     if (validProducts.length === 0) {
-      alert('Please add at least one product with valid details');
+      alert("Please add at least one product with valid details");
       return;
     }
 
     const invoiceData = {
       invoiceNumber,
       invoiceDate,
-      state,
-      dateOfSupply,
-      placeOfSupply,
-      driverName,
-      vehicleNumber,
-      transportMode,
-      countryName,
-      
 
-      // flattened buyer fields:
+      dispatchThrough,
+      vehicleNumber,
+      destination,
+      transport,
+      countryName,
+      termsDelivery,
+
       buyerName,
       buyerAddress,
       buyerEximCode,
@@ -209,253 +284,362 @@ const InvoicePage = () => {
       buyerPAN,
       buyerCountry,
 
-      products: validProducts.map(row => ({
+      products: validProducts.map((row) => ({
         product: row.product,
         descOption: row.descOption,
         description: row.description,
         hsn: row.hsn,
-        qty: parseFloat(row.qty),
-        rate: parseFloat(row.rate),
-        taxable: parseFloat(row.taxable),
-        igst: parseFloat(row.igst),
-        total: parseFloat(row.total),
+        qty: parseFloat(row.qty) || 0,
+        rate: parseFloat(row.rate) || 0,
+        taxable: parseFloat(row.taxable) || 0,
+        igst: parseFloat(row.igst) || 0,
+        total: parseFloat(row.total) || 0,
       })),
 
-      totalAmount: totalSum,
-      amountInWords: totalWords
+      totalAmount: parseFloat(totalSum) || 0,
+      amountInWords: totalWords || "",
     };
 
     try {
-      console.log(import.meta.env.VITE_API_URL)
       const res = await fetch(`${import.meta.env.VITE_API_URL}/api/invoices`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(invoiceData),
       });
 
-      const data = await res.json();
+      // Try to parse JSON response, but don't crash if server returned non-JSON
+      let data = null;
+      try {
+        data = await res.json();
+      } catch {
+        data = null;
+      }
 
       if (res.ok) {
-        alert('Invoice saved successfully!');
-        window.print(); // Print after successful save
-      } else {
-        alert(data.message || 'Something went wrong');
+        alert("Invoice Saved Successfully");
+      }
+      else {
+        alert(data.message || "Something went wrong");
       }
     } catch (error) {
-      console.error('API error:', error);
-      alert('Failed to connect to the server');
+      console.error("API error:", error);
+      alert("Failed to connect to the server");
     }
-
   };
 
   return (
-    <div className="invoice-container">
-      <header className="invoice-header">
-        <img className="img" src={mp} alt="image" />
-        <div className="invoice-info">
-          <h1 style={{ fontSize: 50 }}>M.P. ENTERPRISES</h1>
-          <p>MAIN ROAD RAXAUL, EAST CHAMPARAN, BIHAR 845305</p>
-            <p>CONTACT: +91 8235826679  |  madan.prasad92814@gmail.com</p>
-          <p>AD CODE-0000138-0620007  |  IEC CODE-2192001355</p>
-          <p>GSTIN/UIN: 10AINPP0877F1ZA | PAN: AINP0877F</p>
-          <p>State Code: 10</p>
-        </div>
-      </header>
-
-      <form id="invoice-form">
-        <h3 className="tax">TAX INVOICE</h3>
-
-        <div className="cols-3">
-          <div className="form-elem">
-            <label className="form-label">Invoice Number</label>
-            <input type="text" className="form-control invoice-number" value={invoiceNumber} readOnly />
+    <div className="invoice" style={{
+    }}>
+      <h2 className="title">Tax Invoice</h2>
+      <p className="title2">(SUPPLYMEANTFOREXPORT/SUPPLYTOSEZUNITORSEZDEVELOPERFORAUTHORISEDOPERATIONS ON
+        PAYMENT OF IGST)</p>
+      <div className="top">
+        {/* LEFT: Seller/Buyer */}
+        <div className="left">
+          <div className="box">
+            <p><b>M.P. ENTERPRISES</b></p>
+            <p>MAIN ROAD RAXAUL, EAST CHAMPARAN, BIHAR 845305</p>
+            <p>CONTACT:- +91 8235826679</p>
+            <p>E-Mail:- madan.prasad92814@gmail.com</p>
+            <p>AD CODE:-0000138-0620007</p>
+            <p>IEC CODE:-2192001355</p>
+            <p>GSTIN/UIN:- 10AINPP0877F1ZA</p>
+            <p>PAN:- AINP0877F | State Code:- 10</p>
           </div>
 
-          <div className="form-elem">
-            <label className="form-label">Invoice Date</label>
-            <input type="date" className="form-control" value={invoiceDate} onChange={(e) => setInvoiceDate(e.target.value)} />
+          <div className="box">
+            <p>Buyer (Bill to)</p>
+
+            <input style={{ with: "100%", fontWeight: "bold" }}
+              value={buyerName}
+              onChange={(e) =>
+                setBuyerName(
+                  e.target.value
+                    .toLowerCase()
+                    .replace(/\b\w/g, (char) => char.toUpperCase())
+                )
+              }
+              readOnly={isViewMode}
+            />
+            <br></br>
+            <input style={{ width: "100%" }} value={buyerAddress} onChange={(e) => setBuyerAddress(e.target.value)} readOnly={isViewMode} />
+            <br></br>
+            <label>PAN:-</label>
+            <input value={buyerPAN} onChange={(e) => setBuyerPAN(e.target.value)} readOnly={isViewMode} />
+            <br></br>
+            <label>EXIM CODE:-</label>
+            <input value={buyerEximCode} onChange={(e) => setBuyerEximCode(e.target.value)} readOnly={isViewMode} />
+            <br></br>
+            <label>E-MAIL:-</label>
+            <input style={{ width: "80%", textTransform: "lowercase" }} value={buyerEmail} onChange={(e) => setBuyerEmail(e.target.value)} readOnly={isViewMode} />
+            <br></br>
+            <label>CONTACT:-</label>
+            <input value={buyerPhone} onChange={(e) => setBuyerPhone(e.target.value)} readOnly={isViewMode} />
           </div>
 
-          <div className="form-elem">
-            <label className="form-label">State</label>
-            <input type="text" className="form-control" value={state} onChange={(e) => setState(e.target.value)} />
-          </div>
-
-          <div className="form-elem">
-            <label className="form-label">Date of Supply</label>
-            <input type="date" className="form-control firstname" placeholder="DD/MM/YYYY" value={dateOfSupply} onChange={(e) => setDateOfSupply(e.target.value)} />
-          </div>
-
-          <div className="form-elem">
-            <label className="form-label">Place Of Supply</label>
-            <input type="text" className="form-control middlename" value={placeOfSupply} onChange={(e) => setPlaceOfSupply(e.target.value)} />
-          </div>
-
-          <div className="form-elem">
-            <label className="form-label">Driver's Name</label>
-            <input type="text" className="form-control lastname" value={driverName} onChange={(e) => setDriverName(e.target.value)} list="drivers" />
-            <datalist id="drivers">
-              {driverOptions.map((driver, idx) => (
-                <option key={idx} value={driver} />
-              ))}
-            </datalist>
-          </div>
-
-          <div className="form-elem">
-            <label className="form-label">Vehicle Number</label>
-            <input type="text" className="form-control firstname" value={vehicleNumber} onChange={(e) => setVehicleNumber(e.target.value)} list="vehicles" />
-            <datalist id="vehicles">
-              {vehicleOptions.map((vehicle, idx) => (
-                <option key={idx} value={vehicle} />
-              ))}
-            </datalist>
-          </div>
-
-          <div className="form-elem">
-            <label className="form-label">Transport Mode</label>
-            <input type="text" className="form-control middlename" value={transportMode} onChange={(e) => setTransportMode(e.target.value)} />
-          </div>
-
-          <div className="form-elem">
-            <label className="form-label">Country</label>
-            <input type="text" className="form-control middlename" value={countryName} onChange={(e) => setCountry(e.target.value)} />
-          </div>
         </div>
 
-        <h3 className="buyer">Buyer's Name & Address</h3>
-        <div className="cols-3">
-          <div className="form-elem">
-            <label className="form-label">Name</label>
-            <input type="text" className="form-control designation" value={buyerName} onChange={(e) => setBuyerName(e.target.value)} />
-          </div>
-          <div className="form-elem">
-            <label className="form-label">Address</label>
-            <input type="text" className="form-control address" value={buyerAddress} onChange={(e) => setBuyerAddress(e.target.value)} />
-          </div>
-          <div className="form-elem">
-            <label className="form-label">EXIM CODE</label>
-            <input type="text" className="form-control" value={buyerEximCode} onChange={(e) => setBuyerEximCode(e.target.value)} />
-          </div>
-        </div>
-
-        <div className="cols-3">
-          <div className="form-elem">
-            <label className="form-label">Phone No:</label>
-            <input type="text" className="form-control phoneno" value={buyerPhone} onChange={(e) => setBuyerPhone(e.target.value)} />
-          </div>
-          <div className="form-elem">
-            <label className="form-label">Email</label>
-            <input type="email" className="form-control email" value={buyerEmail} onChange={(e) => setBuyerEmail(e.target.value)} />
-          </div>
-          <div className="form-elem">
-            <label className="form-label">PAN</label>
-            <input type="text" className="form-control summary" value={buyerPAN} onChange={(e) => setBuyerPAN(e.target.value)} />
-          </div>
-          <div className="form-elem">
-            <label className="form-label">Country</label>
-            <input type="text" className="form-control summary" value={buyerCountry} onChange={(e) => setBuyerCountry(e.target.value)} />
-          </div>
-        </div>
-
-        <table id="dynamicTable" className="invoice-page-table">
-          <thead>
-            <tr>
-              <th>Product Name</th>
-              <th>HSN</th>
-              <th>QTY (MTS)</th>
-              <th>Rate</th>
-              <th>Value</th>
-              <th>IGST (5%)</th>
-              <th>Total</th>
-              {/* <th>Action</th> */}
-            </tr>
-          </thead>
-          <tbody>
-            {rows.map((row, index) => (
-              <tr key={index}>
-                <td>
-                  <input
-                    type="text"
-                    value={row.product}
-                    onChange={(e) => handleInputChange(index, 'product', e.target.value)}
-                    list="products"
-                    placeholder="Product Name"
-                  />
-                  <datalist id="products">
-                    {productOptions.map((product, idx) => (
-                      <option key={idx} value={product} />
-                    ))}
-                  </datalist>
-                  <datalist id="descriptions">
-                    {descriptionOptions.map((desc, idx) => (
-                      <option key={idx} value={desc} />
-                    ))}
-                  </datalist>
-                  <input
-                    type="text"
-                    list="descriptions"
-                    placeholder="Select Grade"
-                    value={row.descOption}
-                    onChange={(e) => handleInputChange(index, 'descOption', e.target.value)}
-                  />
-
-                  <textarea
-                    placeholder="Size:-"
-                    value={row.description}
-                    onChange={(e) => handleInputChange(index, 'description', e.target.value)}
-                    rows="3"
-                    style={{ fontsize:"50px" }}
-                  />
+        {/* RIGHT: custom table-like header */}
+        <div className="right">
+          <table className="right-table">
+            <thead>
+              <tr>
+                <td><label>Invoice No:</label><input value={invoiceNumber} readOnly />
                 </td>
                 <td>
-                  <input
-                    type="text"
-                    value={row.hsn}
-                    onChange={(e) => handleInputChange(index, 'hsn', e.target.value)}
-                    list="hsns"
-                  />
-                  <datalist id="hsns">
-                    {hsnOptions.map((hsn, idx) => (
-                      <option key={idx} value={hsn} />
-                    ))}
-                  </datalist>
+                  <label>Date:</label>
+
+                  {isViewMode ? (
+                    <input value={formatDate(invoiceDate)} readOnly />
+                  ) : (
+                    <input
+                      type="date"
+                      value={invoiceDate}
+                      onChange={(e) => setInvoiceDate(e.target.value)}
+                    />
+                  )}
                 </td>
-                <td><input type="number" value={row.qty} onChange={(e) => handleInputChange(index, 'qty', e.target.value)} /></td>
-                <td><input type="number" value={row.rate} onChange={(e) => handleInputChange(index, 'rate', e.target.value)} /></td>
-                <td><input type="number" value={row.taxable.toFixed(2)} readOnly /></td>
-                <td><input type="number" value={row.igst.toFixed(2)} readOnly /></td>
-                <td><input type="number" value={row.total.toFixed(2)} readOnly /></td>
-                {/* <td><button type="button" className="delete-btn" onClick={() => removeRow(index)}>Remove</button></td> */}
               </tr>
-            ))}
-          </tbody>
-        </table>
-        {/* <button type="button" id="addRowBtn" className="btn btn-primary" onClick={addRow}>Add Row</button> */}
 
-        <div className="bill">
-          <div className="bank-info">
-            <p style={{ color: 'blue' }}>Bank & Payment Details</p>
-            <p><b>A/C Holder:</b> M.P. Enterprises</p>
-            <p><b>A/C No:</b> 10973176188</p>
-            <p><b>IFSC Code:</b> SBIN0002998</p>
-            <p><b>Bank:</b> State Bank of India, Raxaul</p>
-          </div>
-          <div className="word">
-            <input type="number" className="total" readOnly value={totalSum.toFixed(2)} style={{ textAlign: 'right',  }} />
-            <p className="total-in-word">Total Invoice Amount in Words</p>
-            <p className="total-in-words">{totalWords}</p>
-          </div>
+              <tr>
+                <td><label>Dispatch Through:</label><input value={dispatchThrough} onChange={(e) => setDispatchThrough(e.target.value)} readOnly={isViewMode} />
+                </td>
+                <td><label>Destination:</label><input value={destination} onChange={(e) => setDestination(e.target.value)} readOnly={isViewMode} />
+                </td>
+              </tr>
+
+              <tr>
+                <td>
+                  <label>Transport:</label><input value={transport} onChange={(e) => setTransport(e.target.value)} readOnly={isViewMode} />
+                </td>
+                <td>
+                  <label>Motor Vehicle No.</label>
+                  <input
+                    type="text"
+                    style={{ width: "100%" }}
+                    value={vehicleNumber || ""}
+                    list="vehicles"
+                    onChange={(e) => setVehicleNumber(e.target.value)}
+                    readOnly={isViewMode}
+                  />
+                  <datalist id="vehicles">
+                    {vehicleOptions.map((v) => (
+                      <option key={v} value={v} />
+                    ))}
+                  </datalist>
+                  <datalist id="products">
+                    {productOptions.map((p, idx) => (
+                      <option key={idx} value={p} />
+                    ))}
+                  </datalist>
+                </td>
+              </tr>
+
+              <tr>
+                <td colSpan="2">
+                  <label>Country:</label><input style={{ textTransform: "uppercase" }}
+                    value={countryName} onChange={(e) => setCountryName(e.target.value)} readOnly={isViewMode} />
+                </td>
+              </tr>
+              <tr>
+                <td colSpan="2">
+                  <label>Terms of Delivery:</label><input value={termsDelivery} onChange={(e) => setTermsDelivery(e.target.value)} readOnly={isViewMode} />
+                </td>
+              </tr>
+            </thead>
+          </table>
+        </div>
+      </div>
+
+      {/* Product table */}
+      <table className="table-product-india">
+        <thead>
+          <tr>
+            <th>Description of Goods</th>
+            <th>HSN/SAC</th>
+            <th>Quantity</th>
+            <th>Rate(MTS)</th>
+            <th>Amount</th>
+            <th>IGST (5%)</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((row, i) => (
+            <tr key={i}>
+              <td>
+                <input
+                  type="text"
+                  style={{
+                    width: "100%",
+                    fontWeight: "bold"
+                  }}
+                  value={row.product || ""}
+                  list="products"
+                  onChange={(e) => handleInputChange(i, "product", e.target.value)}
+                  readOnly={isViewMode}
+                  placeholder="Product"
+                />
+                <datalist id="products">
+                  {productOptions.map((p, idx) => (
+                    <option key={idx} value={p} />
+                  ))}
+                </datalist>
+
+                <input
+                  type="text"
+                  style={{ width: "100%", marginTop: 4 }}
+                  value={row.descOption || ""}
+                  list="descriptions"
+                  onChange={(e) => handleInputChange(i, "descOption", e.target.value)}
+                  placeholder="Grade"
+                  readOnly={isViewMode}
+                />
+                <datalist id="descriptions">
+                  {descriptionOptions.map((d, idx) => (
+                    <option key={idx} value={d} />
+                  ))}
+                </datalist>
+
+                <textarea
+                  className="myTextarea"
+                  value={row.description || " "}
+                  onChange={(e) => handleInputChange(i, "description", e.target.value)}
+                  rows={2}
+                  readOnly={isViewMode}
+                />
+              </td>
+
+              <td>
+                <input
+                  type="text"
+                  style={{ width: "100%" }}
+                  value={row.hsn || ""}
+                  list="hsns"
+                  onChange={(e) => handleInputChange(i, "hsn", e.target.value)}
+                  readOnly={isViewMode}
+                />
+                <datalist id="hsns">
+                  {hsnOptions.map((hsn, idx) => (
+                    <option key={idx} value={hsn} />
+                  ))}
+                </datalist>
+              </td>
+
+              <td>
+                <input
+                  type="text"
+                  style={{ width: "100%" }}
+                  value={row.qty || ""}
+                  onChange={(e) => handleInputChange(i, "qty", e.target.value)}
+                  readOnly={isViewMode}
+                />
+              </td>
+              <td>
+                <input
+                  type="text"
+                  style={{ width: "100%" }}
+                  value={row.rate || ""}
+                  onChange={(e) => handleInputChange(i, "rate", e.target.value)}
+                  readOnly={isViewMode}
+                />
+              </td>
+
+              <td>{(row.taxable || 0).toFixed(2)}</td>
+              <td>{(row.igst || 0).toFixed(2)}</td>
+              <td>{(row.total || 0).toFixed(2)}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      <div className="bottom-section">
+
+        <div className="word" >
+          <p className="total-in-word">Amount Chargeable (in Words)</p>
+          <p className="total-in-words">{numberToWords(totalSum)}</p>
         </div>
 
-        <section className="print-btn-sc">
-          <button type="button" className="print-btn btn btn-primary" onClick={saveInvoiceToDB}>Print</button>
-        </section>
-      </form>
-      
-      <img src={signature} className="footer-image" alt="Digital Signature" /> 
-      {/* <h1 className="footer">M.P. ENTERPRISES</h1> */}
+        <div className="bottom-grid">
+
+          {/* LEFT */}
+          <div className="declaration-box">
+
+            <p className="tax-words">
+              <b>Tax Amount (in words): </b>
+              {rows.reduce((sum, row) => sum + (row.igst || 0), 0) > 0
+                ? numberToWords(
+                  Math.round(
+                    rows.reduce((sum, row) => sum + (row.igst || 0), 0)
+                  )
+                )
+                : "NIL"}
+            </p>
+
+            <div className="declaration-content">
+              <p className="underline">Declaration</p>
+
+              <p>
+                We declare that this invoice shows the actual
+                price of the goods described and that all
+                particulars are true and correct.
+              </p>
+            </div>
+
+          </div>
+
+          {/* RIGHT */}
+          <div className="bank-box">
+
+            <p>Company's Bank Details</p>
+
+            <div className="bank-row">
+              <span>Bank Name</span>
+              <b>:State Bank of India</b>
+            </div>
+
+            <div className="bank-row">
+              <span>A/c No.</span>
+              <b>:10973176188</b>
+            </div>
+
+            <div className="bank-row">
+              <span>Branch & IFS Code</span>
+              <b>:Raxaul & SBIN0002998</b>
+            </div>
+
+            <div className="signature-box">
+              <img
+                src={signature}
+                className="footer-image"
+                alt="Digital Signature"
+              />
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+      <div className="footer-text">
+        This is a Computer Generated Invoice
+      </div>
+
+      <button
+        className="print-btn"
+        onClick={() => {
+          if (isViewMode) {
+            window.print();
+          } else {
+            saveInvoiceToDB();
+          }
+        }}
+        disabled={rows.length === 0}
+      >
+        {isViewMode ? "Print" : "Save Invoice"}
+      </button>
     </div>
   );
 };
 
 export default InvoicePage;
+

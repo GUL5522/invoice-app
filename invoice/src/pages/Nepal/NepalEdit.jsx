@@ -1,7 +1,6 @@
 import React from "react";
 import { useParams, Link } from 'react-router-dom';
 import NepalForm from './NepalForm';
-import './Nepal.css';
 
 const NepalEdit = () => {
   const { id } = useParams();
