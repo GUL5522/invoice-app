@@ -206,6 +206,11 @@ const NepalForm = ({ initialEditId }) => {
         setSelectedIndianInvoice(inv);
 
         setInvoiceNumber(inv.invoiceNumber);
+        setInvoiceDate(
+          inv.invoiceDate
+            ? new Date(inv.invoiceDate).toISOString().split("T")[0]
+            : new Date().toISOString().split("T")[0]
+        );
         setBuyerName(inv.buyerName || "");
         setBuyerAddress(inv.buyerAddress || "");
         setBuyerPAN(inv.buyerPAN || "");
@@ -363,7 +368,7 @@ const NepalForm = ({ initialEditId }) => {
         setCountryOfOrigin(inv.countryOfOrigin || "INDIA");
         setCustomEntryPoint(inv.customEntryPoint || "BIRGUNJ CUSTOM OFFICE,BIRAGUNJ, NEPAL");
         setDispatchThrough(inv.dispatchThrough || "BY TRUCK");
-        setDestination(inv.destination || "BIRGUNJ, (NEPAL)");
+        setDestination(inv.destination || "BIRGUNJ(NEPAL)");
         setTransport(inv.transport || inv.Transport || "");
         setSelectedIndianInvoice({
           vehicleNumber: inv.vehicleNumber
@@ -423,7 +428,7 @@ const NepalForm = ({ initialEditId }) => {
       )}
 
       <h2 className="title">Tax Invoice</h2>
-      <p className="title2">(SUPPLYMEANTFOREXPORT/SUPPLYTOSEZUNITORSEZDEVELOPERFORAUTHORISEDOPERATIONS ON PAYMENT OF IGST)</p>
+      <p className="title2">(SUPPLY MEANT FOR EXPORT / SUPPLY TO SEZ UNIT OR SEZ DEVELOPER FOR AUTHORISED OPERATIONS ON PAYMENT OF IGST)</p>
 
       {/* Nepal Edit Select */}
       {/* <div className="select-box">
@@ -626,11 +631,33 @@ const NepalForm = ({ initialEditId }) => {
         </tbody>
       </table>
 
+          <table className="om">
+        <tbody>
+          <tr>
+            <td>HSN/SAC</td>
+            <td className="right-header">Taxable Value</td>
+          </tr>
+
+          <tr>
+            <td>{rows[0]?.hsn || ""}</td>
+            <td></td>
+          </tr>
+
+          <tr>
+            <th className="total-label">Total</th>
+            <th>{rows[0]?.total?.toFixed(2) || "0.00"}</th>
+          </tr>
+        </tbody>
+      </table>
+
       {/* <h3>Total: {numberToWords(totalSum)}</h3> */}
       <div className="bottom-section">
 
         <div className="word">
-          <p className="total-in-word">Amount Chargeable (in Words)</p>
+          <div className="word-header">
+            <p className="total-in-word">Amount Chargeable (in Words)</p>
+            <p className="eoe">E.&O.E</p>
+          </div>
           <p className="total-in-words">{numberToWords(totalSum)}</p>
         </div>
 
@@ -666,7 +693,7 @@ const NepalForm = ({ initialEditId }) => {
           {/* RIGHT */}
           <div className="bank-box">
 
-            <p>Company's Bank Details</p>
+            <p><b><u>Company's Bank Details</u></b></p>
 
             <div className="bank-row">
               <span>Bank Name</span>
@@ -679,8 +706,13 @@ const NepalForm = ({ initialEditId }) => {
             </div>
 
             <div className="bank-row">
-              <span>Branch & IFS Code</span>
-              <b>:Raxaul & SBIN0002998</b>
+              <span>Branch</span>
+              <b>:Raxaul</b>
+            </div>
+
+            <div className="bank-row">
+              <span>IFS Code</span>
+              <b>:SBIN0002998</b>
             </div>
 
             <div className="signature-box">

@@ -33,13 +33,6 @@ button {
     font-size: 14px;
 }
 
-.total {
-    font-size: 11px;
-    font-family: inherit;
-    padding: 0.8rem 1.6rem;
-}
-
-
 .buyer {
     margin-top: 10px;
     margin-bottom: 10px;
@@ -47,6 +40,7 @@ button {
 
 input {
     border: none;
+    text-transform: uppercase;
     text-align: left;
 }
 
@@ -56,6 +50,27 @@ input {
     text-align: left;
     overflow-wrap: break-word;
     box-sizing: border-box;
+}
+
+.total {
+    font-size: 11px;
+    font-family: inherit;
+    padding: 0.8rem 1.6rem;
+}
+
+
+.word-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.word-header p {
+    margin: 0;
+}
+
+.eoe {
+    font-size: 14px;
 }
 
 .total-in-word {
@@ -68,6 +83,37 @@ input {
 .total-in-words {
     font-size: 15px;
     margin-top: 5px;
+}
+
+.om {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.om td,
+.om th {
+    border: 1px solid black;
+    padding: 4px 8px;
+}
+
+.om td:first-child,
+.om th:first-child {
+    width: 85%;
+    border-top: none;
+}
+
+.om td:last-child,
+.om th:last-child {
+    width: 15%;
+    border-top: none;
+}
+
+.right-header {
+    text-align: center;
+}
+
+.total-label {
+    text-align: right;
 }
 
 .invoice {
@@ -231,7 +277,7 @@ th {
 .table-product-india td,
 .table-product-nepal td {
     /* padding-top: 50px; */
-    padding-bottom: 70px;
+    padding-bottom: 50px;
 }
 
 input[list] {

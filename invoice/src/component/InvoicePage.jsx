@@ -316,7 +316,7 @@ const InvoicePage = ({ readOnly = false, invoiceId = null }) => {
       }
 
       if (res.ok) {
-        alert("Invoice Saved Successfully");
+        alert("Saved Successfully");
       }
       else {
         alert(data.message || "Something went wrong");
@@ -331,8 +331,7 @@ const InvoicePage = ({ readOnly = false, invoiceId = null }) => {
     <div className="invoice" style={{
     }}>
       <h2 className="title">Tax Invoice</h2>
-      <p className="title2">(SUPPLYMEANTFOREXPORT/SUPPLYTOSEZUNITORSEZDEVELOPERFORAUTHORISEDOPERATIONS ON
-        PAYMENT OF IGST)</p>
+      <p className="title2">(SUPPLY MEANT FOR EXPORT / SUPPLY TO SEZ UNIT OR SEZ DEVELOPER FOR AUTHORISED OPERATIONS ON PAYMENT OF IGST)</p>
       <div className="top">
         {/* LEFT: Seller/Buyer */}
         <div className="left">
@@ -350,7 +349,7 @@ const InvoicePage = ({ readOnly = false, invoiceId = null }) => {
           <div className="box">
             <p>Buyer (Bill to)</p>
 
-            <input style={{ with: "100%", fontWeight: "bold" }}
+            <input style={{ with: "100%", fontWeight: "bold", textTransform: "none" }}
               value={buyerName}
               onChange={(e) =>
                 setBuyerName(
@@ -553,10 +552,32 @@ const InvoicePage = ({ readOnly = false, invoiceId = null }) => {
         </tbody>
       </table>
 
+      <table className="om">
+        <tbody>
+          <tr>
+            <td>HSN/SAC</td>
+            <td className="right-header">Taxable Value</td>
+          </tr>
+
+          <tr>
+            <td>{rows[0]?.hsn || ""}</td>
+            <td></td>
+          </tr>
+
+          <tr>
+            <th className="total-label">Total</th>
+            <th>{rows[0]?.total?.toFixed(2) || "0.00"}</th>
+          </tr>
+        </tbody>
+      </table>
+
       <div className="bottom-section">
 
         <div className="word" >
-          <p className="total-in-word">Amount Chargeable (in Words)</p>
+          <div className="word-header">
+            <p className="total-in-word">Amount Chargeable (in Words)</p>
+            <p className="eoe">E.&O.E</p>
+          </div>
           <p className="total-in-words">{numberToWords(totalSum)}</p>
         </div>
 
@@ -591,7 +612,7 @@ const InvoicePage = ({ readOnly = false, invoiceId = null }) => {
           {/* RIGHT */}
           <div className="bank-box">
 
-            <p>Company's Bank Details</p>
+            <p><b><u>Company's Bank Details</u></b></p>
 
             <div className="bank-row">
               <span>Bank Name</span>
@@ -604,8 +625,13 @@ const InvoicePage = ({ readOnly = false, invoiceId = null }) => {
             </div>
 
             <div className="bank-row">
-              <span>Branch & IFS Code</span>
-              <b>:Raxaul & SBIN0002998</b>
+              <span>Branch</span>
+              <b>:Raxaul</b>
+            </div>
+
+            <div className="bank-row">
+              <span>IFS Code</span>
+              <b>:SBIN0002998</b>
             </div>
 
             <div className="signature-box">
