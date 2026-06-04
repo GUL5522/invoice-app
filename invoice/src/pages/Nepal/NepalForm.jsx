@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import signature from "../../assets/singnature.png";
+import html2pdf from "html2pdf.js";
 
 const NepalForm = ({ initialEditId }) => {
+  const invoiceRef = useRef(null);
   const [nepalInvoices, setNepalInvoices] = useState([]);
   const [nepalLoading, setNepalLoading] = useState(false);
   const [nepalError, setNepalError] = useState(null);
@@ -95,12 +97,15 @@ const NepalForm = ({ initialEditId }) => {
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
-
     const day = date.getDate().toString().padStart(2, "0");
     const month = date.toLocaleString("en-US", { month: "short" });
     const year = date.getFullYear().toString().slice(-2);
 
     return `${day}-${month}-${year}`;
+  };
+
+  const formatAmount = (amount) => {
+    return Number(amount || 0).toLocaleString("en-IN");
   };
 
   useEffect(() => {
@@ -232,11 +237,10 @@ const NepalForm = ({ initialEditId }) => {
 
         const mapped = inv.products.map((p) => ({
           ...p,
-          rate: '', // Manual input
-          // qty auto from Indian
-          taxable: 0,
+          rate: p.rate || 0,
+          taxable: (p.qty || 0) * (p.rate || 0),
           gst: 0,
-          total: 0
+          total: (p.qty || 0) * (p.rate || 0)
         }));
 
         setRows(mapped);
@@ -338,6 +342,40 @@ const NepalForm = ({ initialEditId }) => {
     }
   };
 
+  const handleSharePDF = async () => {
+    const element = invoiceRef.current;
+
+    const pdfBlob = await html2pdf()
+      .from(element)
+      .set({
+        margin: 5,
+        filename: `${invoiceNumber}.pdf`,
+        image: { type: "jpeg", quality: 1 },
+        html2canvas: { scale: 2 },
+        jsPDF: {
+          unit: "mm",
+          format: "a4",
+          orientation: "portrait"
+        }
+      })
+      .outputPdf("blob");
+
+    const file = new File(
+      [pdfBlob],
+      `${invoiceNumber}.pdf`,
+      { type: "application/pdf" }
+    );
+
+    if (navigator.canShare?.({ files: [file] })) {
+      await navigator.share({
+        title: `Invoice ${invoiceNumber}`,
+        files: [file]
+      });
+    } else {
+      alert("PDF sharing not supported on this device");
+    }
+  };
+
   const loadNepalInvoice = async () => {
     if (!selectedNepalId) return;
 
@@ -399,7 +437,7 @@ const NepalForm = ({ initialEditId }) => {
 
 
   return (
-    <div className="invoice nepal-invoice">
+    <div ref={invoiceRef} className="invoice nepal-invoice">
       {/* Indian Invoices Select */}
       {!initialEditId && (
         <div className="select-box">
@@ -519,7 +557,7 @@ const NepalForm = ({ initialEditId }) => {
                 </td>
                 <td>
                   <label>Custom Entery Point:</label>
-                  <textarea
+                  <input
                     value={customEntryPoint}
                     onChange={(e) => setCustomEntryPoint(e.target.value)}
                     rows={2}
@@ -529,7 +567,7 @@ const NepalForm = ({ initialEditId }) => {
                       border: "none",
                       resize: "none",
                       overflow: "hidden",
-                      fontSize: "16px",
+                      fontSize: "14px",
                       background: "transparent"
                     }}
                   />
@@ -617,13 +655,13 @@ const NepalForm = ({ initialEditId }) => {
                 <input
                   type="text"
                   // style={{ width: '100%' }}  
-                  value={row.rate || ''}
+                  value={isViewMode ? formatAmount(row.rate) : row.rate}
                   onChange={(e) => handleInputChange(i, 'rate', e.target.value)}
                   readOnly={isViewMode}
                   required
                 />
               </td>
-              <td>{row.taxable?.toFixed(2)}</td>
+              <td>{formatAmount(row.taxable)}</td>
               {/* <td>{row.gst?.toFixed(2)}</td> */}
               {/* <td>{row.total?.toFixed(2)}</td> */}
             </tr>
@@ -631,7 +669,15 @@ const NepalForm = ({ initialEditId }) => {
         </tbody>
       </table>
 
-          <table className="om">
+      <div className="word">
+        <div className="word-header">
+          <p className="total-in-word">Amount Chargeable (in Words)</p>
+          <p className="eoe">E.&O.E</p>
+        </div>
+        <p className="total-in-words">{numberToWords(totalSum)}</p>
+      </div>
+
+      <table className="om">
         <tbody>
           <tr>
             <td>HSN/SAC</td>
@@ -645,7 +691,7 @@ const NepalForm = ({ initialEditId }) => {
 
           <tr>
             <th className="total-label">Total</th>
-            <th>{rows[0]?.total?.toFixed(2) || "0.00"}</th>
+            <th>{formatAmount(rows[0]?.total)}</th>
           </tr>
         </tbody>
       </table>
@@ -653,13 +699,7 @@ const NepalForm = ({ initialEditId }) => {
       {/* <h3>Total: {numberToWords(totalSum)}</h3> */}
       <div className="bottom-section">
 
-        <div className="word">
-          <div className="word-header">
-            <p className="total-in-word">Amount Chargeable (in Words)</p>
-            <p className="eoe">E.&O.E</p>
-          </div>
-          <p className="total-in-words">{numberToWords(totalSum)}</p>
-        </div>
+
 
         <div className="bottom-grid">
 
@@ -670,12 +710,7 @@ const NepalForm = ({ initialEditId }) => {
               <b>Tax Amount (in words): </b>
 
               {rows.reduce((sum, row) => sum + (row.gst || 0), 0) > 0
-                ? numberToWords(
-                  Math.round(
-                    rows.reduce((sum, row) => sum + (row.gst || 0), 0)
-                  )
-                )
-                : "NIL"}
+                ? numberToWords() : "NIL"}
             </p>
 
             <div className="declaration-content">
@@ -746,6 +781,15 @@ const NepalForm = ({ initialEditId }) => {
       >
         {initialEditId ? "Print" : "Save Invoice"}
       </button>
+
+      {initialEditId && (
+        <button
+          className="print-btn"
+          onClick={handleSharePDF}
+        >
+          Share PDF
+        </button>
+      )}
     </div>
   );
 };

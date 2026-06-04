@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import "./main.css";
 import signature from "../assets/singnature.png";
 import { useParams } from "react-router-dom";
+import html2pdf from "html2pdf.js";
 
 const generateInvoiceNumber = () => {
   const today = new Date();
@@ -88,8 +89,8 @@ const numberToWords = (n) => {
 };
 
 const formatDate = (dateString) => {
-  const date = new Date(dateString);
 
+  const date = new Date(dateString);
   const day = date.getDate().toString().padStart(2, "0");
   const month = date.toLocaleString("en-US", { month: "short" });
   const year = date.getFullYear().toString().slice(-2);
@@ -97,8 +98,16 @@ const formatDate = (dateString) => {
   return `${day}-${month}-${year}`;
 };
 
+const formatAmount = (amount) => {
+  return Number(amount || 0).toLocaleString("en-IN", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+};
+
 // NOTE: Indian invoice editor needs IGST (5%) but layout same as Nepal.
 const InvoicePage = ({ readOnly = false, invoiceId = null }) => {
+  const invoiceRef = useRef(null);
   const params = useParams();
   const resolvedInvoiceId = invoiceId || params.id || null;
   const isViewMode = !!resolvedInvoiceId;
@@ -327,9 +336,42 @@ const InvoicePage = ({ readOnly = false, invoiceId = null }) => {
     }
   };
 
+  const handleSharePDF = async () => {
+    const element = invoiceRef.current;
+
+    const pdfBlob = await html2pdf()
+      .from(element)
+      .set({
+        margin: 5,
+        filename: `${invoiceNumber}.pdf`,
+        image: { type: "jpeg", quality: 1 },
+        html2canvas: { scale: 2 },
+        jsPDF: {
+          unit: "mm",
+          format: "a4",
+          orientation: "portrait"
+        }
+      })
+      .outputPdf("blob");
+
+    const file = new File(
+      [pdfBlob],
+      `${invoiceNumber}.pdf`,
+      { type: "application/pdf" }
+    );
+
+    if (navigator.canShare?.({ files: [file] })) {
+      await navigator.share({
+        title: `Invoice ${invoiceNumber}`,
+        files: [file]
+      });
+    } else {
+      alert("PDF sharing not supported on this device");
+    }
+  };
+
   return (
-    <div className="invoice" style={{
-    }}>
+    <div ref={invoiceRef} className="invoice" >
       <h2 className="title">Tax Invoice</h2>
       <p className="title2">(SUPPLY MEANT FOR EXPORT / SUPPLY TO SEZ UNIT OR SEZ DEVELOPER FOR AUTHORISED OPERATIONS ON PAYMENT OF IGST)</p>
       <div className="top">
@@ -538,19 +580,27 @@ const InvoicePage = ({ readOnly = false, invoiceId = null }) => {
                 <input
                   type="text"
                   style={{ width: "100%" }}
-                  value={row.rate || ""}
+                  value={isViewMode ? formatAmount(row.rate) : row.rate}
                   onChange={(e) => handleInputChange(i, "rate", e.target.value)}
                   readOnly={isViewMode}
                 />
               </td>
 
-              <td>{(row.taxable || 0).toFixed(2)}</td>
-              <td>{(row.igst || 0).toFixed(2)}</td>
-              <td>{(row.total || 0).toFixed(2)}</td>
+              <td>{formatAmount(row.taxable)}</td>
+              <td>{formatAmount(row.igst)}</td>
+              <td>{formatAmount(row.total)}</td>
             </tr>
           ))}
         </tbody>
       </table>
+
+      <div className="word" >
+        <div className="word-header">
+          <p className="total-in-word">Amount Chargeable (in Words)</p>
+          <p className="eoe">E.&O.E</p>
+        </div>
+        <p className="total-in-words">{numberToWords(totalSum)}</p>
+      </div>
 
       <table className="om">
         <tbody>
@@ -566,20 +616,19 @@ const InvoicePage = ({ readOnly = false, invoiceId = null }) => {
 
           <tr>
             <th className="total-label">Total</th>
-            <th>{rows[0]?.total?.toFixed(2) || "0.00"}</th>
+            <th>
+              {(rows[0]?.total || 0).toLocaleString("en-IN", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })}
+            </th>
           </tr>
         </tbody>
       </table>
 
       <div className="bottom-section">
 
-        <div className="word" >
-          <div className="word-header">
-            <p className="total-in-word">Amount Chargeable (in Words)</p>
-            <p className="eoe">E.&O.E</p>
-          </div>
-          <p className="total-in-words">{numberToWords(totalSum)}</p>
-        </div>
+
 
         <div className="bottom-grid">
 
@@ -636,9 +685,9 @@ const InvoicePage = ({ readOnly = false, invoiceId = null }) => {
 
             <div className="signature-box">
               <img
-                src={signature}
+                // src={signature}
                 className="footer-image"
-                alt="Digital Signature"
+              // alt="Digital Signature"
               />
             </div>
 
@@ -663,6 +712,17 @@ const InvoicePage = ({ readOnly = false, invoiceId = null }) => {
       >
         {isViewMode ? "Print" : "Save Invoice"}
       </button>
+
+      {isViewMode && (
+        <button
+          className="print-btn"
+          onClick={handleSharePDF}
+          style={{ marginLeft: "10px" }}
+        >
+          Share PDF
+        </button>
+      )}
+
     </div>
   );
 };
