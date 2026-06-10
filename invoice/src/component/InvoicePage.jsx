@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import "./main.css";
 import signature from "../assets/singnature.png";
 import { useParams } from "react-router-dom";
-import html2pdf from "html2pdf.js";
+
 
 const generateInvoiceNumber = () => {
   const today = new Date();
@@ -138,7 +138,8 @@ const InvoicePage = ({ readOnly = false, invoiceId = null }) => {
     },
   ]);
 
-  const [invoiceNumber, setInvoiceNumber] = useState(generateInvoiceNumber());
+  // const [invoiceNumber, setInvoiceNumber] = useState(generateInvoiceNumber());
+  const [invoiceNumber, setInvoiceNumber] = useState("");
   const [invoiceDate, setInvoiceDate] = useState(new Date().toISOString().split("T")[0]);
   // const [dateOfSupply, setDateOfSupply] = useState(new Date().toISOString().split("T")[0]);
 
@@ -165,6 +166,9 @@ const InvoicePage = ({ readOnly = false, invoiceId = null }) => {
   const [buyerEximCode, setBuyerEximCode] = useState("3002773190146NP");
   const [buyerCountry, setBuyerCountry] = useState("NEPAL");
   const GST_RATE = 5 / 100;
+
+  const [invoiceNumberError, setInvoiceNumberError] = useState(false);
+  const [vehicleError, setVehicleError] = useState(false);
 
   const handleInputChange = (index, field, value) => {
     const updatedRows = [...rows];
@@ -246,6 +250,12 @@ const InvoicePage = ({ readOnly = false, invoiceId = null }) => {
   };
 
   const saveInvoiceToDB = async () => {
+    if (!invoiceNumber.trim()) {
+      setInvoiceNumberError(true);
+      alert("Invoice Number is required");
+      return;
+    }
+
     if (!buyerName || !buyerAddress) {
       alert("Please fill in Buyer Name and Buyer Address");
       return;
@@ -257,6 +267,7 @@ const InvoicePage = ({ readOnly = false, invoiceId = null }) => {
     }
 
     if (!vehicleNumber) {
+      setVehicleError(true);
       alert("Please fill Vehicle Number");
       return;
     }
@@ -336,48 +347,20 @@ const InvoicePage = ({ readOnly = false, invoiceId = null }) => {
     }
   };
 
-  const handleSharePDF = async () => {
-    const element = invoiceRef.current;
-
-    const pdfBlob = await html2pdf()
-      .from(element)
-      .set({
-        margin: 5,
-        filename: `${invoiceNumber}.pdf`,
-        image: { type: "jpeg", quality: 1 },
-        html2canvas: { scale: 2 },
-        jsPDF: {
-          unit: "mm",
-          format: "a4",
-          orientation: "portrait"
-        }
-      })
-      .outputPdf("blob");
-
-    const file = new File(
-      [pdfBlob],
-      `${invoiceNumber}.pdf`,
-      { type: "application/pdf" }
-    );
-
-    if (navigator.canShare?.({ files: [file] })) {
-      await navigator.share({
-        title: `Invoice ${invoiceNumber}`,
-        files: [file]
-      });
-    } else {
-      alert("PDF sharing not supported on this device");
-    }
-  };
-
   return (
     <div ref={invoiceRef} className="invoice" >
+      <button
+  className="print-btn"
+  onClick={() => window.history.back()}
+>
+ ← Back to Indian Invoices
+</button>
       <h2 className="title">Tax Invoice</h2>
       <p className="title2">(SUPPLY MEANT FOR EXPORT / SUPPLY TO SEZ UNIT OR SEZ DEVELOPER FOR AUTHORISED OPERATIONS ON PAYMENT OF IGST)</p>
       <div className="top">
         {/* LEFT: Seller/Buyer */}
         <div className="left">
-          <div className="box">
+          <div className="box1">
             <p><b>M.P. ENTERPRISES</b></p>
             <p>MAIN ROAD RAXAUL, EAST CHAMPARAN, BIHAR 845305</p>
             <p>CONTACT:- +91 8235826679</p>
@@ -388,10 +371,10 @@ const InvoicePage = ({ readOnly = false, invoiceId = null }) => {
             <p>PAN:- AINP0877F | State Code:- 10</p>
           </div>
 
-          <div className="box">
+          <div className="box2">
             <p>Buyer (Bill to)</p>
 
-            <input style={{ with: "100%", fontWeight: "bold", textTransform: "none" }}
+            <input style={{ width: "100%", fontWeight: "bold", textTransform: "none" }}
               value={buyerName}
               onChange={(e) =>
                 setBuyerName(
@@ -425,7 +408,22 @@ const InvoicePage = ({ readOnly = false, invoiceId = null }) => {
           <table className="right-table">
             <thead>
               <tr>
-                <td><label>Invoice No:</label><input value={invoiceNumber} readOnly />
+                {/* <td><label>Invoice No:</label><input value={invoiceNumber} readOnly />
+                </td> */}
+                <td>
+                  <label>Invoice No:</label>
+                  <div className="field-wrapper">
+                    <input
+                      className={invoiceNumberError ? "error-input" : ""}
+                      value={invoiceNumber}
+                      onChange={(e) => {
+                        setInvoiceNumber(e.target.value);
+                        setInvoiceNumberError(false);
+                      }}
+                      readOnly={isViewMode}
+                    />
+                    {invoiceNumberError && <span className="error-icon">!</span>}
+                  </div>
                 </td>
                 <td>
                   <label>Date:</label>
@@ -455,19 +453,30 @@ const InvoicePage = ({ readOnly = false, invoiceId = null }) => {
                 </td>
                 <td>
                   <label>Motor Vehicle No.</label>
-                  <input
-                    type="text"
-                    style={{ width: "100%" }}
-                    value={vehicleNumber || ""}
-                    list="vehicles"
-                    onChange={(e) => setVehicleNumber(e.target.value)}
-                    readOnly={isViewMode}
-                  />
+
+                  <div className="field-wrapper">
+                    <input
+                      className={vehicleError ? "error-input" : ""}
+                      type="text"
+                      style={{ width: "100%" }}
+                      value={vehicleNumber || ""}
+                      list="vehicles"
+                      onChange={(e) => {
+                        setVehicleNumber(e.target.value);
+                        setVehicleError(false);
+                      }}
+                      readOnly={isViewMode}
+                    />
+
+                    {vehicleError && <span className="error-icon">!</span>}
+                  </div>
+
                   <datalist id="vehicles">
                     {vehicleOptions.map((v) => (
                       <option key={v} value={v} />
                     ))}
                   </datalist>
+
                   <datalist id="products">
                     {productOptions.map((p, idx) => (
                       <option key={idx} value={p} />
@@ -513,7 +522,8 @@ const InvoicePage = ({ readOnly = false, invoiceId = null }) => {
                   type="text"
                   style={{
                     width: "100%",
-                    fontWeight: "bold"
+                    fontWeight: "bold",
+                    // textAlign: "left"
                   }}
                   value={row.product || ""}
                   list="products"
@@ -527,7 +537,7 @@ const InvoicePage = ({ readOnly = false, invoiceId = null }) => {
                   ))}
                 </datalist>
 
-                <input
+                {/* <input
                   type="text"
                   style={{ width: "100%", marginTop: 4 }}
                   value={row.descOption || ""}
@@ -548,13 +558,16 @@ const InvoicePage = ({ readOnly = false, invoiceId = null }) => {
                   onChange={(e) => handleInputChange(i, "description", e.target.value)}
                   rows={2}
                   readOnly={isViewMode}
-                />
+                /> */}
               </td>
 
               <td>
                 <input
                   type="text"
-                  style={{ width: "100%" }}
+                  style={{
+                    width: "100%",
+                    textAlign: "center"
+                  }}
                   value={row.hsn || ""}
                   list="hsns"
                   onChange={(e) => handleInputChange(i, "hsn", e.target.value)}
@@ -570,7 +583,7 @@ const InvoicePage = ({ readOnly = false, invoiceId = null }) => {
               <td>
                 <input
                   type="text"
-                  style={{ width: "100%" }}
+                  style={{ width: "100%", textAlign: "center" }}
                   value={row.qty || ""}
                   onChange={(e) => handleInputChange(i, "qty", e.target.value)}
                   readOnly={isViewMode}
@@ -684,11 +697,11 @@ const InvoicePage = ({ readOnly = false, invoiceId = null }) => {
             </div>
 
             <div className="signature-box">
-              <img
-                // src={signature}
+              {/* <img
+                src={signature}
                 className="footer-image"
-              // alt="Digital Signature"
-              />
+              alt="Digital Signature"
+              /> */}
             </div>
 
           </div>
@@ -712,18 +725,7 @@ const InvoicePage = ({ readOnly = false, invoiceId = null }) => {
       >
         {isViewMode ? "Print" : "Save Invoice"}
       </button>
-
-      {isViewMode && (
-        <button
-          className="print-btn"
-          onClick={handleSharePDF}
-          style={{ marginLeft: "10px" }}
-        >
-          Share PDF
-        </button>
-      )}
-
-    </div>
+    </div >
   );
 };
 

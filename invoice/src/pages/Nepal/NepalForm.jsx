@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
 import signature from "../../assets/singnature.png";
-import html2pdf from "html2pdf.js";
 
 const NepalForm = ({ initialEditId }) => {
   const invoiceRef = useRef(null);
@@ -47,6 +46,11 @@ const NepalForm = ({ initialEditId }) => {
   const [countryName, setCountryName] = useState("NEPAL");
   const [termsDelivery, setTermsDelivery] = useState("FOB RAXAUL");
   const GST_RATE = 0;
+  const hsnOptions = ["27011200", "27011900", "27040000", "27040030", "27040040"];
+
+  const [hsnError, setHsnError] = useState(false);
+  const [gradeError, setGradeError] = useState(false);
+  const [descriptionError, setDescriptionError] = useState(false);
 
 
 
@@ -105,7 +109,10 @@ const NepalForm = ({ initialEditId }) => {
   };
 
   const formatAmount = (amount) => {
-    return Number(amount || 0).toLocaleString("en-IN");
+    return Number(amount || 0).toLocaleString("en-IN", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
   };
 
   useEffect(() => {
@@ -237,6 +244,7 @@ const NepalForm = ({ initialEditId }) => {
 
         const mapped = inv.products.map((p) => ({
           ...p,
+          hsn:"",
           rate: p.rate || 0,
           taxable: (p.qty || 0) * (p.rate || 0),
           gst: 0,
@@ -282,6 +290,27 @@ const NepalForm = ({ initialEditId }) => {
     if (rows.length === 0) {
       alert("No products to save");
       return;
+    }
+
+    for (const row of rows) {
+
+      if (!row.descOption?.trim()) {
+        setGradeError(true);
+        alert("Please select Grade");
+        return;
+      }
+
+      if (!row.description?.trim()) {
+        setDescriptionError(true);
+        alert("Please enter GCV and Size");
+        return;
+      }
+
+      if (!row.hsn?.trim()) {
+        setHsnError(true);
+        alert("Please select HSN Code");
+        return;
+      }
     }
 
     const payload = {
@@ -339,40 +368,6 @@ const NepalForm = ({ initialEditId }) => {
     } catch (err) {
       alert("Failed to save. Check backend.");
       console.error(err);
-    }
-  };
-
-  const handleSharePDF = async () => {
-    const element = invoiceRef.current;
-
-    const pdfBlob = await html2pdf()
-      .from(element)
-      .set({
-        margin: 5,
-        filename: `${invoiceNumber}.pdf`,
-        image: { type: "jpeg", quality: 1 },
-        html2canvas: { scale: 2 },
-        jsPDF: {
-          unit: "mm",
-          format: "a4",
-          orientation: "portrait"
-        }
-      })
-      .outputPdf("blob");
-
-    const file = new File(
-      [pdfBlob],
-      `${invoiceNumber}.pdf`,
-      { type: "application/pdf" }
-    );
-
-    if (navigator.canShare?.({ files: [file] })) {
-      await navigator.share({
-        title: `Invoice ${invoiceNumber}`,
-        files: [file]
-      });
-    } else {
-      alert("PDF sharing not supported on this device");
     }
   };
 
@@ -497,7 +492,7 @@ const NepalForm = ({ initialEditId }) => {
 
         {/* LEFT */}
         <div className="left">
-          <div className="box">
+          <div className="box-nepal1">
             <p><b>M.P. ENTERPRISES</b></p>
             <p>MAIN ROAD RAXAUL, EAST CHAMPARAN, BIHAR 845305</p>
             <p>CONTACT:- +91 8235826679</p>
@@ -508,7 +503,7 @@ const NepalForm = ({ initialEditId }) => {
             <p>PAN:- AINP0877F | State Code:- 10</p>
           </div>
 
-          <div className="box">
+          <div className="box2">
             <p>Buyer (Bill to)</p>
             <p><b>{buyerName}</b></p>
             <p>{buyerAddress}</p>
@@ -556,21 +551,34 @@ const NepalForm = ({ initialEditId }) => {
                 <td><label>Country of Origin:</label><input value={countryOfOrigin} onChange={(e) => setCountryOfOrigin(e.target.value)} readOnly={!!initialEditId} />
                 </td>
                 <td>
-                  <label>Custom Entery Point:</label>
-                  <input
-                    value={customEntryPoint}
-                    onChange={(e) => setCustomEntryPoint(e.target.value)}
-                    rows={2}
-                    readOnly={!!initialEditId}
-                    style={{
-                      width: "100%",
-                      border: "none",
-                      resize: "none",
-                      overflow: "hidden",
-                      fontSize: "14px",
-                      background: "transparent"
-                    }}
-                  />
+                  <label>Custom Entry Point:</label>
+
+                  {initialEditId ? (
+                    <div
+                      style={{
+                        width: "100%",
+                        fontSize: "14px",
+                        fontFamily: "Arial",
+                        textTransform: "uppercase",
+                        whiteSpace: "normal",
+                        overflowWrap: "break-word",
+                        lineHeight: "1.2"
+                      }}
+                    >
+                      {customEntryPoint}
+                    </div>
+                  ) : (
+                    <input
+                      value={customEntryPoint}
+                      onChange={(e) => setCustomEntryPoint(e.target.value)}
+                      style={{
+                        width: "100%",
+                        border: "none",
+                        fontSize: "14px",
+                        background: "transparent"
+                      }}
+                    />
+                  )}
                 </td>
               </tr>
 
@@ -632,34 +640,95 @@ const NepalForm = ({ initialEditId }) => {
           {rows.map((row, i) => (
             <tr key={i}>
               <td>
-                <div>{row.product}</div>
-                <div>{row.descOption}</div>
-                <textarea
-                  className="myTextarea"
-                  value={row.description || ""}
-                  readOnly
-                />
+                <div style={{ marginLeft: "3px", fontWeight: "bold", }}>{row.product}</div>
+
+                <div className="field-wrapper">
+                  <input
+                    className={gradeError ? "error-input" : ""}
+                    type="text"
+                    style={{ textAlign: "left", width: "100%", marginLeft: "3px" }}
+                    value={row.descOption || ""}
+                    onChange={(e) => {
+                      handleInputChange(i, "descOption", e.target.value);
+                      setGradeError(false);
+                    }}
+                    placeholder="Select Grade"
+                    readOnly={isViewMode}
+                    list="descriptions"
+                  />
+
+                  {gradeError && <span className="error-icon">!</span>}
+                </div>
+
+                <datalist id="descriptions">
+                  <option value="GRADE-I" />
+                  <option value="GRADE-II" />
+                  <option value="GRADE-W-III" />
+                  <option value="GRADE-II FC" />
+                  <option value="GRADE-II FC (coke)" />
+                </datalist>
+
+                <div className="field-wrapper">
+                  <textarea
+                    className={`myTextarea ${descriptionError ? "error-input" : ""}`}
+                    style={{ textAlign: "left", width: "100%", marginLeft: "3px" }}
+                    value={row.description || "GCV-5700\nSize (50-200MM)"}
+                    onChange={(e) => {
+                      handleInputChange(i, "description", e.target.value);
+                      setDescriptionError(false);
+                    }}
+                    readOnly={isViewMode}
+                  // placeholder="Enter GCV and Size"
+                  />
+
+                  {descriptionError && <span className="error-icon">!</span>}
+                </div>
               </td>
 
-              <td>{row.hsn}</td>
               <td>
-                <input
-                  type="text"
-                  // style={{ width: '100%' }}
-                  value={row.qty || ''}
-                  onChange={(e) => handleInputChange(i, 'qty', e.target.value)}
-                  readOnly={isViewMode}
-                />
+                <div className="field-wrapper">
+                  <input
+                    className={hsnError ? "error-input" : ""}
+                    type="text"
+                    style={{ textAlign: "center", width: "100%" }}
+                    value={row.hsn || ""}
+                    list="nepal-hsns"
+                    onChange={(e) => {
+                      handleInputChange(i, "hsn", e.target.value);
+                      setHsnError(false);
+                    }}
+                    readOnly={isViewMode}
+                  />
+
+                  {hsnError && <span className="error-icon">!</span>}
+                </div>
+
+                <datalist id="nepal-hsns">
+                  {hsnOptions.map((hsn, idx) => (
+                    <option key={idx} value={hsn} />
+                  ))}
+                </datalist>
               </td>
               <td>
-                <input
-                  type="text"
-                  // style={{ width: '100%' }}  
-                  value={isViewMode ? formatAmount(row.rate) : row.rate}
-                  onChange={(e) => handleInputChange(i, 'rate', e.target.value)}
-                  readOnly={isViewMode}
-                  required
-                />
+                {isViewMode ? row.qty : (
+                  <input
+                    type="text"
+                    style={{ textAlign: "center" }}
+                    value={row.qty || ""}
+                    onChange={(e) => handleInputChange(i, "qty", e.target.value)}
+                  />
+                )}
+              </td>
+
+              <td>
+                {isViewMode ? formatAmount(row.rate) : (
+                  <input
+                    type="text"
+                    style={{ textAlign: "center" }}
+                    value={row.rate || ""}
+                    onChange={(e) => handleInputChange(i, "rate", e.target.value)}
+                  />
+                )}
               </td>
               <td>{formatAmount(row.taxable)}</td>
               {/* <td>{row.gst?.toFixed(2)}</td> */}
@@ -781,15 +850,6 @@ const NepalForm = ({ initialEditId }) => {
       >
         {initialEditId ? "Print" : "Save Invoice"}
       </button>
-
-      {initialEditId && (
-        <button
-          className="print-btn"
-          onClick={handleSharePDF}
-        >
-          Share PDF
-        </button>
-      )}
     </div>
   );
 };

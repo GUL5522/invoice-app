@@ -114,7 +114,7 @@ const InvoiceList = () => {
   return (
     <div className="invoice-list-container">
       <h2>Indian Invoices</h2>
-      <Link to="/bill" className="create-invoice-btn">Create New Invoice</Link>
+      <Link to="/bill" className="create-invoice-btn">+ Create New Indian Invoice</Link>
 
       <div className="search-box">
         <input
